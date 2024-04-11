@@ -1,0 +1,78 @@
+img{
+    margin-bottom: 30px;
+    max-width: 100%;
+    height: auto;
+}
+
+.login-container{
+    text-align: center;
+    border: 5px solid darkgray;
+    border-radius: 15px;
+    font-family: Arial;
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+    margin-bottom: 30px;
+    width: 30vw;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login-container label{
+    font-family: Arial;
+    color: #6a6a69;
+    margin-right: 15px;
+}
+
+.error-message{
+    font-family: Arial;
+    border: 3px solid gray;
+    border-radius: 15px;
+    text-align: center;
+    width: 30vw;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: rgba(255,0,9,0.60);
+    margin-left: auto;
+    margin-right: auto;
+    display: none;
+}
+
+input[type="text"], input[type="password"]{
+    display: inline-block;
+    font-family: Arial;
+    font-size: 15px;
+    margin: 5px;
+    padding: 5px;
+    text-align: center;
+    border-radius: 20px;
+    border: 3px solid gray;
+}
+
+#password{
+    margin-bottom: 20px;
+}
+
+input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.login-container.remember-me-forgot-password{
+    display: flex;
+}
+
+button{
+    margin: 20px;
+    font-family: Arial;
+    font-size: 1.5em;
+    border: 5px solid gray;
+    border-radius: 15px;
+    background-color: lightgray;
+    cursor: pointer;
+}
+
+#login-button:hover{
+    background-color: #9e9e9d;
+}
+
+

@@ -1,11 +1,13 @@
-import Home from "./HomeScreen/Home.jsx";
+import Login from "./LoginScreen/Login.jsx";
 import "./index.css"
 
 function App() {
 
+
+
   return (
       <>
-        <Home></Home>
+        <Login></Login>
       </>
   )
 }
