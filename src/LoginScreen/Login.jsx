@@ -1,6 +1,6 @@
 import "./index.css"
 import logo from "../assets/logo.png"
-import {useRef, useState} from "react";
+import {useState} from "react";
 import Axios from "axios";
 
 function Login(){
@@ -11,44 +11,48 @@ function Login(){
         remember_me: false
     });
 
-    // const emailAddress = useRef("")
-
-    // const handleChange = (e) => {
-    //     const credentials = {...formData}
-    //     credentials[e.target.id] = e.target.value
-    //     setFormData(credentials)
-    // };
+    const [errorMessage, setErrorMessage] = useState("")
 
     function handleEmailAddressInputChange(e) {
         setCredentials({...credentials, email_address: e.target.value})
-        if (document.getElementById("error-message").style.display === "flex") {
-            document.getElementById("error-message").style.display = "none"
+        if (document.getElementById("error-message").style.visibility === "visible") {
+            document.getElementById("error-message").style.visibility = "hidden"
         }
     }
 
     function handlePasswordInputChange(e) {
         setCredentials({...credentials, password: e.target.value})
-        if (document.getElementById("error-message").style.display === "flex") {
-            document.getElementById("error-message").style.display = "none"
+        if (document.getElementById("error-message").style.visibility === "visible") {
+            document.getElementById("error-message").style.visibility = "hidden"
         }
     }
 
     function handleOnSubmit(){
         Axios.post("http://localhost:8085/login", JSON.stringify(credentials)).catch((error) => {
-            if (error.response.status === 401){
-                document.getElementById("error-message").style.display = "flex"
+            if (error.response){
+                if (error.response.status === 401){
+                    setErrorMessage("Wrong email address or password")
+                }else {
+
+                    setErrorMessage("Something went wrong, please try again")
+                }
+            }else {
+                setErrorMessage("Something went wrong, please try again")
             }
-        })
-        setCredentials(undefined)
-        document.getElementById("email-address").value = ""
-        document.getElementById("password").value = ""
+            document.getElementById("error-message").style.visibility = "visible"
+        }).then((response)=>console.log(response))
+
+
+        // setCredentials(undefined)
+        // document.getElementById("email-address").value = ""
+        // document.getElementById("password").value = ""
     }
 
     return(
         <>
-            <img src={logo}/>
+            <img src={logo} alt={"logo"}/>
             <div className={"error-message"} id={"error-message"}>
-                <label>Wrong email address or password</label>
+                <label>{errorMessage}</label>
             </div>
             <div className={"login-container"}>
                 <input type={"text"} placeholder={"username"} id={"email-address"} onChange={e => handleEmailAddressInputChange(e)}/>
@@ -65,7 +69,7 @@ function Login(){
 
                 <button id={"login-button"} onClick={handleOnSubmit}>Login</button>
 
-                <label>Don't have an account ? <a href={"/register"}>Register</a></label>
+                <label>{"Don't have an account ?"} <a href={"/register"}>Register</a></label>
             </div>
         </>
 

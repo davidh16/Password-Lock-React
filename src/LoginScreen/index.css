@@ -8,42 +8,51 @@ img{
     text-align: center;
     border: 5px solid darkgray;
     border-radius: 15px;
-    font-family: Arial;
+        font-family: Arial, sans-serif;
+;
     display: flex;
     flex-direction: column;
     padding: 25px;
     margin-bottom: 30px;
-    width: 30vw;
+    width: 22vw;
     margin-left: auto;
     margin-right: auto;
 }
 
 .login-container label{
-    font-family: Arial;
+        font-family: Arial, sans-serif;
+;
     color: #6a6a69;
     margin-right: 15px;
 }
 
 .error-message{
-    font-family: Arial;
+        font-family: Arial, sans-serif;
+, sans-serif;
     border: 3px solid gray;
     border-radius: 15px;
     text-align: center;
-    width: 30vw;
-    padding: 10px;
+    /*width: auto;*/
+    width: fit-content;
+    padding: 15px;
     margin-bottom: 10px;
     background-color: rgba(255,0,9,0.60);
     margin-left: auto;
     margin-right: auto;
-    display: none;
-    max-width:30vw;
-    max-height:200px;
+    display: flex;
+    visibility: hidden;
+}
+
+.error-message label{
+    text-align: center;
+    margin: auto;
 }
 
 
 input[type="text"], input[type="password"]{
     display: inline-block;
-    font-family: Arial;
+        font-family: Arial, sans-serif;
+;
     font-size: 15px;
     margin: 5px;
     padding: 5px;
@@ -66,7 +75,8 @@ input[type="checkbox"] {
 
 button{
     margin: 20px;
-    font-family: Arial;
+        font-family: Arial, sans-serif;
+;
     font-size: 1.5em;
     border: 5px solid gray;
     border-radius: 15px;
