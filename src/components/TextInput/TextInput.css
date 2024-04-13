@@ -12,8 +12,13 @@
     font-family: Arial, sans-serif;
     font-size: 15px;
     border: none;
-    text-align: center;
+    text-align: left;
     width: 100%;
+    padding-left: 5%;
+}
+
+.text-input input:focus {
+    outline: none;
 }
 
 .text-input img {
