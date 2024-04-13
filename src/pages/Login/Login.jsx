@@ -1,7 +1,9 @@
-import "./index.css"
-import logo from "../assets/logo.png"
+import "./Login.css"
+import logo from "../../assets/logo.png"
 import {useState} from "react";
 import Axios from "axios";
+import TextInput from "../../components/TextInput/TextInput.jsx";
+import icon from "../../assets/hidden.png"
 
 function Login(){
 
@@ -55,8 +57,8 @@ function Login(){
                 <label>{errorMessage}</label>
             </div>
             <div className={"login-container"}>
-                <input type={"text"} placeholder={"username"} id={"email-address"} onChange={e => handleEmailAddressInputChange(e)}/>
-                <input type={"password"} placeholder={"password"} id={"password"} onChange={e => handlePasswordInputChange(e)}/>
+                <TextInput type={"text"} placeholder={"username"} id={"email-address"} onChange={e => handleEmailAddressInputChange(e)}/>
+                <TextInput type={"password"} placeholder={"password"} id={"password"} onChange={e => handlePasswordInputChange(e)} icon={icon}/>
 
                 <div className={"remember-me-forgot-password"}>
                     <label>
@@ -67,7 +69,7 @@ function Login(){
                     <a href={"/forgot-password"}>Forgot password</a>
                 </div>
 
-                <button id={"login-button"} onClick={handleOnSubmit}>Login</button>
+                <button id={"Login-button"} onClick={handleOnSubmit}>Login</button>
 
                 <label>{"Don't have an account ?"} <a href={"/register"}>Register</a></label>
             </div>

@@ -48,23 +48,6 @@ img{
     margin: auto;
 }
 
-
-input[type="text"], input[type="password"]{
-    display: inline-block;
-        font-family: Arial, sans-serif;
-;
-    font-size: 15px;
-    margin: 5px;
-    padding: 5px;
-    text-align: center;
-    border-radius: 20px;
-    border: 3px solid gray;
-}
-
-#password{
-    margin-bottom: 20px;
-}
-
 input[type="checkbox"] {
     margin-right: 5px;
 }
@@ -75,8 +58,7 @@ input[type="checkbox"] {
 
 button{
     margin: 20px;
-        font-family: Arial, sans-serif;
-;
+    font-family: Arial, sans-serif;;
     font-size: 1.5em;
     border: 5px solid gray;
     border-radius: 15px;
