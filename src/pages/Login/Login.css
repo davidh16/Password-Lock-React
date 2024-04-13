@@ -8,8 +8,7 @@ img{
     text-align: center;
     border: 5px solid darkgray;
     border-radius: 15px;
-        font-family: Arial, sans-serif;
-;
+    font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
     padding: 25px;
@@ -20,26 +19,23 @@ img{
 }
 
 .login-container label{
-        font-family: Arial, sans-serif;
-;
+    font-family: Arial, sans-serif;
     color: #6a6a69;
     margin-right: 15px;
 }
 
 .error-message{
-        font-family: Arial, sans-serif;
-, sans-serif;
+    font-family: Arial, sans-serif;
     border: 3px solid gray;
     border-radius: 15px;
     text-align: center;
-    /*width: auto;*/
     width: fit-content;
     padding: 15px;
     margin-bottom: 10px;
     background-color: rgba(255,0,9,0.60);
     margin-left: auto;
     margin-right: auto;
-    display: flex;
+    display: block;
     visibility: hidden;
 }
 

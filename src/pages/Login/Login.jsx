@@ -43,11 +43,6 @@ function Login(){
             }
             document.getElementById("error-message").style.visibility = "visible"
         }).then((response)=>console.log(response))
-
-
-        // setCredentials(undefined)
-        // document.getElementById("email-address").value = ""
-        // document.getElementById("password").value = ""
     }
 
     return(
@@ -66,12 +61,12 @@ function Login(){
                         Remember me
                     </label>
 
-                    <a href={"/forgot-password"}>Forgot password</a>
+                    <a href={"/forgot-password"} >Forgot password</a>
                 </div>
 
                 <button id={"Login-button"} onClick={handleOnSubmit}>Login</button>
 
-                <label>{"Don't have an account ?"} <a href={"/register"}>Register</a></label>
+                <label>{"Don't have an account ?"} <a href={"/register"} >Register</a></label>
             </div>
         </>
 
