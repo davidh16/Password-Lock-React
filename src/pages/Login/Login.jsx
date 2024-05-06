@@ -13,20 +13,17 @@ function Login(){
         remember_me: false
     });
 
-    const [errorMessage, setErrorMessage] = useState("")
+    const [errorMessage, setErrorMessage] = useState(null)
 
     function handleEmailAddressInputChange(e) {
         setCredentials({...credentials, email_address: e.target.value})
-        if (document.getElementById("error-message").style.visibility === "visible") {
-            document.getElementById("error-message").style.visibility = "hidden"
-        }
+        setErrorMessage(null)
     }
 
     function handlePasswordInputChange(e) {
         setCredentials({...credentials, password: e.target.value})
-        if (document.getElementById("error-message").style.visibility === "visible") {
-            document.getElementById("error-message").style.visibility = "hidden"
-        }
+        setErrorMessage(null)
+
     }
 
     function handleOnSubmit(){
@@ -34,22 +31,23 @@ function Login(){
             if (error.response){
                 if (error.response.status === 401){
                     setErrorMessage("Wrong email address or password")
-                }else {
 
+                }else {
                     setErrorMessage("Something went wrong, please try again")
                 }
             }else {
                 setErrorMessage("Something went wrong, please try again")
             }
-            document.getElementById("error-message").style.visibility = "visible"
         }).then((response)=>console.log(response))
     }
 
     return(
         <>
             <img src={logo} alt={"logo"}/>
-            <div className={"error-message"} id={"error-message"}>
-                <label>{errorMessage}</label>
+            <div className={"error-message-box"}>
+                {errorMessage && <div className={"error-message"} id={"error-message"}>
+                    <label>{errorMessage}</label>
+                </div>}
             </div>
             <div className={"login-container"}>
                 <TextInput type={"text"} placeholder={"username"} id={"email-address"} onChange={e => handleEmailAddressInputChange(e)}/>

@@ -24,6 +24,10 @@ img{
     margin-right: 15px;
 }
 
+.error-message-box{
+    height: 75px;
+}
+
 .error-message{
     font-family: Arial, sans-serif;
     border: 3px solid gray;
@@ -36,7 +40,6 @@ img{
     margin-left: auto;
     margin-right: auto;
     display: block;
-    visibility: hidden;
 }
 
 .error-message label{
