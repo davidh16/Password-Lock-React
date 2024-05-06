@@ -50,7 +50,7 @@ function Login(){
                 </div>}
             </div>
             <div className={"login-container"}>
-                <TextInput type={"text"} placeholder={"username"} id={"email-address"} onChange={e => handleEmailAddressInputChange(e)}/>
+                <TextInput type={"text"} placeholder={"email address"} id={"email-address"} onChange={e => handleEmailAddressInputChange(e)}/>
                 <TextInput type={"password"} placeholder={"password"} id={"password"} onChange={e => handlePasswordInputChange(e)} icon={icon}/>
 
                 <div className={"remember-me-forgot-password"}>
