@@ -9,9 +9,11 @@ function ForgotPassword(){
 
     const [emailAddress, setCredentials] = useState("");
 
+    const [errorMessage, setErrorMessage] = useState("");
+
     const [submitted, setSubmitted] = useState(false)
 
-    const [timer, setTimer] = useState(20)
+    const [timer, setTimer] = useState(5)
 
     useEffect(() => {
         let intervalId;
@@ -19,8 +21,6 @@ function ForgotPassword(){
             intervalId = setInterval(() => {
                 setTimer((prevTimer) => prevTimer - 1);
             }, 1000);
-        } else {
-            setSubmitted(false)
         }
 
         return () => {
@@ -30,15 +30,21 @@ function ForgotPassword(){
 
 
     const startTimer = () => {
-        setTimer(20);
+        setTimer(5);
     };
 
 
     function handleEmailAddressInputChange(e) {
         setCredentials(e.target.value)
+        setErrorMessage()
     }
 
     function handleOnSubmit(){
+
+        if (emailAddress === ""){
+            setErrorMessage("Email address is not specified")
+            return
+        }
 
         const request = {
             email_address: emailAddress
@@ -50,13 +56,34 @@ function ForgotPassword(){
         setSubmitted(true)
     }
 
+    function handleOnResendVerificationLink(){
+        const request = {
+            email_address: emailAddress
+        }
+
+        Axios.post("http://localhost:8085/forgot-password", JSON.stringify(request)).then((response)=>console.log(response))
+
+        startTimer()
+        setSubmitted(false)
+    }
+
+
     return(
         <>
             <img src={logo} alt={"logo"}/>
+            <div className={"error-message-box"}>
+                {errorMessage && <div className={"error-message"} id={"error-message"}>
+                    <label>{errorMessage}</label>
+                </div>}
+            </div>
             <div className={"container"}>
                 {!submitted && <TextInput type={"text"} placeholder={"email address"} id={"email-address"} onChange={e => handleEmailAddressInputChange(e)}/>}
                 {!submitted && <button id={"button"} onClick={handleOnSubmit}>Send reset link</button>}
-                {submitted && <p>{timer}</p>}
+                {submitted && <div className={"timer"}>
+                    <p>Reset link has been sent to your email.</p>
+                    <p>To resend a link, please wait {timer} seconds.</p>
+                    {timer <= 0 && <a href="" onClick={handleOnResendVerificationLink}>Resend verification link</a>}
+                </div>}
             </div>
         </>
     )
