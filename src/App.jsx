@@ -7,6 +7,8 @@ import {
 } from "react-router-dom";
 import Register from "./pages/Register/Register";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword.jsx";
+import PersonalQuestions from "./pages/PersonalQuestions/PersonalQuestions.jsx";
+import Home from "./pages/Home/Home.jsx";
 
 function App() {
   return (
@@ -17,6 +19,16 @@ function App() {
                     exact
                     path="/"
                     element={<Login />}
+                />
+                <Route
+                    exact
+                    path="/personal-questions"
+                    element={<PersonalQuestions />}
+                />
+                <Route
+                    exact
+                    path="/home"
+                    element={<Home />}
                 />
                 <Route
                     exact

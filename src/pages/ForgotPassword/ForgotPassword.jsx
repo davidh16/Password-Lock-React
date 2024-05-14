@@ -13,7 +13,7 @@ function ForgotPassword(){
 
     const [submitted, setSubmitted] = useState(false)
 
-    const [timer, setTimer] = useState(5)
+    const [timer, setTimer] = useState(20)
 
     useEffect(() => {
         let intervalId;
@@ -30,7 +30,7 @@ function ForgotPassword(){
 
 
     const startTimer = () => {
-        setTimer(5);
+        setTimer(20);
     };
 
 
@@ -56,21 +56,21 @@ function ForgotPassword(){
         setSubmitted(true)
     }
 
-    function handleOnResendVerificationLink(){
+    function handleOnResendResetLink(){
         const request = {
             email_address: emailAddress
         }
 
         Axios.post("http://localhost:8085/forgot-password", JSON.stringify(request)).then((response)=>console.log(response))
 
-        startTimer()
-        setSubmitted(false)
+        startTimer(20)
+        setSubmitted(true)
     }
 
 
     return(
         <>
-            <img src={logo} alt={"logo"}/>
+            <a href="/"><img src={logo} alt={"logo"}/></a>
             <div className={"error-message-box"}>
                 {errorMessage && <div className={"error-message"} id={"error-message"}>
                     <label>{errorMessage}</label>
@@ -82,7 +82,7 @@ function ForgotPassword(){
                 {submitted && <div className={"timer"}>
                     <p>Reset link has been sent to your email.</p>
                     <p>To resend a link, please wait {timer} seconds.</p>
-                    {timer <= 0 && <a href="" onClick={handleOnResendVerificationLink}>Resend verification link</a>}
+                    {timer <= 0 && <p className={"link"} onClick={handleOnResendResetLink}>Resend password reset link</p>}
                 </div>}
             </div>
         </>

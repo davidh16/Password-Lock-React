@@ -1,6 +1,7 @@
 import "./Login.css"
 import logo from "../../assets/logo.png"
 import {useState} from "react";
+import { useNavigate } from 'react-router-dom';
 import Axios from "axios";
 import TextInput from "../../components/TextInput/TextInput.jsx";
 import icon from "../../assets/hidden.png"
@@ -15,6 +16,8 @@ function Login(){
 
     const [errorMessage, setErrorMessage] = useState(null)
 
+    const navigate = useNavigate();
+
     function handleEmailAddressInputChange(e) {
         setCredentials({...credentials, email_address: e.target.value})
         setErrorMessage(null)
@@ -27,23 +30,44 @@ function Login(){
     }
 
     function handleOnSubmit(){
-        Axios.post("http://localhost:8085/login", JSON.stringify(credentials)).catch((error) => {
-            if (error.response){
-                if (error.response.status === 401){
-                    setErrorMessage("Wrong email address or password")
+        Axios.post("http://localhost:8085/login", JSON.stringify(credentials), { withCredentials: true })
+            .then((response)=>{
+                console.log(response)
 
+                setErrorMessage(null)
+
+                Axios.post("http://localhost:8085/me", undefined,{ withCredentials: true }).then(
+                    (response)=>{
+                        if(response.data["completed"]){
+                            navigate("/home")
+                        }else {
+                            navigate("/personal-questions")
+                        }
+                    }
+                )
+                    .catch((error) => {
+                    console.log(error)
+                })
+
+
+            })
+            .catch((error) => {
+                if (error.response){
+                    if (error.response.status === 401){
+                        setErrorMessage("Wrong email address or password")
+
+                    }else {
+                        setErrorMessage("Something went wrong, please try again")
+                    }
                 }else {
                     setErrorMessage("Something went wrong, please try again")
                 }
-            }else {
-                setErrorMessage("Something went wrong, please try again")
-            }
-        }).then((response)=>console.log(response))
+            })
     }
 
     return(
         <>
-            <img src={logo} alt={"logo"}/>
+            <a href="/"><img src={logo} alt={"logo"}/></a>
             <div className={"error-message-box"}>
                 {errorMessage && <div className={"error-message"} id={"error-message"}>
                     <label>{errorMessage}</label>
