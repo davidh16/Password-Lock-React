@@ -38,7 +38,8 @@ function Home(){
         Axios.get("http://localhost:8085/entity/list", {withCredentials: true})
             .then((response) => {
                 const decryptedResponse = decryptResponse(response);
-                console.log('Decrypted Response:', decryptedResponse);
+                console.log('Decrypted Response:', JSON.parse(decryptedResponse));
+                setEntities(JSON.parse(decryptedResponse).entities)
             })
             .catch((error) => {
                 console.log(error);
