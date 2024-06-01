@@ -40,7 +40,7 @@ function Home(){
     };
 
     const handleLogout = () =>{
-        Axios.post("http://localhost:8085/logout", {withCredentials: true})
+        Axios.post("http://localhost:8085/logout", undefined,{withCredentials: true})
             .then(() => {
                navigate("/")
             })
@@ -48,6 +48,7 @@ function Home(){
                 console.log(error);
             });
     }
+
 
     useEffect(() => {
         Axios.get("http://localhost:8085/entity/list", {withCredentials: true})
