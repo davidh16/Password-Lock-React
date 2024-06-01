@@ -35,6 +35,20 @@ function Home(){
 
     const navigate = useNavigate()
 
+    const handleNew = () => {
+       navigate("/new-entity")
+    };
+
+    const handleLogout = () =>{
+        Axios.post("http://localhost:8085/logout", {withCredentials: true})
+            .then(() => {
+               navigate("/")
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
     useEffect(() => {
         Axios.get("http://localhost:8085/entity/list", {withCredentials: true})
             .then((response) => {
@@ -63,6 +77,8 @@ function Home(){
                     ))}
                 </div>
             )}
+            <button onClick={handleNew} className="create-button">New</button>
+            <button onClick={handleLogout} className="logout-button">Logout</button>
         </>
 
     )

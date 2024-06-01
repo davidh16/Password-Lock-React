@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './Entity.css';
 import PropTypes from "prop-types";
 
@@ -20,7 +20,7 @@ function Entity({ name, emailAddress, password, username, description, iconPath}
     return (
         <div className={`entity-component ${isExpanded ? 'expanded' : ''}`}>
             <h2>{name}</h2>
-            <img src={iconPath} alt={name} className="entity-picture" />
+            {iconPath && <img src={iconPath} alt={name} className="entity-picture"/>}
             <div className="text-container">
                 <p>{password}</p>
                 <button onClick={handleCopyText} className="copy-icon">📋</button>
@@ -42,7 +42,7 @@ function Entity({ name, emailAddress, password, username, description, iconPath}
 Entity.propTypes = {
     name: PropTypes.string.isRequired,
     password: PropTypes.string.isRequired,
-    email_address: PropTypes.string,
+    emailAddress: PropTypes.string,
     username: PropTypes.string,
     description: PropTypes.string.isRequired,
     iconPath: PropTypes.string,
