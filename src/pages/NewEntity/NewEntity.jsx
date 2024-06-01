@@ -2,6 +2,7 @@ import {useNavigate} from "react-router-dom";
 import TextInput from "../../components/TextInput/TextInput.jsx";
 import {useState} from "react";
 import Axios from "axios";
+import "./NewEntity.css";
 
 function NewEntity() {
     const [errorMessage, setErrorMessage] = useState(null);
@@ -18,11 +19,11 @@ function NewEntity() {
     const [icon, setIcon] = useState(null);
     const navigate = useNavigate();
 
-    function handleCancel(){
+    function handleCancel() {
         navigate("/home");
     }
 
-    function handleCreate(){
+    function handleCreate() {
         const formData = new FormData();
         formData.append('file', icon);
         formData.append('entity', JSON.stringify(entity));
@@ -33,12 +34,12 @@ function NewEntity() {
                 'Content-Type': 'multipart/form-data',
             }
         })
-            .then(()=>{
+            .then(() => {
                 setErrorMessage(null);
-                navigate("/home");  // Navigate to a success page or home page
+                navigate("/home");
             })
             .catch((error) => {
-                if (error.response){
+                if (error.response) {
                     console.log(error.response);
                     setErrorMessage("Error occurred while creating the entity.");
                 }
@@ -58,8 +59,7 @@ function NewEntity() {
     };
 
     return (
-        <>
-            <h1>New Entity</h1>
+        <div className="new-entity-container">
             <TextInput type="text" placeholder="Name" id="entity-name" onChange={(e) => handleInputChange(e, 'name')} />
             <TextInput type="text" placeholder="Email address" id="entity-email-address" onChange={(e) => handleInputChange(e, 'email_address')} />
             <TextInput type="text" placeholder="Username" id="entity-username" onChange={(e) => handleInputChange(e, 'username')} />
@@ -68,8 +68,8 @@ function NewEntity() {
             <input type="file" onChange={handleFileChange} />
             <button onClick={handleCreate}>Create</button>
             <button onClick={handleCancel}>Cancel</button>
-            {errorMessage && <p>{errorMessage}</p>}
-        </>
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+        </div>
     );
 }
 
