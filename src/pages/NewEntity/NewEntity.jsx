@@ -59,17 +59,24 @@ function NewEntity() {
     };
 
     return (
-        <div className="new-entity-container">
-            <TextInput type="text" placeholder="Name" id="entity-name" onChange={(e) => handleInputChange(e, 'name')} />
-            <TextInput type="text" placeholder="Email address" id="entity-email-address" onChange={(e) => handleInputChange(e, 'email_address')} />
-            <TextInput type="text" placeholder="Username" id="entity-username" onChange={(e) => handleInputChange(e, 'username')} />
-            <TextInput type="text" placeholder="Password" id="entity-password" onChange={(e) => handleInputChange(e, 'password')} />
-            <TextInput type="text" placeholder="Description" id="entity-description" onChange={(e) => handleInputChange(e, 'description')} />
-            <input type="file" onChange={handleFileChange} />
-            <button onClick={handleCreate}>Create</button>
-            <button onClick={handleCancel}>Cancel</button>
-            {errorMessage && <p className="error-message">{errorMessage}</p>}
-        </div>
+        <>
+            <div className={"error-message-box"}>
+                {errorMessage && <div className={"error-message"} id={"error-message"}>
+                    <label>{errorMessage}</label>
+                </div>}
+            </div>
+            <div className="new-entity-container">
+                <TextInput type="text" placeholder="Name" id="entity-name" onChange={(e) => handleInputChange(e, 'name')} />
+                <TextInput type="text" placeholder="Email address" id="entity-email-address" onChange={(e) => handleInputChange(e, 'email_address')} />
+                <TextInput type="text" placeholder="Username" id="entity-username" onChange={(e) => handleInputChange(e, 'username')} />
+                <TextInput type="text" placeholder="Password" id="entity-password" onChange={(e) => handleInputChange(e, 'password')} />
+                <TextInput type="text" placeholder="Description" id="entity-description" onChange={(e) => handleInputChange(e, 'description')} />
+                <input type="file" onChange={handleFileChange} />
+                <button onClick={handleCreate}>Create</button>
+                <button onClick={handleCancel}>Cancel</button>
+            </div>
+        </>
+
     );
 }
 

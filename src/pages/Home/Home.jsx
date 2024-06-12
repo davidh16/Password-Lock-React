@@ -3,13 +3,12 @@ import {useNavigate} from "react-router-dom";
 import Axios from "axios";
 import Entity from "../../components/Entity/Entity.jsx";
 import CryptoJS from 'crypto-js';
+import "./Home.css"
 
 const secret = import.meta.env.VITE_RESPONSE_SECRET_KEY;
 const iv = import.meta.env.VITE_RESPONSE_SECRET_VECTOR;
 
 function Home(){
-
-
     function decodeBase64(input) {
         return CryptoJS.enc.Base64.parse(input);
     }
@@ -64,7 +63,7 @@ function Home(){
     return(
         <>
             {entities && (
-                <div>
+                <div className={"entity-list"}>
                     {entities.map((entity) => (
                         <Entity
                             key={entity.uuid}
@@ -74,12 +73,15 @@ function Home(){
                             emailAddress={entity.email_address}
                             username={entity.username}
                             description={entity.description}
+                            uuid={entity.uuid}
                         />
                     ))}
                 </div>
             )}
-            <button onClick={handleNew} className="create-button">New</button>
-            <button onClick={handleLogout} className="logout-button">Logout</button>
+            <div className={"button-section"}>
+                <button onClick={handleNew} className="create-button">New</button>
+                <button onClick={handleLogout} className="logout-button">Logout</button>
+            </div>
         </>
 
     )

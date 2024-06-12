@@ -25,6 +25,7 @@
     border-radius: 20px;
     border: 3px solid gray;
     padding: 5px;
+    height: 30px;
 }
 
 .text-input input {
@@ -57,6 +58,7 @@ button:hover {
 
 /* Error message styling */
 .error-message-box {
+    margin-top: 10px;
     height: 75px;
 }
 

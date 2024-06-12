@@ -1,0 +1,11 @@
+.entity-list{
+    height: 500px;
+    overflow: auto;
+}
+
+.button-section{
+    display: flex;
+    justify-content: space-between;
+    padding-left: 50px;
+    padding-right: 50px;
+}

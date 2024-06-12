@@ -1,45 +1,58 @@
-.entity-component {
-    border: 1px solid #ccc;
-    padding: 20px;
-    margin: 20px 0;
-    position: relative;
-    transition: all 0.3s ease;
-}
-
-.entity-component.expanded {
-    border-color: #007BFF;
-    background-color: #f9f9f9;
-}
-
-.entity-picture {
-    width: 100px;
+.entity-container{
+    font-family: Arial, sans-serif;
+    border: 5px solid darkgray;
+    border-radius: 15px;
+    padding: 25px;
+    display: block;
+    margin: 5px;
     height: 100px;
-    object-fit: cover;
-    border-radius: 50%;
+    justify-content: center;
 }
 
-.text-container {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-}
-
-.text-container p {
-    margin: 0;
-    flex-grow: 1;
-}
-
-.copy-icon, .expand-icon {
-    background: none;
-    border: none;
+.entity-container:hover{
     cursor: pointer;
-    font-size: 20px;
-    margin-left: 10px;
 }
 
-.additional-info {
+.entity{
+    display: flex;
+    width: 400px;
+    justify-content: space-evenly;
+}
+
+.icon-column{
+    margin-left: 20px;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.entity-icon{
+    width:70px;
+    height:70px;
+    border: solid;
+    border-radius: 35px;
     margin-top: 20px;
-    padding: 10px;
-    background-color: #f1f1f1;
-    border-top: 1px solid #ccc;
+}
+
+.entity-data{
+    margin-left: 20px;
+    display: inline-block;
+    width: 70%;
+}
+
+.password-field{
+    display: flex;
+    margin: 10px;
+}
+
+.description-field{
+    display: block;
+    margin: 10px;
+    overflow: auto;
+    max-height: 30px;
+}
+
+h3{
+    margin: 0px;
 }
