@@ -7,7 +7,7 @@ import CryptoJS from "crypto-js";
 const secret = import.meta.env.VITE_RESPONSE_SECRET_KEY;
 const iv = import.meta.env.VITE_RESPONSE_SECRET_VECTOR;
 
-function Entity({ name, password, description, iconPath, uuid}) {
+function Entity({ name, emailAddress, username,password, description, iconPath, uuid}) {
     const [icon, setIcon] = useState()
 
     function decodeBase64(input) {
@@ -56,6 +56,18 @@ function Entity({ name, password, description, iconPath, uuid}) {
                     <div className={"description-field"}>
                         {description}
                     </div>
+                    {emailAddress && <>
+                        <label>Email address :</label>
+                        <div className={"email-address-field"}>
+                            {emailAddress}
+                        </div>
+                    </>}
+                    {username && <>
+                        <label>Username :</label>
+                        <div className={"username-field"}>
+                            {username}
+                        </div>
+                    </>}
                 </div>
             </div>
         </div>

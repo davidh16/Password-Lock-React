@@ -5,7 +5,7 @@
     padding: 25px;
     display: block;
     margin: 5px;
-    height: 100px;
+    height: auto;
     justify-content: center;
 }
 
@@ -46,11 +46,21 @@
     margin: 10px;
 }
 
+.email-address-field{
+    display: flex;
+    margin: 10px;
+}
+
+.username-field{
+    display: flex;
+    margin: 10px;
+}
+
 .description-field{
     display: block;
     margin: 10px;
     overflow: auto;
-    max-height: 30px;
+    max-height: 40px;
 }
 
 h3{
