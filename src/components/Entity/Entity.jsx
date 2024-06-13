@@ -12,7 +12,7 @@ import deleteEntityIcon from "../../assets/delete.png"
 const secret = import.meta.env.VITE_RESPONSE_SECRET_KEY;
 const iv = import.meta.env.VITE_RESPONSE_SECRET_VECTOR;
 
-function Entity({ name, emailAddress, username,password, description, iconPath, uuid}) {
+function Entity({ name, emailAddress, username,password, description, iconPath, uuid, onDelete}) {
     const [icon, setIcon] = useState()
 
     const [viewIcon, setViewIcon] = useState(iconHidden)
@@ -20,6 +20,10 @@ function Entity({ name, emailAddress, username,password, description, iconPath, 
     const defaultShownPassword = "••••••••••••••••"
 
     const [shownPassword, setShownPassword] = useState(defaultShownPassword)
+
+    const [showPopup, setShowPopup] = useState(false);
+
+    const [currentEntity, setCurrentEntity] = useState({ name: '', uuid: '' });
 
     function decodeBase64(input) {
         return CryptoJS.enc.Base64.parse(input);
@@ -57,6 +61,33 @@ function Entity({ name, emailAddress, username,password, description, iconPath, 
         });
     }
 
+    function handleDeleteIconClick(){
+        setCurrentEntity({ name, uuid });
+        setShowPopup(true);
+    }
+
+    function handleUpdateIconClick(){
+        const popup = document.getElementById('popup');
+        popup.style.display = 'none';
+    }
+
+    const confirmDelete = (uuid) => {
+        Axios.post("http://localhost:8085/entity/delete/" + uuid, undefined, {withCredentials: true})
+            .then( ()=> {
+                closePopup()
+                onDelete(uuid)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+    }
+
+    function closePopup(){
+        setShowPopup(false);
+        setCurrentEntity({ name: '', uuid: '' });
+    }
+
     useEffect(() => {
         Axios.get("http://localhost:8085/icon/" + uuid, {withCredentials: true})
             .then((response) => {
@@ -76,8 +107,8 @@ function Entity({ name, emailAddress, username,password, description, iconPath, 
                     <h3>{name}</h3>
                     <img src={icon} className={"entity-icon"}/>
                     <div className="entity-hover-icons">
-                        <img src={updateEntityIcon} alt="Icon 1" className="update-icon"/>
-                        <img src={deleteEntityIcon} alt="Icon 2" className="delete-icon"/>
+                        <img src={updateEntityIcon} alt={""} className="update-icon" onClick={handleUpdateIconClick}/>
+                        <img src={deleteEntityIcon} alt={""} className="delete-icon" onClick={handleDeleteIconClick}/>
                     </div>
                 </div>}
                 <div className={"entity-data"}>
@@ -108,6 +139,13 @@ function Entity({ name, emailAddress, username,password, description, iconPath, 
                 </div>
             </div>
         </div>
+            {showPopup && <div className="popup-overlay">
+            <div className="popup-content">
+                <p id="popupMessage">Are you sure you want to delete {name}?</p>
+                <button onClick={() => confirmDelete(currentEntity.uuid)}>Yes</button>
+                <button onClick={closePopup}>No</button>
+            </div>
+        </div>}
     </>
     );
 }
@@ -120,5 +158,6 @@ Entity.propTypes = {
     description: PropTypes.string.isRequired,
     iconPath: PropTypes.string,
     uuid: PropTypes.string.isRequired,
+    onDelete: PropTypes.func.isRequired,
 };
 export default Entity;

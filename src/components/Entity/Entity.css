@@ -9,10 +9,6 @@
     justify-content: center;
 }
 
-.entity-container:hover{
-    cursor: pointer;
-}
-
 .entity{
     display: flex;
     width: 600px;
@@ -110,4 +106,28 @@ h3{
     margin-bottom: auto;
     cursor: pointer;
     margin-right: 10px;
+}
+
+.popup-overlay {
+    font-family: Arial, sans-serif;
+    border: 5px solid darkgray;
+    border-radius: 15px;
+    position: fixed;
+    top:0;
+    width: 30%;
+    height:auto;
+    background-color: gray;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    z-index: 1000;
+}
+
+.popup-content {
+    background-color: gray;
+    text-align: center;
+}
+
+.popup-content button {
+    margin: 10px;
+    padding: 10px 20px;
 }

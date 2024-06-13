@@ -12,10 +12,7 @@ function Home(){
     function decodeBase64(input) {
         return CryptoJS.enc.Base64.parse(input);
     }
-
     const decryptResponse = (cipherText) => {
-
-
         const key = CryptoJS.enc.Utf8.parse(secret);
         const iv1 = CryptoJS.enc.Hex.parse(iv);
 
@@ -48,7 +45,6 @@ function Home(){
             });
     }
 
-
     useEffect(() => {
         Axios.get("http://localhost:8085/entity/list", {withCredentials: true})
             .then((response) => {
@@ -59,6 +55,12 @@ function Home(){
                 console.log(error);
             });
     }, []);
+
+    const handleDelete = (uuid) => {
+        // Filter out the deleted entity from the entities list
+        const updatedEntities = entities.filter(entity => entity.uuid !== uuid);
+        setEntities(updatedEntities);
+    };
 
     return(
         <>
@@ -74,6 +76,7 @@ function Home(){
                             username={entity.username}
                             description={entity.description}
                             uuid={entity.uuid}
+                            onDelete={handleDelete}
                         />
                     ))}
                 </div>
@@ -83,7 +86,6 @@ function Home(){
                 <button onClick={handleLogout} className="logout-button">Logout</button>
             </div>
         </>
-
     )
 }
 
