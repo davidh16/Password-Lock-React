@@ -15,16 +15,17 @@
 
 .entity{
     display: flex;
-    width: 400px;
+    width: 600px;
     justify-content: space-evenly;
 }
 
 .icon-column{
     margin-left: 20px;
-    width: 30%;
+    width: 40%;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    align-items: center;
 }
 
 .entity-icon{
@@ -38,12 +39,14 @@
 .entity-data{
     margin-left: 20px;
     display: inline-block;
-    width: 70%;
+    width: 60%;
 }
 
 .password-field{
     display: flex;
     margin: 10px;
+    overflow: auto;
+    justify-content: space-between;
 }
 
 .email-address-field{
@@ -65,4 +68,46 @@
 
 h3{
     margin: 0px;
+}
+
+.password-visibility-icon{
+    height: 15px;
+    margin-top: auto;
+    margin-bottom: auto;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.copy-icon{
+    height: 17px;
+    margin-top: auto;
+    margin-bottom: auto;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.entity-hover-icons{
+    visibility: hidden;
+}
+
+.entity:hover .entity-hover-icons {
+    visibility: visible;
+}
+
+.update-icon{
+    height: 33px;
+    width: 33px;
+    margin-top: auto;
+    margin-bottom: auto;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.delete-icon{
+    height: 30px;
+    width: 33px;
+    margin-top: auto;
+    margin-bottom: auto;
+    cursor: pointer;
+    margin-right: 10px;
 }
