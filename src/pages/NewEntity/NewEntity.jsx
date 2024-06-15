@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import TextInput from "../../components/TextInput/TextInput.jsx";
-import {useRef, useState} from "react";
+import {useRef, useState, useEffect} from "react";
 import Axios from "axios";
 import "./NewEntity.css";
 import uploadIcon from "../../assets/upload-icon.png"
@@ -20,6 +20,14 @@ function NewEntity() {
 
     const [icon, setIcon] = useState(uploadIcon);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        return () => {
+            if (icon !== uploadIcon) {
+                URL.revokeObjectURL(icon);
+            }
+        };
+    }, [icon]);
 
     function handleCancel() {
         navigate("/home");
@@ -55,9 +63,8 @@ function NewEntity() {
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
-        console.log("evo ga")
         if (file) {
-            console.log("evo ga")
+            console.log(file)
             const reader = new FileReader();
             reader.onloadend = () => {
                 setIcon(reader.result);
@@ -68,9 +75,7 @@ function NewEntity() {
 
     const fileInputRef = useRef(null);
     const handleIconClick = () => {
-        console.log("nesto")
         if (fileInputRef.current) {
-            console.log("bla")
             fileInputRef.current.click();
         }
     };
@@ -88,7 +93,7 @@ function NewEntity() {
                         <TextInput type="text" placeholder="Name" id="entity-name" onChange={(e) => handleInputChange(e, 'name')} />
 
                         <input className={"img-input"} type="file"  onChange={handleFileChange}  ref={fileInputRef}/>
-                        <img src={uploadIcon} className={"entity-icon"} onClick={handleIconClick}/>
+                        <img src={icon} className={"entity-icon"} onClick={handleIconClick}/>
                     </div>
                     <div className={"entity-data"}>
                         <TextInput type="text" placeholder="Email address" id="entity-email-address" onChange={(e) => handleInputChange(e, 'email_address')} />
