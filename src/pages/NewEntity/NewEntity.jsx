@@ -1,8 +1,10 @@
 import {useNavigate} from "react-router-dom";
 import TextInput from "../../components/TextInput/TextInput.jsx";
-import {useState} from "react";
+import {useRef, useState} from "react";
 import Axios from "axios";
 import "./NewEntity.css";
+import uploadIcon from "../../assets/upload-icon.png"
+import viewPasswordIcon from "../../assets/hidden.png"
 
 function NewEntity() {
     const [errorMessage, setErrorMessage] = useState(null);
@@ -16,7 +18,7 @@ function NewEntity() {
         icon: undefined
     });
 
-    const [icon, setIcon] = useState(null);
+    const [icon, setIcon] = useState(uploadIcon);
     const navigate = useNavigate();
 
     function handleCancel() {
@@ -53,8 +55,23 @@ function NewEntity() {
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
+        console.log("evo ga")
         if (file) {
-            setIcon(file);
+            console.log("evo ga")
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setIcon(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const fileInputRef = useRef(null);
+    const handleIconClick = () => {
+        console.log("nesto")
+        if (fileInputRef.current) {
+            console.log("bla")
+            fileInputRef.current.click();
         }
     };
 
@@ -66,14 +83,24 @@ function NewEntity() {
                 </div>}
             </div>
             <div className="new-entity-container">
-                <TextInput type="text" placeholder="Name" id="entity-name" onChange={(e) => handleInputChange(e, 'name')} />
-                <TextInput type="text" placeholder="Email address" id="entity-email-address" onChange={(e) => handleInputChange(e, 'email_address')} />
-                <TextInput type="text" placeholder="Username" id="entity-username" onChange={(e) => handleInputChange(e, 'username')} />
-                <TextInput type="text" placeholder="Password" id="entity-password" onChange={(e) => handleInputChange(e, 'password')} />
-                <TextInput type="text" placeholder="Description" id="entity-description" onChange={(e) => handleInputChange(e, 'description')} />
-                <input type="file" onChange={handleFileChange} />
-                <button onClick={handleCreate}>Create</button>
-                <button onClick={handleCancel}>Cancel</button>
+                <div className={"entity"}>
+                    <div className={"icon-column"}>
+                        <TextInput type="text" placeholder="Name" id="entity-name" onChange={(e) => handleInputChange(e, 'name')} />
+
+                        <input className={"img-input"} type="file"  onChange={handleFileChange}  ref={fileInputRef}/>
+                        <img src={uploadIcon} className={"entity-icon"} onClick={handleIconClick}/>
+                    </div>
+                    <div className={"entity-data"}>
+                        <TextInput type="text" placeholder="Email address" id="entity-email-address" onChange={(e) => handleInputChange(e, 'email_address')} />
+                        <TextInput type="text" placeholder="Username" id="entity-username" onChange={(e) => handleInputChange(e, 'username')} />
+                        <TextInput type="password" placeholder="Password" id="entity-password" onChange={(e) => handleInputChange(e, 'password')} icon={viewPasswordIcon}/>
+                        <TextInput type="text" placeholder="Description" id="entity-description" onChange={(e) => handleInputChange(e, 'description')} />
+                    </div>
+                </div>
+                <div className={"button-section"}>
+                    <button onClick={handleCreate}>Create</button>
+                    <button onClick={handleCancel}>Cancel</button>
+                </div>
             </div>
         </>
 
