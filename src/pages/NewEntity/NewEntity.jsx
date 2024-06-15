@@ -5,6 +5,7 @@ import Axios from "axios";
 import "./NewEntity.css";
 import uploadIcon from "../../assets/upload-icon.png"
 import viewPasswordIcon from "../../assets/hidden.png"
+import Dropdown from "../../components/Dropdown/Dropdown";
 
 function NewEntity() {
     const [errorMessage, setErrorMessage] = useState(null);
@@ -80,6 +81,12 @@ function NewEntity() {
         }
     };
 
+    function handleSelectOption (option){
+        const source = "../../assets/" + option + ".png"
+        setIcon(source)
+        console.log(icon)
+    }
+
     return (
         <>
             <div className={"error-message-box"}>
@@ -96,6 +103,7 @@ function NewEntity() {
                         <img src={icon} className={"entity-icon"} onClick={handleIconClick}/>
                     </div>
                     <div className={"entity-data"}>
+                        <Dropdown onOptionSelect={handleSelectOption}/>
                         <TextInput type="text" placeholder="Email address" id="entity-email-address" onChange={(e) => handleInputChange(e, 'email_address')} />
                         <TextInput type="text" placeholder="Username" id="entity-username" onChange={(e) => handleInputChange(e, 'username')} />
                         <TextInput type="password" placeholder="Password" id="entity-password" onChange={(e) => handleInputChange(e, 'password')} icon={viewPasswordIcon}/>
