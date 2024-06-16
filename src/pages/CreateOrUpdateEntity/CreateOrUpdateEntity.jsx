@@ -53,16 +53,10 @@ function CreateOrUpdateEntity() {
     const [icon, setIcon] = useState(uploadIcon);
 
     useEffect(() => {
-
         if (iconPath) {
             setIcon(iconPath);
         }
-        return () => {
-            if (icon !== uploadIcon) {
-                URL.revokeObjectURL(icon);
-            }
-        };
-    }, [icon, iconPath]);
+    }, [iconPath]);
 
     function handleCancel() {
         navigate("/home");
@@ -72,6 +66,8 @@ function CreateOrUpdateEntity() {
         const formData = new FormData();
         formData.append('file', icon);
         formData.append('entity', JSON.stringify(entity));
+
+        console.log(JSON.stringify(entity))
 
         const url = update ? `http://localhost:8085/entity/update` : `http://localhost:8085/entity`;
 
@@ -102,10 +98,9 @@ function CreateOrUpdateEntity() {
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
-            console.log(file);
             const reader = new FileReader();
             reader.onloadend = () => {
-                setIcon(reader.result);
+                setIcon(reader.result); // Update icon state with base64 data URL
             };
             reader.readAsDataURL(file);
         }
