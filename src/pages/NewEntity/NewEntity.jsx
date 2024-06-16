@@ -98,7 +98,6 @@ function NewEntity() {
 
     function handleSelectOption (option){
         setIcon(icons[option])
-        console.log(icon)
     }
 
     return (
