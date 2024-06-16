@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import TextInput from "../../components/TextInput/TextInput.jsx";
 import { useRef, useState, useEffect } from "react";
-import Dropdown from "../../components/Dropdown/Dropdown";
+import Dropdown from "../../components/Dropdown/Dropdown.jsx";
 import Axios from "axios";
 import "./CreateOrUpdateEntity.css";
 
@@ -14,12 +14,12 @@ import instagramIcon from "../../assets/instagram.png";
 import gmailIcon from "../../assets/gmail.png";
 
 const icons = {
-    facebook: facebookIcon,
-    github: githubIcon,
-    linkedin: linkedinIcon,
-    instagram: instagramIcon,
-    gmail: gmailIcon,
-    custom: uploadIcon,
+    2: facebookIcon,
+    1: githubIcon,
+    4: linkedinIcon,
+    5: instagramIcon,
+    3: gmailIcon,
+    6: uploadIcon,
 };
 
 function CreateOrUpdateEntity() {
@@ -51,6 +51,7 @@ function CreateOrUpdateEntity() {
     });
 
     const [icon, setIcon] = useState(uploadIcon);
+    const [file, setFile] = useState(null);
 
     useEffect(() => {
         if (iconPath) {
@@ -62,9 +63,10 @@ function CreateOrUpdateEntity() {
         navigate("/home");
     }
 
-    const [file, setFile] = useState(null)
-
     function handleCreateOrUpdate() {
+
+        console.log(JSON.stringify(entity))
+
         const formData = new FormData();
         formData.append('file', file);
         formData.append('entity', JSON.stringify(entity));
@@ -103,7 +105,7 @@ function CreateOrUpdateEntity() {
                 setIcon(reader.result); // Update icon state with base64 data URL
             };
             reader.readAsDataURL(file);
-            setFile(file)
+            setFile(file);
         }
     };
 
@@ -116,6 +118,7 @@ function CreateOrUpdateEntity() {
 
     function handleSelectOption(option) {
         setIcon(icons[option]);
+        setEntity({ ...entity, type: option });
     }
 
     return (
@@ -133,7 +136,7 @@ function CreateOrUpdateEntity() {
                         <img src={icon} className={"entity-icon"} onClick={handleIconClick} alt="Entity Icon" />
                     </div>
                     <div className={"entity-data"}>
-                        <Dropdown onOptionSelect={handleSelectOption} />
+                        <Dropdown onOptionSelect={handleSelectOption} initialOption={entity.type} />
                         <TextInput type="text" placeholder="Email address" id="entity-email-address" value={entity.email_address} onChange={(e) => handleInputChange(e, 'email_address')} />
                         <TextInput type="text" placeholder="Username" id="entity-username" value={entity.username} onChange={(e) => handleInputChange(e, 'username')} />
                         <TextInput type="password" placeholder="Password" id="entity-password" value={entity.password} onChange={(e) => handleInputChange(e, 'password')} icon={viewPasswordIcon} />
