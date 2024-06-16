@@ -9,7 +9,8 @@ import Register from "./pages/Register/Register";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword.jsx";
 import PersonalQuestions from "./pages/PersonalQuestions/PersonalQuestions.jsx";
 import Home from "./pages/Home/Home.jsx";
-import NewEntity from "./pages/NewEntity/NewEntity.jsx";
+import NewEntity from "./pages/CreateOrUpdateEntity/CreateOrUpdateEntity.jsx";
+import CreateOrUpdateEntity from "./pages/CreateOrUpdateEntity/CreateOrUpdateEntity.jsx";
 
 function App() {
   return (
@@ -43,8 +44,8 @@ function App() {
                 />
                 <Route
                     exact
-                    path="/new-entity"
-                    element={<NewEntity />}
+                    path="/create-or-update-entity"
+                    element={<CreateOrUpdateEntity />}
                 />
             </Routes>
         </Router>

@@ -32,7 +32,7 @@ function Home(){
     const navigate = useNavigate()
 
     const handleNew = () => {
-       navigate("/new-entity")
+       navigate("/create-or-update-entity")
     };
 
     const handleLogout = () =>{
