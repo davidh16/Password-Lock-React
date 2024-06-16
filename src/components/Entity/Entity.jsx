@@ -13,7 +13,7 @@ import {useNavigate} from "react-router-dom";
 const secret = import.meta.env.VITE_RESPONSE_SECRET_KEY;
 const iv = import.meta.env.VITE_RESPONSE_SECRET_VECTOR;
 
-function Entity({ name, emailAddress, username, password, description, iconPath, uuid, onDelete }) {
+function Entity({ name, emailAddress, username, password, description, iconPath, uuid, type, onDelete }) {
     const [icon, setIcon] = useState();
     const [viewIcon, setViewIcon] = useState(iconHidden);
     const defaultShownPassword = "••••••••••••••••";
@@ -74,7 +74,8 @@ function Entity({ name, emailAddress, username, password, description, iconPath,
                 password: password,
                 description: description,
                 uuid: uuid,
-                iconPath:icon
+                iconPath:icon,
+                type: type
             }
         });
     }
@@ -165,6 +166,7 @@ Entity.propTypes = {
     description: PropTypes.string.isRequired,
     iconPath: PropTypes.string,
     uuid: PropTypes.string.isRequired,
+    type: PropTypes.number.isRequired,
     onDelete: PropTypes.func.isRequired,
 };
 

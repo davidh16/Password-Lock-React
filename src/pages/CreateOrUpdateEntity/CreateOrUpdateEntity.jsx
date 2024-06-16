@@ -62,12 +62,12 @@ function CreateOrUpdateEntity() {
         navigate("/home");
     }
 
+    const [file, setFile] = useState(null)
+
     function handleCreateOrUpdate() {
         const formData = new FormData();
-        formData.append('file', icon);
+        formData.append('file', file);
         formData.append('entity', JSON.stringify(entity));
-
-        console.log(JSON.stringify(entity))
 
         const url = update ? `http://localhost:8085/entity/update` : `http://localhost:8085/entity`;
 
@@ -84,7 +84,7 @@ function CreateOrUpdateEntity() {
             .catch((error) => {
                 if (error.response) {
                     console.log(error.response);
-                    const errorMsg = update ? `Error occurred while updating the entity.` : `Error occurred while creating/updating the entity.`;
+                    const errorMsg = update ? `Error occurred while updating the entity.` : `Error occurred while creating the entity.`;
                     setErrorMessage(errorMsg);
                 }
             });
@@ -103,6 +103,7 @@ function CreateOrUpdateEntity() {
                 setIcon(reader.result); // Update icon state with base64 data URL
             };
             reader.readAsDataURL(file);
+            setFile(file)
         }
     };
 
