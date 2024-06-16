@@ -4,7 +4,6 @@ import { useRef, useState, useEffect } from "react";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import Axios from "axios";
 import "./CreateOrUpdateEntity.css";
-import PropTypes from "prop-types";
 
 import uploadIcon from "../../assets/upload-icon.png";
 import viewPasswordIcon from "../../assets/hidden.png";
