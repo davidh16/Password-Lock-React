@@ -5,8 +5,9 @@ import PropTypes from "prop-types";
 function DropdownMenu({onOptionSelect}){
     const [selectedOption, setSelectedOption] = useState('custom');
     const handleChange = (event) => {
-        setSelectedOption(event.target.value)
-        onOptionSelect(selectedOption);
+        const newValue = event.target.value;
+        setSelectedOption(newValue);
+        onOptionSelect(newValue);
     };
     return (
         <div className="dropdown-container">

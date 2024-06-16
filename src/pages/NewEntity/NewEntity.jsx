@@ -6,6 +6,21 @@ import "./NewEntity.css";
 import uploadIcon from "../../assets/upload-icon.png"
 import viewPasswordIcon from "../../assets/hidden.png"
 import Dropdown from "../../components/Dropdown/Dropdown";
+// Import the images correctly
+import facebookIcon from "../../assets/facebook.png";
+import githubIcon from "../../assets/github.png";
+import linkedinIcon from "../../assets/linkedin.png";
+import instagramIcon from "../../assets/instagram.png";
+import gmailIcon from "../../assets/gmail.png";
+
+const icons = {
+    facebook: facebookIcon,
+    github: githubIcon,
+    linkedin: linkedinIcon,
+    instagram: instagramIcon,
+    gmail: gmailIcon,
+    custom: uploadIcon,
+};
 
 function NewEntity() {
     const [errorMessage, setErrorMessage] = useState(null);
@@ -82,8 +97,7 @@ function NewEntity() {
     };
 
     function handleSelectOption (option){
-        const source = "../../assets/" + option + ".png"
-        setIcon(source)
+        setIcon(icons[option])
         console.log(icon)
     }
 
