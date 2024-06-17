@@ -77,6 +77,7 @@ function Home(){
                             description={entity.description}
                             uuid={entity.uuid}
                             onDelete={handleDelete}
+                            type={entity.type}
                         />
                     ))}
                 </div>

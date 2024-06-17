@@ -64,9 +64,6 @@ function CreateOrUpdateEntity() {
     }
 
     function handleCreateOrUpdate() {
-
-        console.log(JSON.stringify(entity))
-
         const formData = new FormData();
         formData.append('file', file);
         formData.append('entity', JSON.stringify(entity));
@@ -117,6 +114,7 @@ function CreateOrUpdateEntity() {
     };
 
     function handleSelectOption(option) {
+
         setIcon(icons[option]);
         setEntity({ ...entity, type: option });
     }

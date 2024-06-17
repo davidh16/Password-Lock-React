@@ -7,8 +7,8 @@ function Dropdown({ onOptionSelect, initialOption }) {
 
     const handleChange = (event) => {
         const newValue = event.target.value;
-        setSelectedOption(newValue);
-        onOptionSelect(newValue);
+        setSelectedOption(Number(newValue));
+        onOptionSelect(Number(newValue));
     };
 
     return (
