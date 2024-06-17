@@ -78,10 +78,12 @@ function Login(){
                 <TextInput type={"password"} placeholder={"password"} id={"password"} onChange={e => handlePasswordInputChange(e)} icon={icon}/>
 
                 <div className={"remember-me-forgot-password"}>
-                    <label>
+                    <div className={"nesto"}>
+                        <label>
+                            Remember me
+                        </label>
                         <input type={"checkbox"} id={"remember-me"} onChange={e => setCredentials({...credentials, remember_me: e.target.checked})}/>
-                        Remember me
-                    </label>
+                    </div>
 
                     <a href={"/forgot-password"} >Forgot password</a>
                 </div>

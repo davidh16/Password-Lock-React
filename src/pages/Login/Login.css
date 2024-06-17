@@ -48,12 +48,29 @@ img{
 }
 
 input[type="checkbox"] {
-    margin-right: 5px;
+    margin: 5px;
 }
 
-.login-container.remember-me-forgot-password{
+.remember-me-forgot-password{
     display: flex;
+    justify-content: space-evenly;
 }
+
+.nesto{
+    justify-content: space-evenly;
+    display: inline-flex;
+    flex-direction: row;
+}
+
+.nesto label{
+    font-family: Arial, sans-serif;
+    white-space: nowrap;
+    margin: 3px;
+}
+
+/*.remember-me-checkbox{*/
+/*    display: inline-flex;*/
+/*}*/
 
 button{
     margin: 20px;
