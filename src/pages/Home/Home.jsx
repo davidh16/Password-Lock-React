@@ -56,11 +56,31 @@ function Home(){
             });
     }, []);
 
-    const handleDelete = (uuid) => {
-        // Filter out the deleted entity from the entities list
-        const updatedEntities = entities.filter(entity => entity.uuid !== uuid);
-        setEntities(updatedEntities);
-    };
+
+    const [showPopup, setShowPopup] = useState(false);
+    const [currentEntity, setCurrentEntity] = useState({ name: '', uuid: '' });
+
+    function handleDeleteIconClick(name, uuid) {
+        setCurrentEntity({ name, uuid });
+        setShowPopup(true);
+    }
+
+    function closePopup() {
+        setShowPopup(false);
+        setCurrentEntity({ name: '', uuid: '' });
+    }
+
+    const confirmDelete = (uuid) => {
+        Axios.post("http://localhost:8085/entity/delete/" + uuid, undefined, {withCredentials: true})
+            .then(() => {
+                closePopup();
+                const updatedEntities = entities.filter(entity => entity.uuid !== uuid);
+                setEntities(updatedEntities);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
     return(
         <>
@@ -76,7 +96,7 @@ function Home(){
                             username={entity.username}
                             description={entity.description}
                             uuid={entity.uuid}
-                            onDelete={handleDelete}
+                            handleDeleteIconClick={() => handleDeleteIconClick(entity.name, entity.uuid)}
                             type={entity.type}
                         />
                     ))}
@@ -86,6 +106,13 @@ function Home(){
                 <button onClick={handleNew} className="create-button">New</button>
                 <button onClick={handleLogout} className="logout-button">Logout</button>
             </div>
+            {showPopup && <div className="popup-overlay">
+                <div className="popup-content">
+                    <p id="popupMessage">Are you sure you want to delete {currentEntity.name} ?</p>
+                    <button onClick={() => confirmDelete(currentEntity.uuid)}>Yes</button>
+                    <button onClick={closePopup}>No</button>
+                </div>
+            </div>}
         </>
     )
 }

@@ -13,13 +13,11 @@ import {useNavigate} from "react-router-dom";
 const secret = import.meta.env.VITE_RESPONSE_SECRET_KEY;
 const iv = import.meta.env.VITE_RESPONSE_SECRET_VECTOR;
 
-function Entity({ name, emailAddress, username, password, description, iconPath, uuid, type, onDelete }) {
+function Entity({ name, emailAddress, username, password, description, iconPath, uuid, type, handleDeleteIconClick }) {
     const [icon, setIcon] = useState();
     const [viewIcon, setViewIcon] = useState(iconHidden);
     const defaultShownPassword = "••••••••••••••••";
     const [shownPassword, setShownPassword] = useState(defaultShownPassword);
-    const [showPopup, setShowPopup] = useState(false);
-    const [currentEntity, setCurrentEntity] = useState({ name: '', uuid: '' });
     const navigate = useNavigate();
 
     function decodeBase64(input) {
@@ -59,11 +57,6 @@ function Entity({ name, emailAddress, username, password, description, iconPath,
         });
     }
 
-    function handleDeleteIconClick() {
-        setCurrentEntity({ name, uuid });
-        setShowPopup(true);
-    }
-
     function handleUpdateIconClick() {
         navigate("/create-or-update-entity", {
             state: {
@@ -80,21 +73,7 @@ function Entity({ name, emailAddress, username, password, description, iconPath,
         });
     }
 
-    const confirmDelete = (uuid) => {
-        Axios.post("http://localhost:8085/entity/delete/" + uuid, undefined, {withCredentials: true})
-            .then(() => {
-                closePopup();
-                onDelete(uuid);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }
 
-    function closePopup() {
-        setShowPopup(false);
-        setCurrentEntity({ name: '', uuid: '' });
-    }
 
     useEffect(() => {
         Axios.get("http://localhost:8085/icon/" + uuid, {withCredentials: true})
@@ -147,13 +126,6 @@ function Entity({ name, emailAddress, username, password, description, iconPath,
                     </div>
                 </div>
             </div>
-            {showPopup && <div className="popup-overlay">
-                <div className="popup-content">
-                    <p id="popupMessage">Are you sure you want to delete {name}?</p>
-                    <button onClick={() => confirmDelete(currentEntity.uuid)}>Yes</button>
-                    <button onClick={closePopup}>No</button>
-                </div>
-            </div>}
         </>
     );
 }
@@ -167,7 +139,7 @@ Entity.propTypes = {
     iconPath: PropTypes.string,
     uuid: PropTypes.string.isRequired,
     type: PropTypes.number.isRequired,
-    onDelete: PropTypes.func.isRequired,
+    handleDeleteIconClick: PropTypes.func.isRequired,
 };
 
 export default Entity;
