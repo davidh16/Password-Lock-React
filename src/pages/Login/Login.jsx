@@ -5,8 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import Axios from "axios";
 import TextInput from "../../components/TextInput/TextInput.jsx";
 import icon from "../../assets/hidden.png"
+import {useAuth} from "../../AuthContext.jsx";
 
 function Login(){
+
+    const { login } = useAuth();
 
     const [credentials, setCredentials] = useState({
         email_address: "",
@@ -35,6 +38,8 @@ function Login(){
                 console.log(response)
 
                 setErrorMessage(null)
+
+                login()
 
                 Axios.post("http://localhost:8085/me", undefined,{ withCredentials: true }).then(
                     (response)=>{

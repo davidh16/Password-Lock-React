@@ -4,11 +4,15 @@ import Axios from "axios";
 import Entity from "../../components/Entity/Entity.jsx";
 import CryptoJS from 'crypto-js';
 import "./Home.css"
+import {useAuth} from "../../AuthContext.jsx";
 
 const secret = import.meta.env.VITE_RESPONSE_SECRET_KEY;
 const iv = import.meta.env.VITE_RESPONSE_SECRET_VECTOR;
 
 function Home(){
+
+    const { logout } = useAuth();
+
     function decodeBase64(input) {
         return CryptoJS.enc.Base64.parse(input);
     }
@@ -38,7 +42,8 @@ function Home(){
     const handleLogout = () =>{
         Axios.post("http://localhost:8085/logout", undefined,{withCredentials: true})
             .then(() => {
-               navigate("/")
+                logout()
+                navigate("/")
             })
             .catch((error) => {
                 console.log(error);

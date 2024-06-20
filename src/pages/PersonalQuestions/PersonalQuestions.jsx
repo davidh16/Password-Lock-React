@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Axios from 'axios';
 import './PersonalQuestions.css';
-import {useNavigate} from "react-router-dom";  // Import the CSS file
+import {useNavigate} from "react-router-dom";
 
 function PersonalQuestions() {
+
     const [questions, setQuestions] = useState([]);
     const [selectedQuestions, setSelectedQuestions] = useState([
         { personal_question_uuid: "", answer: "" },

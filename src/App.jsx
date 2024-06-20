@@ -9,10 +9,11 @@ import Register from "./pages/Register/Register";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword.jsx";
 import PersonalQuestions from "./pages/PersonalQuestions/PersonalQuestions.jsx";
 import Home from "./pages/Home/Home.jsx";
-import NewEntity from "./pages/CreateOrUpdateEntity/CreateOrUpdateEntity.jsx";
 import CreateOrUpdateEntity from "./pages/CreateOrUpdateEntity/CreateOrUpdateEntity.jsx";
+import PrivateRoute from "./PrivateRoute.jsx";
 
 function App() {
+
   return (
     <>
         <Router>
@@ -24,16 +25,6 @@ function App() {
                 />
                 <Route
                     exact
-                    path="/personal-questions"
-                    element={<PersonalQuestions />}
-                />
-                <Route
-                    exact
-                    path="/home"
-                    element={<Home />}
-                />
-                <Route
-                    exact
                     path="/register"
                     element={<Register />}
                 />
@@ -42,7 +33,17 @@ function App() {
                     path="/forgot-password"
                     element={<ForgotPassword />}
                 />
-                <Route
+                <PrivateRoute
+                    exact
+                    path="/personal-questions"
+                    element={<PersonalQuestions />}
+                />
+                <PrivateRoute
+                    exact
+                    path="/home"
+                    element={<Home />}
+                />
+                <PrivateRoute
                     exact
                     path="/create-or-update-entity"
                     element={<CreateOrUpdateEntity />}
