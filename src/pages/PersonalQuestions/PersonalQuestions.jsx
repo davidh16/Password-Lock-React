@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Axios from 'axios';
 import './PersonalQuestions.css';
-import {useNavigate} from "react-router-dom";
+import {useNavigate} from 'react-router-dom';
 
 function PersonalQuestions() {
 

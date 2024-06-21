@@ -16,7 +16,7 @@ axiosInstance.interceptors.response.use(
     (error) => {
         if (error.response && error.response.status === 401) {
             // If the response status is 401, redirect to the login page
-            window.location.href = '/login';
+            window.location.href = '/';
         }
         // Return the error to be handled by the requesting code
         return Promise.reject(error);

@@ -11,47 +11,26 @@ import PersonalQuestions from "./pages/PersonalQuestions/PersonalQuestions.jsx";
 import Home from "./pages/Home/Home.jsx";
 import CreateOrUpdateEntity from "./pages/CreateOrUpdateEntity/CreateOrUpdateEntity.jsx";
 import PrivateRoute from "./PrivateRoute.jsx";
+import {AuthProvider} from "./AuthContext.jsx";
 
 function App() {
 
-  return (
-    <>
-        <Router>
-            <Routes>
-                <Route
-                    exact
-                    path="/"
-                    element={<Login />}
-                />
-                <Route
-                    exact
-                    path="/register"
-                    element={<Register />}
-                />
-                <Route
-                    exact
-                    path="/forgot-password"
-                    element={<ForgotPassword />}
-                />
-                <PrivateRoute
-                    exact
-                    path="/personal-questions"
-                    element={<PersonalQuestions />}
-                />
-                <PrivateRoute
-                    exact
-                    path="/home"
-                    element={<Home />}
-                />
-                <PrivateRoute
-                    exact
-                    path="/create-or-update-entity"
-                    element={<CreateOrUpdateEntity />}
-                />
-            </Routes>
-        </Router>
-    </>
-  )
+    return (
+        <>
+            <Router>
+                <AuthProvider>
+                    <Routes>
+                        <Route path="/" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/forgot-password" element={<ForgotPassword />} />
+                        <Route path="/personal-questions" element={<PrivateRoute element={PersonalQuestions} />} />
+                        <Route path="/home" element={<PrivateRoute element={Home} />} />
+                        <Route path="/create-or-update-entity" element={<PrivateRoute element={CreateOrUpdateEntity} />} />
+                    </Routes>
+                </AuthProvider>
+            </Router>
+        </>
+    );
 }
 
 export default App

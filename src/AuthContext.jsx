@@ -1,8 +1,7 @@
-// AuthContext.js
 import { createContext, useContext, useState, useEffect } from 'react';
 import axiosInstance from './axiosConfig';
-import PropTypes from "prop-types";
-import {useNavigate} from "react-router-dom";
+import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext();
 
@@ -12,13 +11,12 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     useEffect(() => {
         const checkSession = async () => {
             try {
-                const response = await axiosInstance.get('http://localhost:8085/check-session:', {withCredentials: true});
+                const response = await axiosInstance.get('http://localhost:8085/check-session', { withCredentials: true });
                 if (response.data.is_authenticated) {
                     setIsAuthenticated(true);
                 } else {
@@ -31,15 +29,15 @@ export const AuthProvider = ({ children }) => {
 
         checkSession();
 
-        const intervalId = setInterval(checkSession, 60000); // Check every minute
+        const intervalId = setInterval(checkSession, 600000); // Check every hour
 
         return () => clearInterval(intervalId);
     }, []);
 
     const handleLogout = () => {
         setIsAuthenticated(false);
-        localStorage.removeItem('sessionToken');
-        navigate("/")
+        localStorage.removeItem('session');
+        navigate("/");
     };
 
     return (
