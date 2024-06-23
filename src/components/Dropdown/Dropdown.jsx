@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import PropTypes from "prop-types";
 import "./Dropdown.css"
 
@@ -10,6 +10,10 @@ function Dropdown({ onOptionSelect, initialOption }) {
         setSelectedOption(Number(newValue));
         onOptionSelect(Number(newValue));
     };
+
+    useEffect(() => {
+        setSelectedOption(initialOption);
+    }, [initialOption]);
 
     return (
         <div className="dropdown-container">

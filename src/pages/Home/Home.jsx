@@ -1,125 +1,223 @@
-import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import Entity from "../../components/Entity/Entity.jsx";
-import CryptoJS from 'crypto-js';
-import "./Home.css"
-import {useAuth} from "../../AuthContext.jsx";
-
-const secret = import.meta.env.VITE_RESPONSE_SECRET_KEY;
-const iv = import.meta.env.VITE_RESPONSE_SECRET_VECTOR;
-
-function Home(){
-
-    const { logout } = useAuth();
-
-    function decodeBase64(input) {
-        return CryptoJS.enc.Base64.parse(input);
-    }
-    const decryptResponse = (cipherText) => {
-        const key = CryptoJS.enc.Utf8.parse(secret);
-        const iv1 = CryptoJS.enc.Hex.parse(iv);
-
-        const decrypted = CryptoJS.AES.decrypt({
-            ciphertext: decodeBase64(cipherText.data)
-        }, key, {
-            iv: iv1,
-            mode: CryptoJS.mode.CFB,
-            padding: CryptoJS.pad.NoPadding
-        });
-
-        return CryptoJS.enc.Utf8.stringify(decrypted);
-    };
-
+import "./Home.css";
+import { useAuth } from "../../AuthContext.jsx";
+import { decryptResponse } from "../../utils/decryption";
+import {EntityState} from "../../utils/EntityState.jsx";
+function Home() {
+    const { logout, authenticated } = useAuth();
+    const navigate = useNavigate();
     const [entities, setEntities] = useState([]);
+    const [showPopup, setShowPopup] = useState(false);
+    const [currentEntity, setCurrentEntity] = useState({ name: '', uuid: '' });
+    const [newEntity, setNewEntity] = useState(null);
+    const [entityStates, setEntityStates] = useState({}); // State management for each entity's state
 
-    const navigate = useNavigate()
-
-    const handleNew = () => {
-       navigate("/create-or-update-entity")
-    };
-
-    const handleLogout = () =>{
-        Axios.post("http://localhost:8085/logout", undefined,{withCredentials: true})
-            .then(() => {
-                logout()
-                navigate("/")
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }
 
     useEffect(() => {
-        Axios.get("http://localhost:8085/entity/list", {withCredentials: true})
+        if (!authenticated) {
+            navigate("/");
+        }
+    }, [authenticated, navigate]);
+
+    useEffect(() => {
+
+        Axios.get("http://localhost:8085/entity/list", { withCredentials: true })
             .then((response) => {
                 const decryptedResponse = decryptResponse(response);
-                setEntities(JSON.parse(decryptedResponse).entities)
+                setEntities(JSON.parse(decryptedResponse).entities);
+
+                const initialStates = entities.reduce((acc, entity) => {
+                    acc[entity.uuid] = EntityState.VIEW;
+                    return acc;
+                }, {});
+                setEntityStates(initialStates);
             })
             .catch((error) => {
                 console.log(error);
             });
     }, []);
 
-
-    const [showPopup, setShowPopup] = useState(false);
-    const [currentEntity, setCurrentEntity] = useState({ name: '', uuid: '' });
-
-    function handleDeleteIconClick(name, uuid) {
+    const handleDeleteIconClick = (name, uuid) => {
         setCurrentEntity({ name, uuid });
         setShowPopup(true);
-    }
+    };
 
-    function closePopup() {
+    const handleUpdateIconClick = (uuid) => {
+        setEntityStates(prevStates => ({
+            ...prevStates,
+            [uuid]: EntityState.EDIT
+        }));
+    };
+
+    const handleSaveUpdatedEntity = (entityData, file, unchanged) => {
+
+        if (!unchanged){
+
+            const formData = new FormData();
+
+            if (file){
+                formData.append("file", file);
+            }
+
+            formData.append("entity", JSON.stringify(entityData));
+
+            Axios.post(`http://localhost:8085/entity/update`, formData, {
+                withCredentials: true,
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            })
+                .then((response) => {
+
+                    const decryptedResponse = decryptResponse(response);
+
+                    setEntities(prevEntities => prevEntities.map(entity =>
+                        entity.uuid === entityData.uuid ? JSON.parse(decryptedResponse).entity : entity
+                    ));
+
+                    setEntityStates(prevStates => ({
+                        ...prevStates,
+                        [entityData.uuid]: EntityState.VIEW
+                    }));
+
+                })
+                .catch((error) => {
+                    console.error("Error updating entity:", error);
+                    // Handle error if needed
+                });
+        }else{
+            setEntityStates(prevStates => ({
+                ...prevStates,
+                [entityData.uuid]: EntityState.VIEW
+            }));
+        }
+    };
+
+    const handleCancelIconClick = (uuid) => {
+        setEntityStates(prevStates => ({
+            ...prevStates,
+            [uuid]: EntityState.VIEW
+        }));
+    };
+
+    const closePopup = () => {
         setShowPopup(false);
         setCurrentEntity({ name: '', uuid: '' });
-    }
+    };
 
     const confirmDelete = (uuid) => {
-        Axios.post("http://localhost:8085/entity/delete/" + uuid, undefined, {withCredentials: true})
+        Axios.post(`http://localhost:8085/entity/delete/${uuid}`, undefined, {
+            withCredentials: true,
+        })
             .then(() => {
                 closePopup();
-                const updatedEntities = entities.filter(entity => entity.uuid !== uuid);
+                const updatedEntities = entities.filter((entity) => entity.uuid !== uuid);
                 setEntities(updatedEntities);
+
+                const { [uuid]: _, ...restStates } = entityStates;
+                setEntityStates(restStates);
             })
             .catch((error) => {
-                console.log(error);
+                console.error("Error deleting entity:", error);
+                // Handle error if needed
             });
-    }
+    };
 
-    return(
+    const handleNew = () => {
+        const emptyEntity = {
+            uuid: '',
+            name: '',
+            type: 6,
+            password: '',
+            description: undefined,
+            email_address: undefined,
+            username: undefined
+        };
+        setNewEntity(emptyEntity);
+    };
+
+    const handleSaveNewEntity = (entityData, file) => {
+        const formData = new FormData();
+        if (file) {
+            formData.append("file", file);
+        }
+        formData.append("entity", JSON.stringify(entityData));
+        Axios.post(`http://localhost:8085/entity`, formData, {
+            withCredentials: true,
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        })
+            .then((response) => {
+
+                const decryptedResponse = decryptResponse(response);
+
+                setEntities(prevEntities => [...prevEntities, JSON.parse(decryptedResponse).entity]);
+                setNewEntity(null);
+            })
+            .catch((error) => {
+                console.error("Error creating entity:", error);
+            });
+    };
+
+    const handleCancelNewEntity = () => {
+        setNewEntity(null);
+    };
+
+    const handleLogout = () => {
+        logout();
+    };
+
+    return (
         <>
             {entities && (
                 <div className={"entity-list"}>
                     {entities.map((entity) => (
                         <Entity
                             key={entity.uuid}
-                            name={entity.name}
-                            iconPath={entity.icon_path}
-                            password={entity.password}
-                            emailAddress={entity.email_address}
-                            username={entity.username}
-                            description={entity.description}
-                            uuid={entity.uuid}
+                            entityState={entityStates[entity.uuid] || EntityState.VIEW}
+                            entityData={entity}
                             handleDeleteIconClick={() => handleDeleteIconClick(entity.name, entity.uuid)}
-                            type={entity.type}
+                            handleUpdateIconClick={() => handleUpdateIconClick(entity.uuid)}
+                            handleSaveIconClickOnUpdate={(entityData, file, unchanged) => handleSaveUpdatedEntity(entityData, file, unchanged)}
+                            handleCancelIconClick={() => handleCancelIconClick(entity.uuid)}
                         />
                     ))}
                 </div>
             )}
+            {newEntity && (
+                <Entity
+                    key="new-entity"
+                    entityState={EntityState.CREATE}
+                    entityData={newEntity}
+                    handleSaveIconClickOnCreate={handleSaveNewEntity}
+                    handleCancelIconClick={handleCancelNewEntity}
+                />
+            )}
             <div className={"button-section"}>
-                <button onClick={handleNew} className="create-button">New</button>
-                <button onClick={handleLogout} className="logout-button">Logout</button>
+                <button onClick={handleNew} className="create-button">
+                    New
+                </button>
+                <button onClick={handleLogout} className="logout-button">
+                    Logout
+                </button>
             </div>
-            {showPopup && <div className="popup-overlay">
-                <div className="popup-content">
-                    <p id="popupMessage">Are you sure you want to delete {currentEntity.name} ?</p>
-                    <button onClick={() => confirmDelete(currentEntity.uuid)}>Yes</button>
-                    <button onClick={closePopup}>No</button>
+            {showPopup && (
+                <div className="popup-overlay">
+                    <div className="popup-content">
+                        <p id="popupMessage">
+                            Are you sure you want to delete {currentEntity.name} ?
+                        </p>
+                        <button onClick={() => confirmDelete(currentEntity.uuid)}>Yes</button>
+                        <button onClick={closePopup}>No</button>
+                    </div>
                 </div>
-            </div>}
+            )}
         </>
-    )
+    );
 }
 
-export default Home
+export default Home;

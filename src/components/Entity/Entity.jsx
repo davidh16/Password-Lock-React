@@ -1,145 +1,215 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './Entity.css';
 import PropTypes from "prop-types";
 import Axios from "axios";
-import CryptoJS from "crypto-js";
-import iconVisible from "../../assets/visible.png";
-import iconHidden from "../../assets/hidden.png";
+import { decryptResponse } from "../../utils/decryption";
 import copyIcon from "../../assets/copy.png";
 import updateEntityIcon from "../../assets/edit.png";
 import deleteEntityIcon from "../../assets/delete.png";
-import {useNavigate} from "react-router-dom";
+import saveEntityIcon from "../../assets/save.png";
+import cancelIcon from "../../assets/cancel.png";
+import placeholderIcon from "../../assets/placeholder.png";
+import TextInput from "../TextInput/TextInput.jsx";
+import Dropdown from "../Dropdown/Dropdown.jsx";
+import facebookIcon from "../../assets/facebook.png";
+import githubIcon from "../../assets/github.png";
+import linkedinIcon from "../../assets/linkedin.png";
+import instagramIcon from "../../assets/instagram.png";
+import gmailIcon from "../../assets/gmail.png";
+import uploadIcon from "../../assets/upload-icon.png";
+import { EntityState } from "../../utils/EntityState";
 
-const secret = import.meta.env.VITE_RESPONSE_SECRET_KEY;
-const iv = import.meta.env.VITE_RESPONSE_SECRET_VECTOR;
+const types = {
+    2: "Facebook",
+    1: "Github",
+    4: "LinkedIn",
+    5: "Instagram",
+    3: "Gmail",
+    6: "Custom",
+}
 
-function Entity({ name, emailAddress, username, password, description, iconPath, uuid, type, handleDeleteIconClick }) {
-    const [icon, setIcon] = useState();
-    const [viewIcon, setViewIcon] = useState(iconHidden);
-    const defaultShownPassword = "••••••••••••••••";
-    const [shownPassword, setShownPassword] = useState(defaultShownPassword);
-    const navigate = useNavigate();
+const icons = {
+    2: facebookIcon,
+    1: githubIcon,
+    4: linkedinIcon,
+    5: instagramIcon,
+    3: gmailIcon,
+    6: uploadIcon,
+};
 
-    function decodeBase64(input) {
-        return CryptoJS.enc.Base64.parse(input);
-    }
+function Entity({ entityData, handleDeleteIconClick, handleUpdateIconClick, handleSaveIconClickOnUpdate, handleSaveIconClickOnCreate, handleCancelIconClick, entityState }) {
+    const [icon, setIcon] = useState(placeholderIcon);
+    const [entity, setEntity] = useState(entityData);
+    const [file, setFile] = useState(null);
+    const fileInputRef = useRef(null);
+    const [initialEntity, setInitialEntity] = useState(entityData);
 
-    const decryptResponse = (cipherText) => {
-        const key = CryptoJS.enc.Utf8.parse(secret);
-        const iv1 = CryptoJS.enc.Hex.parse(iv);
+    useEffect(() => {
 
-        const decrypted = CryptoJS.AES.decrypt({
-            ciphertext: decodeBase64(cipherText.data)
-        }, key, {
-            iv: iv1,
-            mode: CryptoJS.mode.CFB,
-            padding: CryptoJS.pad.NoPadding
-        });
+        if (entityState === EntityState.CREATE){
+            setIcon(uploadIcon)
+        }
 
-        return CryptoJS.enc.Utf8.stringify(decrypted);
+        if (entityData.uuid) {
+            Axios.get(`http://localhost:8085/icon/${entityData.uuid}`, { withCredentials: true })
+                .then((response) => {
+                    const decryptedResponse = JSON.parse(decryptResponse(response));
+                    setIcon(decryptedResponse.signed_url);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, []);
+
+    const handleInputChange = (e, field) => {
+        setEntity({ ...entity, [field]: e.target.value });
     };
 
-    function togglePasswordViewType() {
-        if (shownPassword === defaultShownPassword) {
-            setViewIcon(iconVisible);
-            setShownPassword(password);
-        } else {
-            setViewIcon(iconHidden);
-            setShownPassword(defaultShownPassword);
-        }
-    }
-
-    function copyPassword() {
-        navigator.clipboard.writeText(password).then(() => {
+    const copyPassword = () => {
+        navigator.clipboard.writeText(entityData.password).then(() => {
             alert("Text copied to clipboard!");
         }).catch(err => {
             console.error("Failed to copy text: ", err);
         });
+    };
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            setFile(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setIcon(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleEntityIconClick = () => {
+        if (entityState !== EntityState.VIEW && fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    };
+
+    function handleSelectOption(option) {
+        setIcon(icons[option]);
+        setEntity({ ...entity, type: option });
     }
 
-    function handleUpdateIconClick() {
-        navigate("/create-or-update-entity", {
-            state: {
-                update: true,
-                name: name,
-                emailAddress: emailAddress,
-                username: username,
-                password: password,
-                description: description,
-                uuid: uuid,
-                iconPath:icon,
-                type: type
+    const hasChanges = () => {
+        // Check if entity has changed compared to the initial state
+        return JSON.stringify(entity) !== JSON.stringify(initialEntity) || file !== null;
+    };
+
+    const handleSaveClick = () => {
+
+        if (entityState === EntityState.EDIT){
+            if (hasChanges()) {
+                handleSaveIconClickOnUpdate(entity, file, false);
+                setInitialEntity(entity);
+                setFile(null);
+            } else {
+                handleSaveIconClickOnUpdate(entity, file, true);
             }
-        });
-    }
-
-
-
-    useEffect(() => {
-        Axios.get("http://localhost:8085/icon/" + uuid, {withCredentials: true})
-            .then((response) => {
-                const decryptedResponse = JSON.parse(decryptResponse(response));
-                setIcon(decryptedResponse.signed_url);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }, []);
+        }else if(entityState === EntityState.CREATE){
+            handleSaveIconClickOnCreate(entity, file);
+            setInitialEntity(entity);
+            setFile(null);
+        }
+    };
 
     return (
-        <>
-            <div className={"entity-container"}>
-                <div className={"entity"}>
-                    {iconPath !== "" && <div className={"icon-column"}>
-                        <h3>{name}</h3>
-                        <img src={icon} className={"entity-icon"}/>
-                        <div className="entity-hover-icons">
-                            <img src={updateEntityIcon} alt={""} className="update-icon" onClick={handleUpdateIconClick}/>
-                            <img src={deleteEntityIcon} alt={""} className="delete-icon" onClick={handleDeleteIconClick}/>
-                        </div>
-                    </div>}
-                    <div className={"entity-data"}>
-                        <label>Password :</label>
-                        <div className={"password-field"}>
-                            {shownPassword}
-                            <div className={"password-buttons"}>
-                                <img className={"password-visibility-icon"} src={viewIcon} onClick={togglePasswordViewType} alt={""}/>
-                                <img className={"copy-icon"} src={copyIcon} onClick={copyPassword} alt={""}/>
-                            </div>
-                        </div>
-                        <label>Description :</label>
-                        <div className={"description-field"}>
-                            {description}
-                        </div>
-                        {emailAddress && <>
-                            <label>Email address :</label>
-                            <div className={"email-address-field"}>
-                                {emailAddress}
-                            </div>
-                        </>}
-                        {username && <>
-                            <label>Username :</label>
-                            <div className={"username-field"}>
-                                {username}
-                            </div>
-                        </>}
+        <div className="entity-container">
+            <div className="entity">
+
+                <div className="icon-column">
+                    {entityState === EntityState.CREATE &&  <label>Name:</label>}
+                    <h3>
+                        {entityState === EntityState.VIEW ?
+                            <TextInput inputDisplay={true} type="text" value={entity.name} />
+                            :
+                            <TextInput inputDisplay={false} type="text" value={entity.name} onChange={(e) => handleInputChange(e, 'name')}/>
+                        }
+                    </h3>
+                    {entityState !== EntityState.VIEW && <input className="img-input" type="file" onChange={handleFileChange} ref={fileInputRef} />}
+                    <img src={icon} className="entity-icon" onClick={handleEntityIconClick} />
+                    <div className="entity-hover-icons">
+                        {entityState === EntityState.VIEW && <img src={updateEntityIcon} alt="Update" className="action-icon" onClick={handleUpdateIconClick} />}
+                        {entityState === EntityState.VIEW && <img src={deleteEntityIcon} alt="Delete" className="action-icon" onClick={handleDeleteIconClick} />}
+                        {(entityState === EntityState.EDIT || entityState === EntityState.CREATE) && <img src={saveEntityIcon} alt="Save" className="action-icon" onClick={handleSaveClick} />}
+                        {(entityState === EntityState.EDIT || entityState === EntityState.CREATE) && <img src={cancelIcon} alt="Cancel" className="action-icon" onClick={handleCancelIconClick} />}
                     </div>
                 </div>
+
+                <div className="entity-data">
+                    <label>Type:</label>
+                    <div className="input-field">
+                        {entityState !== EntityState.VIEW ?
+                            <Dropdown onOptionSelect={handleSelectOption} initialOption={entity.type} />
+                            :
+                            <TextInput inputDisplay={true} type="text" value={types[entity.type]} />
+                        }
+                    </div>
+                    <label>Password:</label>
+                    <div className="input-field">
+                        {entityState === EntityState.VIEW ?
+                            <TextInput inputDisplay={true} type="password" value={entity.password} />
+                            :
+                            <TextInput inputDisplay={false} type="password" value={entity.password} onChange={(e) => handleInputChange(e, 'password')}/>
+                        }
+                        {entityState === EntityState.VIEW && <img className="copy-icon" src={copyIcon} onClick={copyPassword} alt="Copy" />}
+                    </div>
+                    {(entityData.description || entityState !== EntityState.VIEW ) &&
+                        <>
+                            <label>Description:</label>
+                            <div className="input-field">
+                                {entityState === EntityState.VIEW ?
+                                    <TextInput inputDisplay={true} type="text" value={entity.description} />
+                                    :
+                                    <TextInput inputDisplay={false} type="text" value={entity.description} onChange={(e) => handleInputChange(e, 'description')}/>
+                                }
+                            </div>
+                        </>
+                    }
+                    {(entityData.email_address || entityState !== EntityState.VIEW ) &&
+                        <>
+                            <label>Email address:</label>
+                            <div className="input-field">
+                                {entityState === EntityState.VIEW ?
+                                    <TextInput inputDisplay={true} type="text" value={entity.email_address} />
+                                    :
+                                    <TextInput inputDisplay={false} type="text" value={entity.email_address} onChange={(e) => handleInputChange(e, 'email_address')}/>
+                                }
+                            </div>
+                        </>
+                    }
+                    {(entityData.username || entityState !== EntityState.VIEW) &&
+                        <>
+                            <label>Username:</label>
+                            <div className="input-field">
+                                {entityState === EntityState.VIEW ?
+                                    <TextInput inputDisplay={true} type="text" value={entity.username} />
+                                    :
+                                    <TextInput inputDisplay={false} type="text" value={entity.username} onChange={(e) => handleInputChange(e, 'username')} />
+                                }
+                            </div>
+                        </>
+                    }
+                </div>
             </div>
-        </>
+        </div>
     );
 }
 
 Entity.propTypes = {
-    name: PropTypes.string.isRequired,
-    password: PropTypes.string.isRequired,
-    emailAddress: PropTypes.string,
-    username: PropTypes.string,
-    description: PropTypes.string.isRequired,
-    iconPath: PropTypes.string,
-    uuid: PropTypes.string.isRequired,
-    type: PropTypes.number.isRequired,
-    handleDeleteIconClick: PropTypes.func.isRequired,
+    entityData: PropTypes.object.isRequired,
+    entityState: PropTypes.oneOf(Object.values(EntityState)).isRequired,
+    handleDeleteIconClick: PropTypes.func,
+    handleUpdateIconClick: PropTypes.func,
+    handleSaveIconClickOnUpdate: PropTypes.func,
+    handleSaveIconClickOnCreate: PropTypes.func,
+    handleCancelIconClick: PropTypes.func,
 };
 
 export default Entity;

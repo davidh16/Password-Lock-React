@@ -1,52 +1,68 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import axiosInstance from './axiosConfig';
-import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
+import {createContext, useContext, useMemo, useState} from "react";
+import Axios from "axios";
 
 const AuthContext = createContext();
 
-export const useAuth = () => {
-    return useContext(AuthContext);
-};
-
+// eslint-disable-next-line react/prop-types
 export const AuthProvider = ({ children }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const navigate = useNavigate();
+    const [authenticated, setAuthenticated] = useState(false);
+    const [authError, setAuthError] = useState(null);
+    const [registrationCompleted, setRegistrationCompleted]=useState(true)
 
-    useEffect(() => {
-        const checkSession = async () => {
-            try {
-                const response = await axiosInstance.get('http://localhost:8085/check-session', { withCredentials: true });
-                if (response.data.is_authenticated) {
-                    setIsAuthenticated(true);
-                } else {
-                    handleLogout();
-                }
-            } catch (error) {
-                handleLogout();
-            }
-        };
-
-        checkSession();
-
-        const intervalId = setInterval(checkSession, 600000); // Check every hour
-
-        return () => clearInterval(intervalId);
-    }, []);
-
-    const handleLogout = () => {
-        setIsAuthenticated(false);
-        localStorage.removeItem('session');
-        navigate("/");
+    const resetAuthError = () => {
+        setAuthError(null);
     };
 
-    return (
-        <AuthContext.Provider value={{ isAuthenticated, handleLogout }}>
-            {children}
-        </AuthContext.Provider>
-    );
+    // call this function when you want to authenticate the user
+    const login = async (credentials) => {
+
+        await Axios.post("http://localhost:8085/login", JSON.stringify(credentials), {withCredentials: true}).then(() => {
+            setAuthenticated(true)
+            setAuthError(null)
+        }).then(() => {
+            Axios.post("http://localhost:8085/me", undefined, {withCredentials: true}).then(
+                (response) => {
+                    setRegistrationCompleted(response.data["completed"])
+                })
+        }).catch((error)=>{
+            if (error.response) {
+                if (error.response.status === 401) {
+                    setAuthError("Wrong email address or password");
+                } else {
+                    setAuthError("Something went wrong, please try again");
+                }
+            } else {
+                setAuthError("Something went wrong, please try again");
+            }
+            setAuthenticated(false);
+            throw error; // Propagate the error
+        })
+    }
+
+    // call this function to sign out logged in user
+    const logout = () => {
+        Axios.post("http://localhost:8085/logout", undefined,{withCredentials: true})
+            .then(() => {
+                setAuthenticated(false);
+                setRegistrationCompleted(true)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    const value = useMemo(() => ({
+        authenticated,
+        login,
+        logout,
+        authError,
+        resetAuthError,
+        registrationCompleted,
+    }), [authenticated, authError, registrationCompleted]);
+
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-AuthProvider.propTypes = {
-    children: PropTypes.node.isRequired,
+export const useAuth = () => {
+    return useContext(AuthContext);
 };

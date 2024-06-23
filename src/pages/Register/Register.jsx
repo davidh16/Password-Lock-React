@@ -89,7 +89,7 @@ function Registser(){
                 </div>}
             </div>
             <div className={"login-container"}>
-                {!submitted && <TextInput type={"text"} placeholder={"email address"} id={"email-address"} onChange={e => handleEmailAddressInputChange(e)}/>}
+                {!submitted && <TextInput inputDisplay={false} type={"text"} placeholder={"email address"} id={"email-address"} onChange={e => handleEmailAddressInputChange(e)}/>}
                 {!submitted && <button id={"register-button"} onClick={handleOnSubmit}>Register</button>}
                 {!submitted && <label>{"Already have an account ?"} <a href={"/"} >Login</a></label>}
                 {submitted && <div className={"timer"}>

@@ -1,15 +1,13 @@
 import "./Login.css"
 import logo from "../../assets/logo.png"
-import {useState} from "react";
-import { useNavigate } from 'react-router-dom';
-import Axios from "axios";
+import {useEffect, useState} from "react";
+import {useNavigate} from 'react-router-dom';
 import TextInput from "../../components/TextInput/TextInput.jsx";
-import icon from "../../assets/hidden.png"
 import {useAuth} from "../../AuthContext.jsx";
 
 function Login(){
 
-    const { login } = useAuth();
+    const { login, authenticated, authError, resetAuthError, registrationCompleted } = useAuth();
 
     const [credentials, setCredentials] = useState({
         email_address: "",
@@ -17,77 +15,50 @@ function Login(){
         remember_me: false
     });
 
-    const [errorMessage, setErrorMessage] = useState(null)
-
     const navigate = useNavigate();
 
-    function handleEmailAddressInputChange(e) {
-        setCredentials({...credentials, email_address: e.target.value})
-        setErrorMessage(null)
+    function handleInputChange(type, e) {
+        setCredentials({...credentials, [type]: e.target.value})
+        resetAuthError()
     }
 
-    function handlePasswordInputChange(e) {
-        setCredentials({...credentials, password: e.target.value})
-        setErrorMessage(null)
+    useEffect(() => {
 
-    }
+        if (authenticated) {
+            if (registrationCompleted){
+                navigate("/home")
+            }else{
+                navigate("/personal-questions")
+            }
+        }
+    }, [authenticated, registrationCompleted, navigate]);
 
-    function handleOnSubmit(){
-        Axios.post("http://localhost:8085/login", JSON.stringify(credentials), { withCredentials: true })
-            .then((response)=>{
-                console.log(response)
-
-                setErrorMessage(null)
-
-                login()
-
-                Axios.post("http://localhost:8085/me", undefined,{ withCredentials: true }).then(
-                    (response)=>{
-                        if(response.data["completed"]){
-                            navigate("/home")
-                        }else {
-                            navigate("/personal-questions")
-                        }
-                    }
-                )
-                    .catch((error) => {
-                    console.log(error)
-                })
-
-
-            })
-            .catch((error) => {
-                if (error.response){
-                    if (error.response.status === 401){
-                        setErrorMessage("Wrong email address or password")
-
-                    }else {
-                        setErrorMessage("Something went wrong, please try again")
-                    }
-                }else {
-                    setErrorMessage("Something went wrong, please try again")
-                }
-            })
+    async function handleOnSubmit() {
+        try {
+            await login(credentials);
+        } catch (error) {
+            console.log(error); // Handle error if necessary
+        }
     }
 
     return(
         <>
             <a href="/"><img src={logo} alt={"logo"}/></a>
             <div className={"error-message-box"}>
-                {errorMessage && <div className={"error-message"} id={"error-message"}>
-                    <label>{errorMessage}</label>
+                {authError && <div className={"error-message"} id={"error-message"}>
+                    <label>{authError}</label>
                 </div>}
             </div>
             <div className={"login-container"}>
-                <TextInput type={"text"} placeholder={"email address"} id={"email-address"} onChange={e => handleEmailAddressInputChange(e)}/>
-                <TextInput type={"password"} placeholder={"password"} id={"password"} onChange={e => handlePasswordInputChange(e)} icon={icon}/>
+                <TextInput inputDisplay={false} type={"text"} placeholder={"email address"} id={"email-address"} onChange={e => handleInputChange('email_address', e)}/>
+                <TextInput inputDisplay={false} type={"password"} placeholder={"password"} id={"password"} onChange={e => handleInputChange('password', e)}/>
 
                 <div className={"remember-me-forgot-password"}>
                     <div className={"nesto"}>
                         <label>
                             Remember me
                         </label>
-                        <input type={"checkbox"} id={"remember-me"} onChange={e => setCredentials({...credentials, remember_me: e.target.checked})}/>
+                        <input type={"checkbox"} id={"remember-me"} onChange={e => handleInputChange('remember_me',e)}/>
                     </div>
 
                     <a href={"/forgot-password"} >Forgot password</a>

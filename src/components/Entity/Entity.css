@@ -30,56 +30,8 @@
     border: solid;
     border-radius: 35px;
     margin-top: 20px;
-}
-
-.entity-data{
-    margin-left: 20px;
-    display: inline-block;
-    width: 60%;
-}
-
-.password-field{
-    display: flex;
-    margin: 10px;
-    overflow: auto;
-    justify-content: space-between;
-}
-
-.email-address-field{
-    display: flex;
-    margin: 10px;
-}
-
-.username-field{
-    display: flex;
-    margin: 10px;
-}
-
-.description-field{
-    display: block;
-    margin: 10px;
-    overflow: auto;
-    max-height: 40px;
-}
-
-h3{
-    margin: 0px;
-}
-
-.password-visibility-icon{
-    height: 15px;
-    margin-top: auto;
-    margin-bottom: auto;
+    object-fit: cover;
     cursor: pointer;
-    margin-right: 10px;
-}
-
-.copy-icon{
-    height: 17px;
-    margin-top: auto;
-    margin-bottom: auto;
-    cursor: pointer;
-    margin-right: 10px;
 }
 
 .entity-hover-icons{
@@ -90,8 +42,8 @@ h3{
     visibility: visible;
 }
 
-.update-icon{
-    height: 33px;
+.action-icon{
+    height: 30px;
     width: 33px;
     margin-top: auto;
     margin-bottom: auto;
@@ -99,11 +51,22 @@ h3{
     margin-right: 10px;
 }
 
-.delete-icon{
-    height: 30px;
-    width: 33px;
+.entity-data{
+    margin-left: 20px;
+    display: inline-block;
+    width: 60%;
+}
+
+.input-field{
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.copy-icon{
+    height: 17px;
+    margin-left: 20px;
     margin-top: auto;
     margin-bottom: auto;
     cursor: pointer;
-    margin-right: 10px;
 }

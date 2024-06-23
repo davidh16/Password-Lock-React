@@ -6,7 +6,6 @@ import Axios from "axios";
 import "./CreateOrUpdateEntity.css";
 
 import uploadIcon from "../../assets/upload-icon.png";
-import viewPasswordIcon from "../../assets/hidden.png";
 import facebookIcon from "../../assets/facebook.png";
 import githubIcon from "../../assets/github.png";
 import linkedinIcon from "../../assets/linkedin.png";
@@ -114,7 +113,6 @@ function CreateOrUpdateEntity() {
     };
 
     function handleSelectOption(option) {
-
         setIcon(icons[option]);
         setEntity({ ...entity, type: option });
     }
@@ -129,16 +127,16 @@ function CreateOrUpdateEntity() {
             <div className="new-entity-container">
                 <div className={"entity"}>
                     <div className={"icon-column"}>
-                        <TextInput type="text" placeholder="Name" id="entity-name" value={entity.name} onChange={(e) => handleInputChange(e, 'name')} />
+                        <TextInput inputDisplay={false} type="text" placeholder="Name" id="entity-name" value={entity.name} onChange={(e) => handleInputChange(e, 'name')} />
                         <input className={"img-input"} type="file" onChange={handleFileChange} ref={fileInputRef} />
                         <img src={icon} className={"entity-icon"} onClick={handleIconClick} alt="Entity Icon" />
                     </div>
                     <div className={"entity-data"}>
                         <Dropdown onOptionSelect={handleSelectOption} initialOption={entity.type} />
-                        <TextInput type="text" placeholder="Email address" id="entity-email-address" value={entity.email_address} onChange={(e) => handleInputChange(e, 'email_address')} />
-                        <TextInput type="text" placeholder="Username" id="entity-username" value={entity.username} onChange={(e) => handleInputChange(e, 'username')} />
-                        <TextInput type="password" placeholder="Password" id="entity-password" value={entity.password} onChange={(e) => handleInputChange(e, 'password')} icon={viewPasswordIcon} />
-                        <TextInput type="text" placeholder="Description" id="entity-description" value={entity.description} onChange={(e) => handleInputChange(e, 'description')} />
+                        <TextInput inputDisplay={false} type="text" placeholder="Email address" value={entity.email_address} onChange={(e) => handleInputChange(e, 'email_address')} />
+                        <TextInput inputDisplay={false} type="text" placeholder="Username" value={entity.username} onChange={(e) => handleInputChange(e, 'username')} />
+                        <TextInput inputDisplay={false} type="password" placeholder="Password" value={entity.password} onChange={(e) => handleInputChange(e, 'password')} />
+                        <TextInput inputDisplay={false} type="text" placeholder="Description" value={entity.description} onChange={(e) => handleInputChange(e, 'description')} />
                     </div>
                 </div>
                 <div className={"button-section"}>
