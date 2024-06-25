@@ -3,7 +3,7 @@ import iconVisible from "../../assets/visible.png"
 import iconHidden from "../../assets/hidden.png"
 import {useState} from "react";
 import PropTypes from "prop-types";
-function TextInput({inputDisplay, onChange, value, label, placeholder, type, icon, id, handleIconClick}){
+function TextInput({inputDisplay, onChange, value, label, placeholder, type, icon, handleIconClick, error}){
 
     const [inputType, setInputType] = useState(type)
     const toggleInputType = () =>{
@@ -12,12 +12,15 @@ function TextInput({inputDisplay, onChange, value, label, placeholder, type, ico
 
     return(
         <>
-            {!inputDisplay && <div className={"text-input"}>
-                {label && <label>{label}</label>}
-                <input type={inputType} placeholder={placeholder}  onChange={e => onChange(e)} value={value}/>
-                {icon && <img src={icon} onClick={handleIconClick} alt={""}/>}
-                {type === "password" && <img src={inputType === 'text' ? iconVisible : iconHidden} onClick={toggleInputType} alt={""}/>}
-            </div>}
+            <div>
+                {error && <p className={"input-error"}>{error}</p>}
+                {!inputDisplay && <div className={`text-input ${error ? 'error-border' : ''}`}>
+                    {label && <label>{label}</label>}
+                    <input type={inputType} placeholder={placeholder}  onChange={e => onChange(e)} value={value}/>
+                    {icon && <img src={icon} onClick={handleIconClick} alt={""}/>}
+                    {type === "password" && <img src={inputType === 'text' ? iconVisible : iconHidden} onClick={toggleInputType} alt={""}/>}
+                </div>}
+            </div>
 
             {inputDisplay && <div className={"text-input-read-only"}>
                 <input readOnly={true} type={inputType} placeholder={placeholder}  onChange={e => onChange(e)} value={value}/>
@@ -38,7 +41,8 @@ TextInput.propTypes = {
     type: PropTypes.string,
     id: PropTypes.string,
     onChange: PropTypes.func,
-    handleIconClick: PropTypes.func
+    handleIconClick: PropTypes.func,
+    error: PropTypes.string
 };
 
 export default TextInput

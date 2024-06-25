@@ -140,6 +140,7 @@ function Home() {
     };
 
     const handleSaveNewEntity = (entityData, file) => {
+
         const formData = new FormData();
         if (file) {
             formData.append("file", file);

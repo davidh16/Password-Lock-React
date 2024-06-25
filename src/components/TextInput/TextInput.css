@@ -47,3 +47,16 @@
     margin-bottom: auto;
     cursor: pointer;
 }
+
+.input-error{
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    color: red;
+    text-align: left;
+    margin: 0;
+    margin-left: 30px;
+}
+
+.error-border {
+    border-color: red;
+}

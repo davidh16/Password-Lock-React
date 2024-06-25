@@ -2,12 +2,15 @@ import logo from "../../assets/logo.png";
 import TextInput from "../../components/TextInput/TextInput.jsx";
 import {useEffect, useState} from "react";
 import Axios from "axios";
+import validator from "validator";
 
 function Registser(){
 
     const [emailAddress, setEmailAddress] = useState("");
 
     const [errorMessage, setErrorMessage] = useState(null)
+
+    const [validationError, setValidationError] = useState(null)
 
     const [submitted, setSubmitted] = useState(false)
 
@@ -46,27 +49,35 @@ function Registser(){
             setErrorMessage("Email address not specified")
         }
 
-        const request = {
-            email_address: emailAddress
-        }
-
-        Axios.post("http://localhost:8085/register", JSON.stringify(request))
-            .then((response)=>{
-                console.log(response);
-                setSubmitted(true);
-                setTimer(20);
-            })
-            .catch((error) => {
-            if (error.response){
-                if (error.response.status === 401 || error.response.status === 400){
-                    setErrorMessage(capitalizeFirstLetter(error.response.data["error"]))
-                }else {
-                    setErrorMessage("Something went wrong, please try again")
-                }
-            }else {
-                setErrorMessage("Something went wrong, please try again")
+        if(emailAddress !== undefined && emailAddress !== ""){
+            if (!validator.isEmail(emailAddress)) {
+                setValidationError("Invalid email address")
             }
-        });
+        }else {
+            setValidationError(null)
+
+            const request = {
+                email_address: emailAddress
+            }
+
+            Axios.post("http://localhost:8085/register", JSON.stringify(request))
+                .then((response)=>{
+                    console.log(response);
+                    setSubmitted(true);
+                    setTimer(20);
+                })
+                .catch((error) => {
+                    if (error.response){
+                        if (error.response.status === 401 || error.response.status === 400){
+                            setErrorMessage(capitalizeFirstLetter(error.response.data["error"]))
+                        }else {
+                            setErrorMessage("Something went wrong, please try again")
+                        }
+                    }else {
+                        setErrorMessage("Something went wrong, please try again")
+                    }
+                });
+        }
     }
     function handleOnResendVerificationLink(){
 
@@ -89,7 +100,7 @@ function Registser(){
                 </div>}
             </div>
             <div className={"login-container"}>
-                {!submitted && <TextInput inputDisplay={false} type={"text"} placeholder={"email address"} id={"email-address"} onChange={e => handleEmailAddressInputChange(e)}/>}
+                {!submitted && <TextInput inputDisplay={false} type={"text"} placeholder={"email address"} id={"email-address"} onChange={e => handleEmailAddressInputChange(e)} error={validationError}/>}
                 {!submitted && <button id={"register-button"} onClick={handleOnSubmit}>Register</button>}
                 {!submitted && <label>{"Already have an account ?"} <a href={"/"} >Login</a></label>}
                 {submitted && <div className={"timer"}>

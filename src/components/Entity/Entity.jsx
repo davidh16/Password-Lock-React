@@ -18,6 +18,7 @@ import instagramIcon from "../../assets/instagram.png";
 import gmailIcon from "../../assets/gmail.png";
 import uploadIcon from "../../assets/upload-icon.png";
 import { EntityState } from "../../utils/EntityState";
+import {validateCreateRequest} from "../../utils/validations.jsx";
 
 const types = {
     2: "Facebook",
@@ -43,6 +44,7 @@ function Entity({ entityData, handleDeleteIconClick, handleUpdateIconClick, hand
     const [file, setFile] = useState(null);
     const fileInputRef = useRef(null);
     const [initialEntity, setInitialEntity] = useState(entityData);
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
 
@@ -104,18 +106,24 @@ function Entity({ entityData, handleDeleteIconClick, handleUpdateIconClick, hand
 
     const handleSaveClick = () => {
 
-        if (entityState === EntityState.EDIT){
-            if (hasChanges()) {
-                handleSaveIconClickOnUpdate(entity, file, false);
+        const validationErrors = validateCreateRequest(entity)
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+        }else {
+            setErrors(null)
+            if (entityState === EntityState.EDIT){
+                if (hasChanges()) {
+                    handleSaveIconClickOnUpdate(entity, file, false);
+                    setInitialEntity(entity);
+                    setFile(null);
+                } else {
+                    handleSaveIconClickOnUpdate(entity, file, true);
+                }
+            }else if(entityState === EntityState.CREATE){
+                handleSaveIconClickOnCreate(entity, file);
                 setInitialEntity(entity);
                 setFile(null);
-            } else {
-                handleSaveIconClickOnUpdate(entity, file, true);
             }
-        }else if(entityState === EntityState.CREATE){
-            handleSaveIconClickOnCreate(entity, file);
-            setInitialEntity(entity);
-            setFile(null);
         }
     };
 
@@ -129,7 +137,7 @@ function Entity({ entityData, handleDeleteIconClick, handleUpdateIconClick, hand
                         {entityState === EntityState.VIEW ?
                             <TextInput inputDisplay={true} type="text" value={entity.name} />
                             :
-                            <TextInput inputDisplay={false} type="text" value={entity.name} onChange={(e) => handleInputChange(e, 'name')}/>
+                            <TextInput inputDisplay={false} type="text" value={entity.name} onChange={(e) => handleInputChange(e, 'name')} error={errors.name}/>
                         }
                     </h3>
                     {entityState !== EntityState.VIEW && <input className="img-input" type="file" onChange={handleFileChange} ref={fileInputRef} />}
@@ -156,7 +164,7 @@ function Entity({ entityData, handleDeleteIconClick, handleUpdateIconClick, hand
                         {entityState === EntityState.VIEW ?
                             <TextInput inputDisplay={true} type="password" value={entity.password} />
                             :
-                            <TextInput inputDisplay={false} type="password" value={entity.password} onChange={(e) => handleInputChange(e, 'password')}/>
+                            <TextInput inputDisplay={false} type="password" value={entity.password} onChange={(e) => handleInputChange(e, 'password')} error={errors.password}/>
                         }
                         {entityState === EntityState.VIEW && <img className="copy-icon" src={copyIcon} onClick={copyPassword} alt="Copy" />}
                     </div>
@@ -179,7 +187,7 @@ function Entity({ entityData, handleDeleteIconClick, handleUpdateIconClick, hand
                                 {entityState === EntityState.VIEW ?
                                     <TextInput inputDisplay={true} type="text" value={entity.email_address} />
                                     :
-                                    <TextInput inputDisplay={false} type="text" value={entity.email_address} onChange={(e) => handleInputChange(e, 'email_address')}/>
+                                    <TextInput inputDisplay={false} type="text" value={entity.email_address} onChange={(e) => handleInputChange(e, 'email_address')} error={errors.email_address}/>
                                 }
                             </div>
                         </>

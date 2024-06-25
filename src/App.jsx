@@ -10,9 +10,9 @@ import Register from "./pages/Register/Register";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword.jsx";
 import PersonalQuestions from "./pages/PersonalQuestions/PersonalQuestions.jsx";
 import Home from "./pages/Home/Home.jsx";
-import CreateOrUpdateEntity from "./pages/CreateOrUpdateEntity/CreateOrUpdateEntity.jsx";
-import {AuthProvider, useAuth} from "./AuthContext";
+import { useAuth} from "./AuthContext";
 import PropTypes from "prop-types";
+import Verification from "./pages/Verification/Verification.jsx";
 
 
 // eslint-disable-next-line react/prop-types
@@ -52,6 +52,11 @@ function App() {
                 />
                 <Route
                     exact
+                    path="/verify"
+                    element={ <Verification/>}
+                />
+                <Route
+                    exact
                     path="/personal-questions"
                     element={ <PersonalQuestions/>}
                 />
@@ -60,11 +65,6 @@ function App() {
                     path="/home"
                     element={ <Home/>}
                 />
-                {/*<Route*/}
-                {/*    exact*/}
-                {/*    path="/create-or-update-entity"*/}
-                {/*    element={ <CreateOrUpdateEntity/>} />}*/}
-                {/*/>*/}
             </Routes>
             {/*</AuthProvider>*/}
         </BrowserRouter>
