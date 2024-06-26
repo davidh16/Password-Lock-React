@@ -5,7 +5,6 @@ import axiosInstance from "../../axiosConfig.jsx";
 import "./ForgotPassword.css"
 import {useNavigate} from "react-router-dom";
 
-
 function ForgotPassword(){
 
     const navigate = useNavigate()
@@ -53,7 +52,11 @@ function ForgotPassword(){
             email_address: emailAddress
         }
 
-        axiosInstance.post("forgot-password", JSON.stringify(request)).then((response)=>console.log(response))
+        axiosInstance.post("forgot-password", JSON.stringify(request)).catch((error)=>{
+            if(error.response){
+                navigate("/error")
+            }
+        })
 
         startTimer()
         setSubmitted(true)
@@ -64,7 +67,11 @@ function ForgotPassword(){
             email_address: emailAddress
         }
 
-        axiosInstance.post("forgot-password", JSON.stringify(request)).then((response)=>console.log(response))
+        axiosInstance.post("forgot-password", JSON.stringify(request)).catch((error)=>{
+            if(error.response){
+                navigate("/error")
+            }
+        })
 
         startTimer(20)
         setSubmitted(true)

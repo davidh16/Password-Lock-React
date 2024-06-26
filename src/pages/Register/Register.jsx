@@ -6,7 +6,7 @@ import "./Register.css"
 import axiosInstance from "../../axiosConfig.jsx";
 import {useNavigate} from "react-router-dom";
 
-function Registser(){
+function Register(){
 
     const navigate = useNavigate()
 
@@ -78,21 +78,32 @@ function Registser(){
                             setErrorMessage("Something went wrong, please try again")
                         }
                     }else {
-                        setErrorMessage("Something went wrong, please try again")
+                        navigate("/error")
                     }
                 });
         }
     }
     function handleOnResendVerificationLink(){
 
+        if(emailAddress !== undefined && emailAddress !== ""){
+            if (!validator.isEmail(emailAddress)) {
+                setValidationError("Invalid email address")
+            }
+        }else {
+
         const request = {
             email_address: emailAddress
         }
 
-        axiosInstance.post("resend-verification-email", JSON.stringify(request)).then((response)=>console.log(response))
+        axiosInstance.post("resend-verification-email", JSON.stringify(request)).catch((error)=>{
+            if(error.response){
+                navigate("/error")
+            }
+        })
 
         startTimer(5)
         setSubmitted(false)
+        }
     }
 
     function handleOnLogoClick(){
@@ -124,4 +135,4 @@ function Registser(){
     )
 }
 
-export default Registser
+export default Register

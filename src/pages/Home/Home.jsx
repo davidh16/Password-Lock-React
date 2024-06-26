@@ -36,7 +36,9 @@ function Home() {
                 setEntityStates(initialStates);
             })
             .catch((error) => {
-                console.log(error);
+                if(error.response){
+                    navigate("/error")
+                }
             });
     }, []);
 
@@ -85,8 +87,9 @@ function Home() {
 
                 })
                 .catch((error) => {
-                    console.error("Error updating entity:", error);
-                    // Handle error if needed
+                    if(error.response){
+                        navigate("/error")
+                    }
                 });
         }else{
             setEntityStates(prevStates => ({
@@ -121,8 +124,9 @@ function Home() {
                 setEntityStates(restStates);
             })
             .catch((error) => {
-                console.error("Error deleting entity:", error);
-                // Handle error if needed
+                if(error.response){
+                    navigate("/error")
+                }
             });
     };
 
@@ -160,7 +164,9 @@ function Home() {
                 setNewEntity(null);
             })
             .catch((error) => {
-                console.error("Error creating entity:", error);
+                if(error.response){
+                    navigate("/error")
+                }
             });
     };
 

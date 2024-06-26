@@ -65,6 +65,11 @@ function App() {
                     path="/home"
                     element={ <Home/>}
                 />
+                <Route
+                    exact
+                    path="/error"
+                    element={ <Home/>}
+                />
             </Routes>
             {/*</AuthProvider>*/}
         </BrowserRouter>

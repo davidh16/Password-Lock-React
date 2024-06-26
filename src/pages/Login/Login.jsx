@@ -41,7 +41,9 @@ function Login(){
         try {
             await login(credentials);
         } catch (error) {
-            console.log(error);
+            if(error.response){
+                navigate("/error")
+            }
         }
     }
 

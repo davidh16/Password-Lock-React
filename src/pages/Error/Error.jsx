@@ -27,7 +27,8 @@ function Error(){
                 <h3>
                     Oops something went wrong, head over to the home page and please try again.
                 </h3>
-                <button onClick={handleOnButtonClick}>Home</button>
+                {authenticated && <button onClick={handleOnButtonClick}>Home</button>}
+                {!authenticated && <button onClick={handleOnButtonClick}>Login</button>}
             </div>
 
         </>

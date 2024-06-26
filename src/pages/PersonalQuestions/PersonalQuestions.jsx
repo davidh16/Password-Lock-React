@@ -21,7 +21,9 @@ function PersonalQuestions() {
                 setQuestions(jsonObject.security_questions);
             })
             .catch((error) => {
-                console.log(error);
+                if(error.response){
+                    navigate("/error")
+                }
             });
     }, []);
 
@@ -48,7 +50,9 @@ function PersonalQuestions() {
                 navigate("/home")
             })
             .catch(error => {
-                console.error("Error submitting answers:", error);
+                if(error.response){
+                    navigate("/error")
+                }
             });
     };
 
