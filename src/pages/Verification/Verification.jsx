@@ -1,8 +1,7 @@
 import logo from "../../assets/logo.png";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useEffect} from "react";
-import Axios from "axios";
-
+import axiosInstance from "../../axiosConfig.jsx";
 function Verification(){
 
     const navigate = useNavigate()
@@ -21,16 +20,19 @@ function Verification(){
             token: token
         }
 
-        Axios.post("http://localhost:8085/verify", JSON.stringify(request)).catch((error) => {
+        axiosInstance.post("verify", JSON.stringify(request)).catch((error) => {
             if (error.response){
                 navigate("/error")
             }
         })
     }, []);
+    function handleOnLogoClick(){
+        navigate("/")
+    }
 
     return(
         <>
-            <a href="/"><img src={logo} alt={"logo"}/></a>
+            <img src={logo} alt={"logo"} onClick={handleOnLogoClick}/>
             <div className={"login-container"}>
                 <h3>
                     You have successfully verified your account, head over to the login page to continue with using Password Lock

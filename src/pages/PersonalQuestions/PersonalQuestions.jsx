@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Axios from 'axios';
+import axiosInstance from "../../axiosConfig.jsx";
 import './PersonalQuestions.css';
 import {useNavigate} from 'react-router-dom';
 
@@ -15,7 +15,7 @@ function PersonalQuestions() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        Axios.get("http://localhost:8085/list-security-questions")
+        axiosInstance.get("list-security-questions")
             .then((response) => {
                 const jsonObject = JSON.parse(response.data);
                 setQuestions(jsonObject.security_questions);
@@ -42,7 +42,7 @@ function PersonalQuestions() {
     };
 
     const handleSubmit = () => {
-        Axios.post("http://localhost:8085/complete-registration", selectedQuestions, { withCredentials: true })
+        axiosInstance.post("complete-registration", selectedQuestions, { withCredentials: true })
             .then(response => {
                 console.log("Answers submitted successfully:", response.data);
                 navigate("/home")

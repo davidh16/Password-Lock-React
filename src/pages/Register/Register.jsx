@@ -1,11 +1,14 @@
 import logo from "../../assets/logo.png";
 import TextInput from "../../components/TextInput/TextInput.jsx";
 import {useEffect, useState} from "react";
-import Axios from "axios";
 import validator from "validator";
 import "./Register.css"
+import axiosInstance from "../../axiosConfig.jsx";
+import {useNavigate} from "react-router-dom";
 
 function Registser(){
+
+    const navigate = useNavigate()
 
     const [emailAddress, setEmailAddress] = useState("");
 
@@ -61,7 +64,7 @@ function Registser(){
                 email_address: emailAddress
             }
 
-            Axios.post("http://localhost:8085/register", JSON.stringify(request))
+            axiosInstance.post("register", JSON.stringify(request))
                 .then((response)=>{
                     console.log(response);
                     setSubmitted(true);
@@ -86,15 +89,19 @@ function Registser(){
             email_address: emailAddress
         }
 
-        Axios.post("http://localhost:8085/resend-verification-email", JSON.stringify(request)).then((response)=>console.log(response))
+        axiosInstance.post("resend-verification-email", JSON.stringify(request)).then((response)=>console.log(response))
 
         startTimer(5)
         setSubmitted(false)
     }
 
+    function handleOnLogoClick(){
+        navigate("/")
+    }
+
     return(
         <>
-            <a href="/"><img src={logo} alt={"logo"}/></a>
+            <img src={logo} alt={"logo"} onClick={handleOnLogoClick}/>
             <div className={"error-message-box"}>
                 {errorMessage && <div className={"error-message"} id={"error-message"}>
                     <label>{errorMessage}</label>

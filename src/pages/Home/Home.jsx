@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Axios from "axios";
+import axiosInstance from "../../axiosConfig.jsx";
 import Entity from "../../components/Entity/Entity.jsx";
 import "./Home.css";
 import { useAuth } from "../../AuthContext.jsx";
@@ -24,7 +24,7 @@ function Home() {
 
     useEffect(() => {
 
-        Axios.get("http://localhost:8085/entity/list", { withCredentials: true })
+        axiosInstance.get("entity/list", { withCredentials: true })
             .then((response) => {
                 const decryptedResponse = decryptResponse(response);
                 setEntities(JSON.parse(decryptedResponse).entities);
@@ -64,7 +64,7 @@ function Home() {
 
             formData.append("entity", JSON.stringify(entityData));
 
-            Axios.post(`http://localhost:8085/entity/update`, formData, {
+            axiosInstance.post(`entity/update`, formData, {
                 withCredentials: true,
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -109,7 +109,7 @@ function Home() {
     };
 
     const confirmDelete = (uuid) => {
-        Axios.post(`http://localhost:8085/entity/delete/${uuid}`, undefined, {
+        axiosInstance.post(`entity/delete/${uuid}`, undefined, {
             withCredentials: true,
         })
             .then(() => {
@@ -146,7 +146,7 @@ function Home() {
             formData.append("file", file);
         }
         formData.append("entity", JSON.stringify(entityData));
-        Axios.post(`http://localhost:8085/entity`, formData, {
+        axiosInstance.post(`entity`, formData, {
             withCredentials: true,
             headers: {
                 "Content-Type": "multipart/form-data",

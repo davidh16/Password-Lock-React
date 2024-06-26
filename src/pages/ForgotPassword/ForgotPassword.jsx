@@ -1,11 +1,14 @@
 import logo from "../../assets/logo.png";
 import TextInput from "../../components/TextInput/TextInput.jsx";
 import {useEffect, useState} from "react";
-import Axios from "axios";
+import axiosInstance from "../../axiosConfig.jsx";
 import "./ForgotPassword.css"
+import {useNavigate} from "react-router-dom";
 
 
 function ForgotPassword(){
+
+    const navigate = useNavigate()
 
     const [emailAddress, setCredentials] = useState("");
 
@@ -50,7 +53,7 @@ function ForgotPassword(){
             email_address: emailAddress
         }
 
-        Axios.post("http://localhost:8085/forgot-password", JSON.stringify(request)).then((response)=>console.log(response))
+        axiosInstance.post("forgot-password", JSON.stringify(request)).then((response)=>console.log(response))
 
         startTimer()
         setSubmitted(true)
@@ -61,16 +64,19 @@ function ForgotPassword(){
             email_address: emailAddress
         }
 
-        Axios.post("http://localhost:8085/forgot-password", JSON.stringify(request)).then((response)=>console.log(response))
+        axiosInstance.post("forgot-password", JSON.stringify(request)).then((response)=>console.log(response))
 
         startTimer(20)
         setSubmitted(true)
     }
 
+    function handleOnLogoClick(){
+        navigate("/")
+    }
 
     return(
         <>
-            <a href="/"><img src={logo} alt={"logo"}/></a>
+            <img src={logo} alt={"logo"} onClick={handleOnLogoClick}/>
             <div className={"error-message-box"}>
                 {errorMessage && <div className={"error-message"} id={"error-message"}>
                     <label>{errorMessage}</label>

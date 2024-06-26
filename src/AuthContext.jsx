@@ -1,5 +1,5 @@
 import {createContext, useContext, useMemo, useState} from "react";
-import Axios from "axios";
+import axiosInstance from "./axiosConfig.jsx";
 
 const AuthContext = createContext();
 
@@ -16,11 +16,11 @@ export const AuthProvider = ({ children }) => {
     // call this function when you want to authenticate the user
     const login = async (credentials) => {
 
-        await Axios.post("http://localhost:8085/login", JSON.stringify(credentials), {withCredentials: true}).then(() => {
+        await axiosInstance.post("login", JSON.stringify(credentials), {withCredentials: true}).then(() => {
             setAuthenticated(true)
             setAuthError(null)
         }).then(() => {
-            Axios.post("http://localhost:8085/me", undefined, {withCredentials: true}).then(
+            axiosInstance.post("me", undefined, {withCredentials: true}).then(
                 (response) => {
                     setRegistrationCompleted(response.data["completed"])
                 })
@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
 
     // call this function to sign out logged in user
     const logout = () => {
-        Axios.post("http://localhost:8085/logout", undefined,{withCredentials: true})
+        axiosInstance("logout", undefined,{withCredentials: true})
             .then(() => {
                 setAuthenticated(false);
                 setRegistrationCompleted(true)
