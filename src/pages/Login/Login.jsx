@@ -27,12 +27,11 @@ function Login(){
     }
 
     useEffect(() => {
-
         if (authenticated) {
-            if (registrationCompleted){
-                navigate("/home")
-            }else{
-                navigate("/personal-questions")
+            if (registrationCompleted) {
+                navigate("/home");
+            } else {
+                navigate("/personal-questions");
             }
         }
     }, [authenticated, registrationCompleted, navigate]);

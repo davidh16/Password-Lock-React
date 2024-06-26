@@ -7,7 +7,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [authenticated, setAuthenticated] = useState(false);
     const [authError, setAuthError] = useState(null);
-    const [registrationCompleted, setRegistrationCompleted]=useState(true)
+    const [registrationCompleted, setRegistrationCompleted] = useState(false)
 
     const resetAuthError = () => {
         setAuthError(null);
@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }) => {
                     setRegistrationCompleted(response.data["completed"])
                 })
         }).catch((error)=>{
+            setAuthenticated(false);
             if (error.response) {
                 if (error.response.status === 401) {
                     setAuthError("Wrong email address or password");
@@ -35,16 +36,16 @@ export const AuthProvider = ({ children }) => {
                 setAuthError("Something went wrong, please try again");
             }
             setAuthenticated(false);
-            throw error; // Propagate the error
+            throw authError;
         })
     }
 
     // call this function to sign out logged in user
     const logout = () => {
-        axiosInstance("logout", undefined,{withCredentials: true})
+        axiosInstance.post("logout", undefined,{withCredentials: true})
             .then(() => {
                 setAuthenticated(false);
-                setRegistrationCompleted(true)
+                setRegistrationCompleted(false)
             })
             .catch((error) => {
                 console.log(error);
@@ -58,6 +59,7 @@ export const AuthProvider = ({ children }) => {
         authError,
         resetAuthError,
         registrationCompleted,
+        setRegistrationCompleted,
     }), [authenticated, authError, registrationCompleted]);
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

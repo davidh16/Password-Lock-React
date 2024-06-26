@@ -2,8 +2,11 @@ import { useEffect, useState } from 'react';
 import axiosInstance from "../../axiosConfig.jsx";
 import './PersonalQuestions.css';
 import {useNavigate} from 'react-router-dom';
+import {useAuth} from "../../AuthContext.jsx";
 
 function PersonalQuestions() {
+
+    const { setRegistrationCompleted } = useAuth();
 
     const [questions, setQuestions] = useState([]);
     const [selectedQuestions, setSelectedQuestions] = useState([
@@ -45,8 +48,8 @@ function PersonalQuestions() {
 
     const handleSubmit = () => {
         axiosInstance.post("complete-registration", selectedQuestions, { withCredentials: true })
-            .then(response => {
-                console.log("Answers submitted successfully:", response.data);
+            .then(() => {
+                setRegistrationCompleted(true)
                 navigate("/home")
             })
             .catch(error => {

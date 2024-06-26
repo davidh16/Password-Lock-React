@@ -7,7 +7,7 @@ import { useAuth } from "../../AuthContext.jsx";
 import { decryptResponse } from "../../utils/decryption";
 import {EntityState} from "../../utils/EntityState.jsx";
 function Home() {
-    const { logout, authenticated } = useAuth();
+    const { logout } = useAuth();
     const navigate = useNavigate();
     const [entities, setEntities] = useState([]);
     const [showPopup, setShowPopup] = useState(false);
@@ -15,17 +15,12 @@ function Home() {
     const [newEntity, setNewEntity] = useState(null);
     const [entityStates, setEntityStates] = useState({}); // State management for each entity's state
 
-
     useEffect(() => {
-        if (!authenticated) {
-            navigate("/");
-        }
-    }, [authenticated, navigate]);
-
-    useEffect(() => {
-
+        console.log("nesto se događa")
         axiosInstance.get("entity/list", { withCredentials: true })
             .then((response) => {
+                console.log("nesto se događa")
+
                 const decryptedResponse = decryptResponse(response);
                 setEntities(JSON.parse(decryptedResponse).entities);
 

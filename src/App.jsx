@@ -1,7 +1,6 @@
 import Login from "./pages/Login/Login.jsx";
 import "./index.css"
 import {
-    BrowserRouter as Router,
     Routes,
     Route, Navigate,
     BrowserRouter
@@ -10,16 +9,18 @@ import Register from "./pages/Register/Register";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword.jsx";
 import PersonalQuestions from "./pages/PersonalQuestions/PersonalQuestions.jsx";
 import Home from "./pages/Home/Home.jsx";
-import { useAuth} from "./AuthContext";
+import {AuthProvider, useAuth} from "./AuthContext";
 import PropTypes from "prop-types";
 import Verification from "./pages/Verification/Verification.jsx";
 
 
 // eslint-disable-next-line react/prop-types
 export const ProtectedRoute = ({ children }) => {
-    const { authenticated } = useAuth();
+    const { authenticated, registrationCompleted } = useAuth();
     if (!authenticated) {
         return <Navigate to="/" />;
+    }else if(!registrationCompleted){
+            return <Navigate to="/personal-questions" />;
     }
     return children;
 };
@@ -33,7 +34,7 @@ function App() {
   return (
     <>
         <BrowserRouter>
-            {/*<AuthProvider>*/}
+            <AuthProvider>
             <Routes>
                 <Route
                     exact
@@ -63,7 +64,7 @@ function App() {
                 <Route
                     exact
                     path="/home"
-                    element={ <Home/>}
+                    element={ <ProtectedRoute element={<Home/>}/>}
                 />
                 <Route
                     exact
@@ -71,7 +72,7 @@ function App() {
                     element={ <Home/>}
                 />
             </Routes>
-            {/*</AuthProvider>*/}
+            </AuthProvider>
         </BrowserRouter>
     </>
   )
