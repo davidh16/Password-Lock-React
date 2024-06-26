@@ -3,6 +3,7 @@ import TextInput from "../../components/TextInput/TextInput.jsx";
 import {useEffect, useState} from "react";
 import Axios from "axios";
 import validator from "validator";
+import "./Register.css"
 
 function Registser(){
 
@@ -99,9 +100,11 @@ function Registser(){
                     <label>{errorMessage}</label>
                 </div>}
             </div>
-            <div className={"login-container"}>
-                {!submitted && <TextInput inputDisplay={false} type={"text"} placeholder={"email address"} id={"email-address"} onChange={e => handleEmailAddressInputChange(e)} error={validationError}/>}
-                {!submitted && <button id={"register-button"} onClick={handleOnSubmit}>Register</button>}
+            <div className={"input-container"}>
+                <div className="email-address-input">
+                    {!submitted && <TextInput inputDisplay={false} type={"text"} placeholder={"email address"} onChange={e => handleEmailAddressInputChange(e)} error={validationError}/>}
+                </div>
+                {!submitted && <button onClick={handleOnSubmit}>Register</button>}
                 {!submitted && <label>{"Already have an account ?"} <a href={"/"} >Login</a></label>}
                 {submitted && <div className={"timer"}>
                     <p>Verification link has been sent to your email.</p>

@@ -24,6 +24,10 @@ img{
     margin-right: 15px;
 }
 
+.input{
+    margin-right: 25px;
+}
+
 .error-message-box{
     height: 75px;
 }
@@ -67,10 +71,6 @@ input[type="checkbox"] {
     white-space: nowrap;
     margin: 3px;
 }
-
-/*.remember-me-checkbox{*/
-/*    display: inline-flex;*/
-/*}*/
 
 button{
     margin: 20px;

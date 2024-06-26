@@ -22,6 +22,10 @@ function Login(){
         resetAuthError()
     }
 
+    function handleCheckboxChange(e){
+        setCredentials({...credentials, remember_me: e.target.checked})
+    }
+
     useEffect(() => {
 
         if (authenticated) {
@@ -50,15 +54,20 @@ function Login(){
                 </div>}
             </div>
             <div className={"login-container"}>
-                <TextInput inputDisplay={false} type={"text"} placeholder={"email address"} id={"email-address"} onChange={e => handleInputChange('email_address', e)}/>
-                <TextInput inputDisplay={false} type={"password"} placeholder={"password"} id={"password"} onChange={e => handleInputChange('password', e)}/>
+                <div className={"input"}>
+                    <TextInput inputDisplay={false} type={"text"} placeholder={"email address"} onChange={e => handleInputChange('email_address', e)}/>
+                </div>
+
+                <div className={"input"}>
+                    <TextInput inputDisplay={false} type={"password"} placeholder={"password"} onChange={e => handleInputChange('password', e)}/>
+                </div>
 
                 <div className={"remember-me-forgot-password"}>
                     <div className={"nesto"}>
                         <label>
                             Remember me
                         </label>
-                        <input type={"checkbox"} id={"remember-me"} onChange={e => handleInputChange('remember_me',e)}/>
+                        <input type={"checkbox"} onChange={e => handleCheckboxChange(e)}/>
                     </div>
 
                     <a href={"/forgot-password"} >Forgot password</a>
