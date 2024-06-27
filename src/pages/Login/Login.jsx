@@ -7,7 +7,7 @@ import {useAuth} from "../../AuthContext.jsx";
 
 function Login(){
 
-    const { login, authenticated, authError, resetAuthError, registrationCompleted } = useAuth();
+    const { login, authError, resetAuthError, authInfo } = useAuth();
 
     const [credentials, setCredentials] = useState({
         email_address: "",
@@ -27,14 +27,17 @@ function Login(){
     }
 
     useEffect(() => {
-        if (authenticated) {
-            if (registrationCompleted) {
+
+        console.log(authInfo)
+
+        if (authInfo.authenticated) {
+            if (authInfo.registrationCompleted) {
                 navigate("/home");
             } else {
                 navigate("/personal-questions");
             }
         }
-    }, [authenticated, registrationCompleted, navigate]);
+    }, [authInfo, navigate]);
 
     async function handleOnSubmit() {
         try {

@@ -1,10 +1,6 @@
 import Login from "./pages/Login/Login.jsx";
 import "./index.css"
-import {
-    Routes,
-    Route, Navigate,
-    BrowserRouter
-} from "react-router-dom";
+import {Routes, Route, Navigate, BrowserRouter} from "react-router-dom";
 import Register from "./pages/Register/Register";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword.jsx";
 import PersonalQuestions from "./pages/PersonalQuestions/PersonalQuestions.jsx";
@@ -12,21 +8,22 @@ import Home from "./pages/Home/Home.jsx";
 import {AuthProvider, useAuth} from "./AuthContext";
 import PropTypes from "prop-types";
 import Verification from "./pages/Verification/Verification.jsx";
+import Error from "./pages/Error/Error.jsx";
 
 
 // eslint-disable-next-line react/prop-types
 export const ProtectedRoute = ({ children }) => {
-    const { authenticated, registrationCompleted } = useAuth();
-    if (!authenticated) {
+    const {authInfo } = useAuth();
+    if (!authInfo.authenticated) {
         return <Navigate to="/" />;
-    }else if(!registrationCompleted){
+    }else if(!authInfo.registrationCompleted){
             return <Navigate to="/personal-questions" />;
     }
     return children;
 };
 
 ProtectedRoute.propTypes = {
-    element: PropTypes.node.isRequired,
+    children: PropTypes.node.isRequired,
 };
 
 function App() {
@@ -64,12 +61,16 @@ function App() {
                 <Route
                     exact
                     path="/home"
-                    element={ <ProtectedRoute element={<Home/>}/>}
+                    element={
+                        <ProtectedRoute>
+                            <Home />
+                        </ProtectedRoute>
+                        }
                 />
                 <Route
                     exact
                     path="/error"
-                    element={ <Home/>}
+                    element={ <Error/>}
                 />
             </Routes>
             </AuthProvider>

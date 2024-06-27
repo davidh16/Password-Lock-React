@@ -6,7 +6,7 @@ import {useAuth} from "../../AuthContext.jsx";
 
 function PersonalQuestions() {
 
-    const { setRegistrationCompleted } = useAuth();
+    const { setAuthInfo } = useAuth();
 
     const [questions, setQuestions] = useState([]);
     const [selectedQuestions, setSelectedQuestions] = useState([
@@ -49,7 +49,10 @@ function PersonalQuestions() {
     const handleSubmit = () => {
         axiosInstance.post("complete-registration", selectedQuestions, { withCredentials: true })
             .then(() => {
-                setRegistrationCompleted(true)
+                setAuthInfo(prevState => ({
+                    ...prevState,
+                    registrationCompleted: true
+                }))
                 navigate("/home")
             })
             .catch(error => {

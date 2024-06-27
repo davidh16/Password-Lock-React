@@ -1,13 +1,19 @@
-import {createContext, useContext, useMemo, useState} from "react";
+import {createContext, useContext, useEffect, useMemo, useState} from "react";
 import axiosInstance from "./axiosConfig.jsx";
 
 const AuthContext = createContext();
 
 // eslint-disable-next-line react/prop-types
 export const AuthProvider = ({ children }) => {
-    const [authenticated, setAuthenticated] = useState(false);
     const [authError, setAuthError] = useState(null);
-    const [registrationCompleted, setRegistrationCompleted] = useState(false)
+    const [authInfo, setAuthInfo] = useState(() => {
+        const savedAuthInfo = localStorage.getItem('authInfo');
+        return savedAuthInfo ? JSON.parse(savedAuthInfo) : { authenticated: false, registrationCompleted: false };
+    });
+
+    useEffect(() => {
+        localStorage.setItem('authInfo', JSON.stringify(authInfo));
+    }, [authInfo]);
 
     const resetAuthError = () => {
         setAuthError(null);
@@ -15,27 +21,34 @@ export const AuthProvider = ({ children }) => {
 
     // call this function when you want to authenticate the user
     const login = async (credentials) => {
-
-        await axiosInstance.post("login", JSON.stringify(credentials), {withCredentials: true}).then(() => {
-            setAuthenticated(true)
+        setAuthError(null)
+        await axiosInstance.post("login", JSON.stringify(credentials)).then(() => {
             setAuthError(null)
         }).then(() => {
             axiosInstance.post("me", undefined, {withCredentials: true}).then(
                 (response) => {
-                    setRegistrationCompleted(response.data["completed"])
+                    setAuthInfo(prevState => ({
+                        ...prevState,
+                        authenticated: true,
+                        registrationCompleted: response.data["completed"]
+                    }))
                 })
         }).catch((error)=>{
-            setAuthenticated(false);
+            setAuthInfo(prevState => ({
+                ...prevState,
+                authenticated: false,
+                registrationCompleted: false
+            }))
+
             if (error.response) {
                 if (error.response.status === 401) {
                     setAuthError("Wrong email address or password");
                 } else {
-                    setAuthError("Something went wrong, please try again");
+                    throw authError
                 }
             } else {
-                setAuthError("Something went wrong, please try again");
+                throw authError
             }
-            setAuthenticated(false);
             throw authError;
         })
     }
@@ -44,8 +57,13 @@ export const AuthProvider = ({ children }) => {
     const logout = () => {
         axiosInstance.post("logout", undefined,{withCredentials: true})
             .then(() => {
-                setAuthenticated(false);
-                setRegistrationCompleted(false)
+
+                setAuthInfo(prevState => ({
+                    ...prevState,
+                    authenticated: false,
+                    registrationCompleted: false
+                }))
+
             })
             .catch((error) => {
                 console.log(error);
@@ -53,14 +71,13 @@ export const AuthProvider = ({ children }) => {
     };
 
     const value = useMemo(() => ({
-        authenticated,
         login,
         logout,
         authError,
         resetAuthError,
-        registrationCompleted,
-        setRegistrationCompleted,
-    }), [authenticated, authError, registrationCompleted]);
+        setAuthInfo,
+        authInfo
+    }), [authError, authInfo]);
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

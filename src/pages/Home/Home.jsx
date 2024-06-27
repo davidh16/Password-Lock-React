@@ -7,20 +7,20 @@ import { useAuth } from "../../AuthContext.jsx";
 import { decryptResponse } from "../../utils/decryption";
 import {EntityState} from "../../utils/EntityState.jsx";
 function Home() {
+
     const { logout } = useAuth();
     const navigate = useNavigate();
-    const [entities, setEntities] = useState([]);
+
     const [showPopup, setShowPopup] = useState(false);
+
+    const [entities, setEntities] = useState([]);
     const [currentEntity, setCurrentEntity] = useState({ name: '', uuid: '' });
+    const [entityStates, setEntityStates] = useState({});
     const [newEntity, setNewEntity] = useState(null);
-    const [entityStates, setEntityStates] = useState({}); // State management for each entity's state
 
     useEffect(() => {
-        console.log("nesto se događa")
         axiosInstance.get("entity/list", { withCredentials: true })
             .then((response) => {
-                console.log("nesto se događa")
-
                 const decryptedResponse = decryptResponse(response);
                 setEntities(JSON.parse(decryptedResponse).entities);
 
@@ -115,6 +115,7 @@ function Home() {
                 const updatedEntities = entities.filter((entity) => entity.uuid !== uuid);
                 setEntities(updatedEntities);
 
+                // eslint-disable-next-line no-unused-vars
                 const { [uuid]: _, ...restStates } = entityStates;
                 setEntityStates(restStates);
             })
