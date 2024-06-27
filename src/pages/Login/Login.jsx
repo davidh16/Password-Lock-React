@@ -27,9 +27,6 @@ function Login(){
     }
 
     useEffect(() => {
-
-        console.log(authInfo)
-
         if (authInfo.authenticated) {
             if (authInfo.registrationCompleted) {
                 navigate("/home");
