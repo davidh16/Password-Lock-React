@@ -1,6 +1,7 @@
 import logo from "../../assets/logo.png";
 import {useNavigate} from "react-router-dom";
 import {useAuth} from "../../AuthContext.jsx";
+import "./Error.css"
 
 function Error(){
 
@@ -10,10 +11,10 @@ function Error(){
         navigate("/home")
     }
 
-    const { authenticated } = useAuth();
+    const { authInfo } = useAuth();
 
     function handleOnLogoClick(){
-        if (authenticated){
+        if (authInfo.authenticated && authInfo.registrationCompleted){
             navigate("/home")
         }else {
             navigate("/")
@@ -23,14 +24,18 @@ function Error(){
     return(
         <>
             <img src={logo} alt={"logo"} onClick={handleOnLogoClick}/>
-            <div>
+            <div className={"message"}>
                 <h3>
-                    Oops something went wrong, head over to the home page and please try again.
+                    Oops something went wrong...
                 </h3>
-                {authenticated && <button onClick={handleOnButtonClick}>Home</button>}
-                {!authenticated && <button onClick={handleOnButtonClick}>Login</button>}
+                <h3>
+                    Head over to the {(authInfo.authenticated && authInfo.registrationCompleted) ? "home" : "login"} page and please try again.
+                </h3>
             </div>
-
+            <div className={"button"}>
+                {(authInfo.authenticated && authInfo.registrationCompleted) && <button onClick={handleOnButtonClick}>Home</button>}
+                {!(authInfo.authenticated && authInfo.registrationCompleted) && <button onClick={handleOnButtonClick}>Login</button>}
+            </div>
         </>
     )
 }

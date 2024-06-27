@@ -95,10 +95,8 @@ function Register(){
             email_address: emailAddress
         }
 
-        axiosInstance.post("resend-verification-email", JSON.stringify(request)).catch((error)=>{
-            if(error.response){
-                navigate("/error")
-            }
+        axiosInstance.post("resend-verification-email", JSON.stringify(request)).catch(()=>{
+            navigate("/error")
         })
 
         startTimer(5)

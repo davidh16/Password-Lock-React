@@ -20,10 +20,8 @@ function Verification(){
             token: token
         }
 
-        axiosInstance.post("verify", JSON.stringify(request)).catch((error) => {
-            if (error.response){
-                navigate("/error")
-            }
+        axiosInstance.post("verify", JSON.stringify(request)).catch(() => {
+            navigate("/error")
         })
     }, []);
     function handleOnLogoClick(){

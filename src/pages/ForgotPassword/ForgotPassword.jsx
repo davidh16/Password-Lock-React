@@ -52,10 +52,8 @@ function ForgotPassword(){
             email_address: emailAddress
         }
 
-        axiosInstance.post("forgot-password", JSON.stringify(request)).catch((error)=>{
-            if(error.response){
+        axiosInstance.post("forgot-password", JSON.stringify(request)).catch(()=>{
                 navigate("/error")
-            }
         })
 
         startTimer()
@@ -67,10 +65,8 @@ function ForgotPassword(){
             email_address: emailAddress
         }
 
-        axiosInstance.post("forgot-password", JSON.stringify(request)).catch((error)=>{
-            if(error.response){
+        axiosInstance.post("forgot-password", JSON.stringify(request)).catch(()=>{
                 navigate("/error")
-            }
         })
 
         startTimer(20)

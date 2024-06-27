@@ -106,6 +106,8 @@ function Entity({ entityData, handleDeleteIconClick, handleUpdateIconClick, hand
 
     const handleSaveClick = () => {
 
+        console.log(entityData)
+
         const validationErrors = validateCreateRequest(entity)
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
@@ -113,11 +115,11 @@ function Entity({ entityData, handleDeleteIconClick, handleUpdateIconClick, hand
             setErrors(null)
             if (entityState === EntityState.EDIT){
                 if (hasChanges()) {
-                    handleSaveIconClickOnUpdate(entity, file, false);
+                    handleSaveIconClickOnUpdate(entity, file, true);
                     setInitialEntity(entity);
                     setFile(null);
                 } else {
-                    handleSaveIconClickOnUpdate(entity, file, true);
+                    handleSaveIconClickOnUpdate(entity, file, false);
                 }
             }else if(entityState === EntityState.CREATE){
                 handleSaveIconClickOnCreate(entity, file);

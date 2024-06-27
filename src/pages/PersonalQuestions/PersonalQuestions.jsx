@@ -23,10 +23,8 @@ function PersonalQuestions() {
                 const jsonObject = JSON.parse(response.data);
                 setQuestions(jsonObject.security_questions);
             })
-            .catch((error) => {
-                if(error.response){
-                    navigate("/error")
-                }
+            .catch(() => {
+                navigate("/error")
             });
     }, []);
 
@@ -55,10 +53,8 @@ function PersonalQuestions() {
                 }))
                 navigate("/home")
             })
-            .catch(error => {
-                if(error.response){
-                    navigate("/error")
-                }
+            .catch(() => {
+                navigate("/error")
             });
     };
 

@@ -40,9 +40,7 @@ function Login(){
         try {
             await login(credentials);
         } catch (error) {
-            if(error.response){
-                navigate("/error")
-            }
+            navigate("/error")
         }
     }
 

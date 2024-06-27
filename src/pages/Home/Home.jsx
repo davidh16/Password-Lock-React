@@ -30,10 +30,8 @@ function Home() {
                 }, {});
                 setEntityStates(initialStates);
             })
-            .catch((error) => {
-                if(error.response){
-                    navigate("/error")
-                }
+            .catch(() => {
+                navigate("/error")
             });
     }, []);
 
@@ -49,10 +47,9 @@ function Home() {
         }));
     };
 
-    const handleSaveUpdatedEntity = (entityData, file, unchanged) => {
+    const handleSaveUpdatedEntity = (entityData, file, hasChanges) => {
 
-        if (!unchanged){
-
+        if (hasChanges){
             const formData = new FormData();
 
             if (file){
@@ -81,10 +78,8 @@ function Home() {
                     }));
 
                 })
-                .catch((error) => {
-                    if(error.response){
-                        navigate("/error")
-                    }
+                .catch(() => {
+                    navigate("/error")
                 });
         }else{
             setEntityStates(prevStates => ({
@@ -119,10 +114,8 @@ function Home() {
                 const { [uuid]: _, ...restStates } = entityStates;
                 setEntityStates(restStates);
             })
-            .catch((error) => {
-                if(error.response){
-                    navigate("/error")
-                }
+            .catch(() => {
+                navigate("/error")
             });
     };
 
@@ -159,10 +152,8 @@ function Home() {
                 setEntities(prevEntities => [...prevEntities, JSON.parse(decryptedResponse).entity]);
                 setNewEntity(null);
             })
-            .catch((error) => {
-                if(error.response){
-                    navigate("/error")
-                }
+            .catch(() => {
+                navigate("/error")
             });
     };
 
@@ -176,6 +167,15 @@ function Home() {
 
     return (
         <>
+            {newEntity && (
+                <Entity
+                    key="new-entity"
+                    entityState={EntityState.CREATE}
+                    entityData={newEntity}
+                    handleSaveIconClickOnCreate={handleSaveNewEntity}
+                    handleCancelIconClick={handleCancelNewEntity}
+                />
+            )}
             {entities && (
                 <div className={"entity-list"}>
                     {entities.map((entity) => (
@@ -185,20 +185,11 @@ function Home() {
                             entityData={entity}
                             handleDeleteIconClick={() => handleDeleteIconClick(entity.name, entity.uuid)}
                             handleUpdateIconClick={() => handleUpdateIconClick(entity.uuid)}
-                            handleSaveIconClickOnUpdate={(entityData, file, unchanged) => handleSaveUpdatedEntity(entityData, file, unchanged)}
+                            handleSaveIconClickOnUpdate={(entityData, file, hasChanges) => handleSaveUpdatedEntity(entityData, file, hasChanges)}
                             handleCancelIconClick={() => handleCancelIconClick(entity.uuid)}
                         />
                     ))}
                 </div>
-            )}
-            {newEntity && (
-                <Entity
-                    key="new-entity"
-                    entityState={EntityState.CREATE}
-                    entityData={newEntity}
-                    handleSaveIconClickOnCreate={handleSaveNewEntity}
-                    handleCancelIconClick={handleCancelNewEntity}
-                />
             )}
             <div className={"button-section"}>
                 <button onClick={handleNew} className="create-button">
