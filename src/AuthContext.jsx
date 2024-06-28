@@ -1,5 +1,5 @@
 import {createContext, useContext, useEffect, useMemo, useState} from "react";
-import axiosInstance from "./axiosConfig.jsx";
+import axiosInstance, { setAuthInfoUpdater } from "./axiosConfig.jsx";
 
 const AuthContext = createContext();
 
@@ -14,6 +14,10 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         localStorage.setItem('authInfo', JSON.stringify(authInfo));
     }, [authInfo]);
+
+    useEffect(() => {
+        setAuthInfoUpdater(setAuthInfo); // Set the state updater function for the interceptor
+    }, []);
 
     const resetAuthError = () => {
         setAuthError(null);

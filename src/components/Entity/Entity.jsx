@@ -38,7 +38,7 @@ const icons = {
     6: uploadIcon,
 };
 
-function Entity({ entityData, handleDeleteIconClick, handleUpdateIconClick, handleSaveIconClickOnUpdate, handleSaveIconClickOnCreate, handleCancelIconClick, entityState }) {
+function Entity({ entityData = {}, handleDeleteIconClick, handleUpdateIconClick, handleSaveIconClickOnUpdate, handleSaveIconClickOnCreate, handleCancelIconClick, entityState }) {
     const [icon, setIcon] = useState(placeholderIcon);
     const [entity, setEntity] = useState(entityData);
     const [file, setFile] = useState(null);

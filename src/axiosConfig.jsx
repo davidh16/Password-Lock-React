@@ -7,18 +7,30 @@ const axiosInstance = axios.create({
     withCredentials: true, // Include cookies in requests
 });
 
+
+let setAuthInfo;
+
+export const setAuthInfoUpdater = (updater) => {
+    setAuthInfo = updater;
+};
 // Add a response interceptor
 axiosInstance.interceptors.response.use(
+
     (response) => {
-        // If the response is successful, just return the response
         return response;
     },
     (error) => {
-        if (error.response && error.response.status === 401) {
-            // If the response status is 401, redirect to the login page
-            window.location.href = '/';
+
+        if (setAuthInfo) {
+            setAuthInfo(prevState => ({
+                ...prevState,
+                authenticated: false,
+                registrationCompleted: false
+            }));
         }
-        // Return the error to be handled by the requesting code
+
+        window.location.href = '/';
+
         return Promise.reject(error);
     }
 );
