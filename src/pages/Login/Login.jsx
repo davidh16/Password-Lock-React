@@ -53,12 +53,15 @@ function Login(){
                 </div>}
             </div>
             <div className={"login-container"}>
-                <div className={"input"}>
-                    <TextInput inputDisplay={false} type={"text"} placeholder={"email address"} onChange={e => handleInputChange('email_address', e)}/>
-                </div>
 
-                <div className={"input"}>
-                    <TextInput inputDisplay={false} type={"password"} placeholder={"password"} onChange={e => handleInputChange('password', e)}/>
+                <div className={"credentials"}>
+                    <div className={"input"}>
+                        <TextInput inputDisplay={false} type={"text"} placeholder={"email address"} onChange={e => handleInputChange('email_address', e)}/>
+                    </div>
+                    <div className={"input"}>
+                        <TextInput inputDisplay={false} type={"password"} placeholder={"password"} onChange={e => handleInputChange('password', e)}/>
+
+                    </div>
                 </div>
 
                 <div className={"remember-me-forgot-password"}>

@@ -117,9 +117,11 @@ function Register(){
                 </div>}
             </div>
             <div className={"input-container"}>
+
                 <div className="email-address-input">
                     {!submitted && <TextInput inputDisplay={false} type={"text"} placeholder={"email address"} onChange={e => handleEmailAddressInputChange(e)} error={validationError}/>}
                 </div>
+
                 {!submitted && <button onClick={handleOnSubmit}>Register</button>}
                 {!submitted && <label>{"Already have an account ?"} <a href={"/"} >Login</a></label>}
                 {submitted && <div className={"timer"}>

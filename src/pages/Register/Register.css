@@ -13,5 +13,7 @@
 }
 
 .email-address-input{
-    margin-right: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
 }
