@@ -60,7 +60,6 @@ function Login(){
                     </div>
                     <div className={"input"}>
                         <TextInput inputDisplay={false} type={"password"} placeholder={"password"} onChange={e => handleInputChange('password', e)}/>
-
                     </div>
                 </div>
 
