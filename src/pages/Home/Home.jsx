@@ -185,6 +185,7 @@ function Home() {
                             entityData={entity}
                             handleDeleteIconClick={() => handleDeleteIconClick(entity.name, entity.uuid)}
                             handleUpdateIconClick={() => handleUpdateIconClick(entity.uuid)}
+                            handleSaveIconClickOnCreate={(entityData, file) => handleSaveNewEntity(entityData, file)}
                             handleSaveIconClickOnUpdate={(entityData, file, hasChanges) => handleSaveUpdatedEntity(entityData, file, hasChanges)}
                             handleCancelIconClick={() => handleCancelIconClick(entity.uuid)}
                         />

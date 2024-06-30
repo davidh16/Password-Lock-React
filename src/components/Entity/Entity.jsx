@@ -106,24 +106,29 @@ function Entity({ entityData = {}, handleDeleteIconClick, handleUpdateIconClick,
 
     const handleSaveClick = () => {
 
-        console.log(entityData)
-
         const validationErrors = validateCreateRequest(entity)
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
         }else {
-            setErrors(null)
+            setErrors({});
+
             if (entityState === EntityState.EDIT){
                 if (hasChanges()) {
                     handleSaveIconClickOnUpdate(entity, file, true);
+
                     setInitialEntity(entity);
+
                     setFile(null);
                 } else {
                     handleSaveIconClickOnUpdate(entity, file, false);
                 }
             }else if(entityState === EntityState.CREATE){
                 handleSaveIconClickOnCreate(entity, file);
+
                 setInitialEntity(entity);
+
+                setEntity(entity)
+
                 setFile(null);
             }
         }
@@ -139,7 +144,7 @@ function Entity({ entityData = {}, handleDeleteIconClick, handleUpdateIconClick,
                         {entityState === EntityState.VIEW ?
                             <TextInput inputDisplay={true} type="text" value={entity.name} />
                             :
-                            <TextInput inputDisplay={false} type="text" value={entity.name} onChange={(e) => handleInputChange(e, 'name')} error={errors.name}/>
+                            <TextInput inputDisplay={false} type="text" value={entity.name || ''} onChange={(e) => handleInputChange(e, 'name')} error={errors.name}/>
                         }
                     </h3>
                     {entityState !== EntityState.VIEW && <input className="img-input" type="file" onChange={handleFileChange} ref={fileInputRef} />}
@@ -166,42 +171,42 @@ function Entity({ entityData = {}, handleDeleteIconClick, handleUpdateIconClick,
                         {entityState === EntityState.VIEW ?
                             <TextInput inputDisplay={true} type="password" value={entity.password} />
                             :
-                            <TextInput inputDisplay={false} type="password" value={entity.password} onChange={(e) => handleInputChange(e, 'password')} error={errors.password}/>
+                            <TextInput inputDisplay={false} type="password" value={entity.password || ''} onChange={(e) => handleInputChange(e, 'password')} error={errors.password}/>
                         }
                         {entityState === EntityState.VIEW && <img className="copy-icon" src={copyIcon} onClick={copyPassword} alt="Copy" />}
                     </div>
-                    {(entityData.description || entityState !== EntityState.VIEW ) &&
+                    {(entityData.description !== undefined || entityState !== EntityState.VIEW ) &&
                         <>
                             <label>Description:</label>
                             <div className="input-field">
                                 {entityState === EntityState.VIEW ?
                                     <TextInput inputDisplay={true} type="text" value={entity.description} />
                                     :
-                                    <TextInput inputDisplay={false} type="text" value={entity.description} onChange={(e) => handleInputChange(e, 'description')}/>
+                                    <TextInput inputDisplay={false} type="text" value={entity.description || ''} onChange={(e) => handleInputChange(e, 'description')}/>
                                 }
                             </div>
                         </>
                     }
-                    {(entityData.email_address || entityState !== EntityState.VIEW ) &&
+                    {(entityData.email_address !== undefined || entityState !== EntityState.VIEW ) &&
                         <>
                             <label>Email address:</label>
                             <div className="input-field">
                                 {entityState === EntityState.VIEW ?
                                     <TextInput inputDisplay={true} type="text" value={entity.email_address} />
                                     :
-                                    <TextInput inputDisplay={false} type="text" value={entity.email_address} onChange={(e) => handleInputChange(e, 'email_address')} error={errors.email_address}/>
+                                    <TextInput inputDisplay={false} type="text" value={entity.email_address || ''} onChange={(e) => handleInputChange(e, 'email_address')} error={errors.email_address}/>
                                 }
                             </div>
                         </>
                     }
-                    {(entityData.username || entityState !== EntityState.VIEW) &&
+                    {(entityData.username !== undefined || entityState !== EntityState.VIEW) &&
                         <>
                             <label>Username:</label>
                             <div className="input-field">
                                 {entityState === EntityState.VIEW ?
                                     <TextInput inputDisplay={true} type="text" value={entity.username} />
                                     :
-                                    <TextInput inputDisplay={false} type="text" value={entity.username} onChange={(e) => handleInputChange(e, 'username')} />
+                                    <TextInput inputDisplay={false} type="text" value={entity.username || ''} onChange={(e) => handleInputChange(e, 'username')} />
                                 }
                             </div>
                         </>
