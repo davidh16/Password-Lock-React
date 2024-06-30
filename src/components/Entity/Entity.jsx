@@ -139,14 +139,22 @@ function Entity({ entityData = {}, handleDeleteIconClick, handleUpdateIconClick,
             <div className="entity">
 
                 <div className="icon-column">
-                    {entityState === EntityState.CREATE &&  <label>Name:</label>}
-                    <h3>
+                    {entityState !== EntityState.VIEW &&  <label>Name:</label>}
+                    <div className="input-field">
                         {entityState === EntityState.VIEW ?
                             <TextInput inputDisplay={true} type="text" value={entity.name} />
                             :
                             <TextInput inputDisplay={false} type="text" value={entity.name || ''} onChange={(e) => handleInputChange(e, 'name')} error={errors.name}/>
                         }
-                    </h3>
+                    </div>
+                    <label>Type:</label>
+                    <div className="input-field">
+                        {entityState !== EntityState.VIEW ?
+                            <Dropdown onOptionSelect={handleSelectOption} initialOption={entity.type} />
+                            :
+                            <TextInput inputDisplay={true} type="text" value={types[entity.type]} />
+                        }
+                    </div>
                     {entityState !== EntityState.VIEW && <input className="img-input" type="file" onChange={handleFileChange} ref={fileInputRef} />}
                     <img src={icon} className="entity-icon" onClick={handleEntityIconClick} />
                     <div className="entity-hover-icons">
@@ -158,14 +166,6 @@ function Entity({ entityData = {}, handleDeleteIconClick, handleUpdateIconClick,
                 </div>
 
                 <div className="entity-data">
-                    <label>Type:</label>
-                    <div className="input-field">
-                        {entityState !== EntityState.VIEW ?
-                            <Dropdown onOptionSelect={handleSelectOption} initialOption={entity.type} />
-                            :
-                            <TextInput inputDisplay={true} type="text" value={types[entity.type]} />
-                        }
-                    </div>
                     <label>Password:</label>
                     <div className="input-field">
                         {entityState === EntityState.VIEW ?
@@ -175,7 +175,7 @@ function Entity({ entityData = {}, handleDeleteIconClick, handleUpdateIconClick,
                         }
                         {entityState === EntityState.VIEW && <img className="copy-icon" src={copyIcon} onClick={copyPassword} alt="Copy" />}
                     </div>
-                    {(entityData.description !== undefined || entityState !== EntityState.VIEW ) &&
+                    {(entityData.description || entityState !== EntityState.VIEW ) &&
                         <>
                             <label>Description:</label>
                             <div className="input-field">
@@ -187,7 +187,7 @@ function Entity({ entityData = {}, handleDeleteIconClick, handleUpdateIconClick,
                             </div>
                         </>
                     }
-                    {(entityData.email_address !== undefined || entityState !== EntityState.VIEW ) &&
+                    {(entityData.email_address || entityState !== EntityState.VIEW ) &&
                         <>
                             <label>Email address:</label>
                             <div className="input-field">
@@ -199,7 +199,7 @@ function Entity({ entityData = {}, handleDeleteIconClick, handleUpdateIconClick,
                             </div>
                         </>
                     }
-                    {(entityData.username !== undefined || entityState !== EntityState.VIEW) &&
+                    {(entityData.username || entityState !== EntityState.VIEW) &&
                         <>
                             <label>Username:</label>
                             <div className="input-field">
