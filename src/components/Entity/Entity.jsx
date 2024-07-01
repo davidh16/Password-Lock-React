@@ -162,17 +162,24 @@ function Entity({ entityData = {}, handleDeleteIconClick, handleUpdateIconClick,
                 </div>
 
                 <div className="entity-data">
-                    <label>Password:</label>
-                    <div className="input-field">
-                        {entityState === EntityState.VIEW ?
-                            <TextInput inputDisplay={true} type="password" value={entity.password} />
-                            :
-                            <TextInput inputDisplay={false} type="password" value={entity.password || ''} onChange={(e) => handleInputChange(e, 'password')} error={errors.password}/>
-                        }
-                        {entityState === EntityState.VIEW && <img className="copy-icon" src={copyIcon} onClick={copyPassword} alt="Copy" />}
+
+
+                    <div className={"test"}>
+                        <label>Password:</label>
+                        <div className="input-field">
+                            {entityState === EntityState.VIEW ?
+                                <TextInput inputDisplay={true} type="password" value={entity.password} />
+                                :
+                                <TextInput inputDisplay={false} type="password" value={entity.password || ''} onChange={(e) => handleInputChange(e, 'password')} error={errors.password}/>
+                            }
+                            {entityState === EntityState.VIEW && <img className="copy-icon" src={copyIcon} onClick={copyPassword} alt="Copy" />}
+                        </div>
                     </div>
+
+
+
                     {(entityData.description || entityState !== EntityState.VIEW ) &&
-                        <>
+                        <div className={"test"}>
                             <label>Description:</label>
                             <div className="input-field">
                                 {entityState === EntityState.VIEW ?
@@ -181,10 +188,10 @@ function Entity({ entityData = {}, handleDeleteIconClick, handleUpdateIconClick,
                                     <TextInput inputDisplay={false} type="text" value={entity.description || ''} onChange={(e) => handleInputChange(e, 'description')}/>
                                 }
                             </div>
-                        </>
+                        </div>
                     }
                     {(entityData.email_address || entityState !== EntityState.VIEW ) &&
-                        <>
+                        <div className={"test"}>
                             <label>Email address:</label>
                             <div className="input-field">
                                 {entityState === EntityState.VIEW ?
@@ -193,10 +200,10 @@ function Entity({ entityData = {}, handleDeleteIconClick, handleUpdateIconClick,
                                     <TextInput inputDisplay={false} type="text" value={entity.email_address || ''} onChange={(e) => handleInputChange(e, 'email_address')} error={errors.email_address}/>
                                 }
                             </div>
-                        </>
+                        </div>
                     }
                     {(entityData.username || entityState !== EntityState.VIEW) &&
-                        <>
+                        <div className={"test"}>
                             <label>Username:</label>
                             <div className="input-field">
                                 {entityState === EntityState.VIEW ?
@@ -205,7 +212,7 @@ function Entity({ entityData = {}, handleDeleteIconClick, handleUpdateIconClick,
                                     <TextInput inputDisplay={false} type="text" value={entity.username || ''} onChange={(e) => handleInputChange(e, 'username')} />
                                 }
                             </div>
-                        </>
+                        </div>
                     }
                 </div>
             </div>
