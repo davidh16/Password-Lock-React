@@ -166,8 +166,14 @@ function Home() {
     };
 
     return (
-        <>
-            {newEntity && (
+        <div className={"home"}>
+            {(newEntity === null && entities.length ===0) &&
+                <div className={"message"}>
+                    <h3>Looks like you haven't saved any of your passwords yet...</h3>
+                    <h3>Click on ''New'' and change that, we will do the rest.</h3>
+                </div>
+            }
+            {newEntity !== null && (
                 <Entity
                     key="new-entity"
                     entityState={EntityState.CREATE}
@@ -176,7 +182,7 @@ function Home() {
                     handleCancelIconClick={handleCancelNewEntity}
                 />
             )}
-            {entities && (
+            {entities.length > 0 && (
                 <div className={"entity-list"}>
                     {entities.map((entity) => (
                         <Entity
@@ -211,7 +217,7 @@ function Home() {
                     </div>
                 </div>
             )}
-        </>
+        </div>
     );
 }
 
