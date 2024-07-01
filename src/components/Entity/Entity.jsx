@@ -149,11 +149,7 @@ function Entity({ entityData = {}, handleDeleteIconClick, handleUpdateIconClick,
                     </div>
                     {entityState !== EntityState.VIEW && <label>Type:</label>}
                     <div className="input-field">
-                        {entityState !== EntityState.VIEW ?
-                            <Dropdown onOptionSelect={handleSelectOption} initialOption={entity.type} />
-                            :
-                            <TextInput inputDisplay={true} type="text" value={types[entity.type]} />
-                        }
+                        {entityState !== EntityState.VIEW && <Dropdown onOptionSelect={handleSelectOption} initialOption={entity.type} />}
                     </div>
                     {entityState !== EntityState.VIEW && <input className="img-input" type="file" onChange={handleFileChange} ref={fileInputRef} />}
                     <img src={icon} className="entity-icon" onClick={handleEntityIconClick} />
