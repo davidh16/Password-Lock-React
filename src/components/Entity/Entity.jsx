@@ -20,15 +20,6 @@ import uploadIcon from "../../assets/upload-icon.png";
 import { EntityState } from "../../utils/EntityState";
 import {validateCreateRequest} from "../../utils/validations.jsx";
 
-const types = {
-    2: "Facebook",
-    1: "Github",
-    4: "LinkedIn",
-    5: "Instagram",
-    3: "Gmail",
-    6: "Custom",
-}
-
 const icons = {
     2: facebookIcon,
     1: githubIcon,
