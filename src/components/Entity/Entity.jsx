@@ -147,7 +147,7 @@ function Entity({ entityData = {}, handleDeleteIconClick, handleUpdateIconClick,
                             <TextInput inputDisplay={false} type="text" value={entity.name || ''} onChange={(e) => handleInputChange(e, 'name')} error={errors.name}/>
                         }
                     </div>
-                    <label>Type:</label>
+                    {entityState !== EntityState.VIEW && <label>Type:</label>}
                     <div className="input-field">
                         {entityState !== EntityState.VIEW ?
                             <Dropdown onOptionSelect={handleSelectOption} initialOption={entity.type} />

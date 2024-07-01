@@ -29,7 +29,7 @@
     height:70px;
     border: solid;
     border-radius: 35px;
-    margin-top: 20px;
+    margin-top: 10px;
     object-fit: cover;
     cursor: pointer;
 }
@@ -60,7 +60,7 @@
 .input-field{
     display: flex;
     align-items: center;
-    margin: 10px 0;
+    margin: 5px 0;
 }
 
 .copy-icon{
