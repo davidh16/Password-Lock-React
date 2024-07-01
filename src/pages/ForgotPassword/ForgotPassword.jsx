@@ -86,8 +86,8 @@ function ForgotPassword(){
                 </div>}
             </div>
             <div className={"container"}>
-                {!submitted && <TextInput inputDisplay={false} ype={"text"} placeholder={"email address"} id={"email-address"} onChange={e => handleEmailAddressInputChange(e)}/>}
-                {!submitted && <button id={"button"} onClick={handleOnSubmit}>Send reset link</button>}
+                {!submitted && <TextInput inputDisplay={false} type={"text"} placeholder={"email address"} onChange={e => handleEmailAddressInputChange(e)}/>}
+                {!submitted && <button onClick={handleOnSubmit}>Send reset link</button>}
                 {submitted && <div className={"timer"}>
                     <p>Reset link has been sent to your email.</p>
                     <p>To resend a link, please wait {timer} seconds.</p>

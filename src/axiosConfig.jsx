@@ -21,15 +21,22 @@ axiosInstance.interceptors.response.use(
     },
     (error) => {
 
-        if (setAuthInfo) {
-            setAuthInfo(prevState => ({
-                ...prevState,
-                authenticated: false,
-                registrationCompleted: false
-            }));
+        if (error.response) {
+            if (error.response.status === 401) {
+                if (setAuthInfo) {
+                    setAuthInfo(prevState => ({
+                        ...prevState,
+                        authenticated: false,
+                        registrationCompleted: false
+                    }));
+                }
+                return Promise.reject(error);
+            } else {
+                window.location.href = '/error';
+            }
+        } else {
+            window.location.href = '/error';
         }
-
-        window.location.href = '/';
 
         return Promise.reject(error);
     }

@@ -5,11 +5,16 @@ const AuthContext = createContext();
 
 // eslint-disable-next-line react/prop-types
 export const AuthProvider = ({ children }) => {
-    const [authError, setAuthError] = useState(null);
     const [authInfo, setAuthInfo] = useState(() => {
         const savedAuthInfo = localStorage.getItem('authInfo');
         return savedAuthInfo ? JSON.parse(savedAuthInfo) : { authenticated: false, registrationCompleted: false };
     });
+
+    const [authError, setAuthError] = useState("")
+
+    function resetAuthError(){
+        setAuthError("")
+    }
 
     useEffect(() => {
         localStorage.setItem('authInfo', JSON.stringify(authInfo));
@@ -19,16 +24,9 @@ export const AuthProvider = ({ children }) => {
         setAuthInfoUpdater(setAuthInfo); // Set the state updater function for the interceptor
     }, []);
 
-    const resetAuthError = () => {
-        setAuthError(null);
-    };
-
     // call this function when you want to authenticate the user
     const login = async (credentials) => {
-        setAuthError(null)
         await axiosInstance.post("login", JSON.stringify(credentials)).then(() => {
-            setAuthError(null)
-        }).then(() => {
             axiosInstance.post("me", undefined, {withCredentials: true}).then(
                 (response) => {
                     setAuthInfo(prevState => ({
@@ -37,23 +35,16 @@ export const AuthProvider = ({ children }) => {
                         registrationCompleted: response.data["completed"]
                     }))
                 })
-        }).catch((error)=>{
+        }).catch(()=>{
+
             setAuthInfo(prevState => ({
                 ...prevState,
                 authenticated: false,
                 registrationCompleted: false
             }))
 
-            if (error.response) {
-                if (error.response.status === 401) {
-                    setAuthError("Wrong email address or password");
-                } else {
-                    throw authError
-                }
-            } else {
-                throw authError
-            }
-            throw authError;
+            setAuthError("Wrong email address or password")
+
         })
     }
 
@@ -61,7 +52,6 @@ export const AuthProvider = ({ children }) => {
     const logout = () => {
         axiosInstance.post("logout", undefined,{withCredentials: true})
             .then(() => {
-
                 setAuthInfo(prevState => ({
                     ...prevState,
                     authenticated: false,
@@ -69,19 +59,16 @@ export const AuthProvider = ({ children }) => {
                 }))
 
             })
-            .catch((error) => {
-                console.log(error);
-            });
     };
 
     const value = useMemo(() => ({
         login,
         logout,
-        authError,
-        resetAuthError,
         setAuthInfo,
-        authInfo
-    }), [authError, authInfo]);
+        authInfo,
+        authError,
+        resetAuthError
+    }), [authInfo, authError]);
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

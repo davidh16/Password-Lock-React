@@ -37,18 +37,14 @@ function Login(){
     }, [authInfo, navigate]);
 
     async function handleOnSubmit() {
-        try {
-            await login(credentials);
-        } catch (error) {
-            navigate("/error")
-        }
+        login(credentials);
     }
 
     return(
         <>
-            <a href="/"><img src={logo} alt={"logo"}/></a>
+            <img src={logo} alt={"logo"} className={"logo"}/>
             <div className={"error-message-box"}>
-                {authError && <div className={"error-message"} id={"error-message"}>
+                {authError && <div className={"error-message"}>
                     <label>{authError}</label>
                 </div>}
             </div>
@@ -64,7 +60,7 @@ function Login(){
                 </div>
 
                 <div className={"remember-me-forgot-password"}>
-                    <div className={"nesto"}>
+                    <div className={"remember-me"}>
                         <label>
                             Remember me
                         </label>

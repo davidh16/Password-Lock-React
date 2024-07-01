@@ -49,9 +49,6 @@ function Entity({ entityData = {}, handleDeleteIconClick, handleUpdateIconClick,
                     const decryptedResponse = JSON.parse(decryptResponse(response));
                     setIcon(decryptedResponse.signed_url);
                 })
-                .catch((error) => {
-                    console.log(error);
-                });
         }
     }, []);
 

@@ -65,22 +65,10 @@ function Register(){
             }
 
             axiosInstance.post("register", JSON.stringify(request))
-                .then((response)=>{
-                    console.log(response);
+                .then(()=>{
                     setSubmitted(true);
                     setTimer(20);
                 })
-                .catch((error) => {
-                    if (error.response){
-                        if (error.response.status === 401 || error.response.status === 400){
-                            setErrorMessage(capitalizeFirstLetter(error.response.data["error"]))
-                        }else {
-                            setErrorMessage("Something went wrong, please try again")
-                        }
-                    }else {
-                        navigate("/error")
-                    }
-                });
         }
     }
     function handleOnResendVerificationLink(){
