@@ -32,9 +32,19 @@ axiosInstance.interceptors.response.use(
                 }
                 return Promise.reject(error);
             } else {
+                setAuthInfo(prevState => ({
+                    ...prevState,
+                    authenticated: false,
+                    registrationCompleted: false
+                }));
                 window.location.href = '/error';
             }
         } else {
+            setAuthInfo(prevState => ({
+                ...prevState,
+                authenticated: false,
+                registrationCompleted: false
+            }));
             window.location.href = '/error';
         }
 

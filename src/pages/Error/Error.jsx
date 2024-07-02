@@ -1,40 +1,55 @@
 import logo from "../../assets/logo.png";
-import {useNavigate} from "react-router-dom";
-import {useAuth} from "../../AuthContext.jsx";
+import {useLocation, useNavigate} from "react-router-dom";
 import "./Error.css"
 
 function Error(){
 
     const navigate = useNavigate()
 
+    const location = useLocation();
+
+    // Function to get query parameters
+    const getQueryParams = (search) => {
+        return new URLSearchParams(search);
+    };
+
+    const queryParams = getQueryParams(location.search);
+    const errorType = queryParams.get('type');
     function handleOnButtonClick(){
         navigate("/home")
     }
 
-    const { authInfo } = useAuth();
-
     function handleOnLogoClick(){
-        if (authInfo.authenticated && authInfo.registrationCompleted){
-            navigate("/home")
-        }else {
-            navigate("/")
-        }
+        navigate("/")
     }
 
     return(
         <>
             <img src={logo} alt={"logo"} onClick={handleOnLogoClick}/>
-            <div className={"message"}>
-                <h3>
-                    Oops something went wrong...
-                </h3>
-                <h3>
-                    Head over to the {(authInfo.authenticated && authInfo.registrationCompleted) ? "home" : "login"} page and please try again.
-                </h3>
-            </div>
+            {errorType === 'session' ?
+                <div className={"message"}>
+                    <h3>
+                        Looks like your session has expired...
+                    </h3>
+                    <h3>
+                        Safety first right ?
+                    </h3>
+                    <h3>
+                        Head over to the login page and log back in.
+                    </h3>
+                </div>
+                :
+                <div className={"message"}>
+                    <h3>
+                        Oops something went wrong...
+                    </h3>
+                    <h3>
+                        Head over to the login page and please try again.
+                    </h3>
+                </div>
+            }
             <div className={"button"}>
-                {(authInfo.authenticated && authInfo.registrationCompleted) && <button onClick={handleOnButtonClick}>Home</button>}
-                {!(authInfo.authenticated && authInfo.registrationCompleted) && <button onClick={handleOnButtonClick}>Login</button>}
+                <button onClick={handleOnButtonClick}>Login</button>
             </div>
         </>
     )

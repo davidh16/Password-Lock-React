@@ -1,5 +1,6 @@
 import {createContext, useContext, useEffect, useMemo, useState} from "react";
-import axiosInstance, { setAuthInfoUpdater } from "./axiosConfig.jsx";
+import axiosInstance, {setAuthInfoUpdater} from "./axiosConfig.jsx";
+import error from "./pages/Error/Error.jsx";
 
 const AuthContext = createContext();
 
@@ -21,7 +22,7 @@ export const AuthProvider = ({ children }) => {
     }, [authInfo]);
 
     useEffect(() => {
-        setAuthInfoUpdater(setAuthInfo); // Set the state updater function for the interceptor
+        setAuthInfoUpdater(setAuthInfo);
     }, []);
 
     // call this function when you want to authenticate the user
