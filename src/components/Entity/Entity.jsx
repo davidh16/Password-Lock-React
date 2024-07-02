@@ -127,7 +127,7 @@ function Entity({ entityData = {}, handleDeleteIconClick, handleUpdateIconClick,
             <div className="entity">
 
                 <div className="icon-column">
-                    {entityState !== EntityState.VIEW &&  <label>Name:</label>}
+                    {entityState !== EntityState.VIEW &&  <label>* Name:</label>}
                     <div className="input-field">
                         {entityState === EntityState.VIEW ?
                             <TextInput inputDisplay={true} type="text" value={entity.name} />
@@ -153,7 +153,7 @@ function Entity({ entityData = {}, handleDeleteIconClick, handleUpdateIconClick,
 
 
                     <div className={"test"}>
-                        <label>Password:</label>
+                        <label>{entityState === EntityState.VIEW ? 'Password:' : '* Password:'}</label>
                         <div className="input-field">
                             {entityState === EntityState.VIEW ?
                                 <TextInput inputDisplay={true} type="password" value={entity.password} />
