@@ -1,0 +1,20 @@
+
+services:
+  password-lock:
+    container_name: password-lock-frontend
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: debug
+    volumes:
+      - /Users/davidhorvat/React projects/Password-Locker-React:/app
+      - /app/node_modules
+    ports:
+      - "5713:5713"
+    networks:
+      - password-lock-frontend-network
+
+networks:
+  password-lock-frontend-network:
+    external:
+      name: my-network
