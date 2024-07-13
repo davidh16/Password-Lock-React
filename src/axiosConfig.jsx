@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Create an Axios instance
 const axiosInstance = axios.create({
-    baseURL: 'http://password-lock-backend:8080/', // Replace with your API base URL
+    baseURL: '/api',
     withCredentials: true, // Include cookies in requests
 });
 
@@ -20,6 +20,8 @@ axiosInstance.interceptors.response.use(
         return response;
     },
     (error) => {
+
+        console.log(error)
 
         if (error.response) {
             if (error.response.status === 401) {

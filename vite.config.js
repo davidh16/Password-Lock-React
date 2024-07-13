@@ -7,6 +7,13 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 5713,
+    proxy: {
+      '/api': {
+        target: 'http://password-lock-backend:8080',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/api/, ''),
+      },
+    },
   },
   preview: {
     host: '0.0.0.0',
