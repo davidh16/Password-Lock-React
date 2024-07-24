@@ -10,13 +10,16 @@ COPY . .
 
 EXPOSE 5713
 
-FROM base as debug
+FROM base as local
 
 CMD ["npm", "run", "dev"]
 
-FROM base as production
+FROM base as build
 
-RUN npm i -g serve
+RUN npm install -g serve
+
 RUN npm run build
 
-CMD [ "serve", "-s", "dist" ]
+FROM build as deploy
+
+CMD ["serve", "-s", "-l", "5713", "./build"]
