@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
-      target: debug
+      target: local
     volumes:
       - /Users/davidhorvat/React projects/Password-Locker-React:/app
       - /app/node_modules

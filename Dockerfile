@@ -22,4 +22,4 @@ RUN npm run build
 
 FROM build as deploy
 
-CMD ["serve", "-s", "-l", "5713", "./build"]
+CMD ["serve", "-s", "-l", "5713", "./dist"]

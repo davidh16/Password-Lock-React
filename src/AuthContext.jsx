@@ -1,6 +1,5 @@
 import {createContext, useContext, useEffect, useMemo, useState} from "react";
 import axiosInstance, {setAuthInfoUpdater} from "./axiosConfig.jsx";
-import error from "./pages/Error/Error.jsx";
 
 const AuthContext = createContext();
 
