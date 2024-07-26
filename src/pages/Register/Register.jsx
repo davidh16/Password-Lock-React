@@ -43,10 +43,6 @@ function Register(){
         setErrorMessage(null)
     }
 
-    function capitalizeFirstLetter(str) {
-        return str[0].toUpperCase() + str.slice(1);
-    }
-
     function handleOnSubmit(){
 
         if(emailAddress === ""){
