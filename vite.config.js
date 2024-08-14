@@ -4,7 +4,18 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-const baseUrl = process.env.BASE_URL
+let baseUrl
+switch (process.env.ENVIRONMENT){
+  case "local":
+    baseUrl = process.env.LOCAL_BASE_URL
+    break;
+  case "debug":
+    baseUrl = process.env.DEBUG_BASE_URL
+    break;
+  case "production":
+    baseUrl = process.env.PRODUCTION_BASE_URL
+    break;
+}
 export default defineConfig({
 
   plugins: [react()],

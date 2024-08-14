@@ -20,12 +20,10 @@ axiosInstance.interceptors.response.use(
         return response;
     },
     (error) => {
-
-        console.log(error)
-
         if (error.response) {
             if (error.response.status === 401) {
                 if (setAuthInfo) {
+                    localStorage.removeItem('authInfo');
                     setAuthInfo(prevState => ({
                         ...prevState,
                         authenticated: false,
@@ -34,14 +32,16 @@ axiosInstance.interceptors.response.use(
                 }
                 return Promise.reject(error);
             } else {
+                localStorage.removeItem('authInfo');
                 setAuthInfo(prevState => ({
                     ...prevState,
                     authenticated: false,
                     registrationCompleted: false
                 }));
-                window.location.href = '/error';
+                 window.location.href = '/error';
             }
         } else {
+            localStorage.removeItem('authInfo');
             setAuthInfo(prevState => ({
                 ...prevState,
                 authenticated: false,

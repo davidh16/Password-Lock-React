@@ -16,7 +16,7 @@ function Error(){
     const queryParams = getQueryParams(location.search);
     const errorType = queryParams.get('type');
     function handleOnButtonClick(){
-        navigate("/home")
+        navigate("/")
     }
 
     function handleOnLogoClick(){

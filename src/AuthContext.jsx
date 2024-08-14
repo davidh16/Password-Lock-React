@@ -29,21 +29,23 @@ export const AuthProvider = ({ children }) => {
         await axiosInstance.post("login", JSON.stringify(credentials)).then(() => {
             axiosInstance.post("me", undefined, {withCredentials: true}).then(
                 (response) => {
-                    setAuthInfo(prevState => ({
-                        ...prevState,
-                        authenticated: true,
-                        registrationCompleted: response.data["completed"]
-                    }))
+
+                    if (response !== undefined){
+                        setAuthInfo(prevState => ({
+                            ...prevState,
+                            authenticated: true,
+                            registrationCompleted: response.data["completed"]
+                        }))
+                    }else {
+                        setAuthError("Wrong email address or password")
+                    }
                 })
         }).catch(()=>{
-
             setAuthInfo(prevState => ({
                 ...prevState,
                 authenticated: false,
                 registrationCompleted: false
             }))
-
-            setAuthError("Wrong email address or password")
 
         })
     }
@@ -52,6 +54,7 @@ export const AuthProvider = ({ children }) => {
     const logout = () => {
         axiosInstance.post("logout", undefined,{withCredentials: true})
             .then(() => {
+                localStorage.removeItem('authInfo');
                 setAuthInfo(prevState => ({
                     ...prevState,
                     authenticated: false,
