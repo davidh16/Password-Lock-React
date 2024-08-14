@@ -20,33 +20,20 @@ axiosInstance.interceptors.response.use(
         return response;
     },
     (error) => {
+        localStorage.removeItem('authInfo');
+        setAuthInfo(prevState => ({
+            ...prevState,
+            authenticated: false,
+            registrationCompleted: false
+        }));
+
         if (error.response) {
             if (error.response.status === 401) {
-                if (setAuthInfo) {
-                    localStorage.removeItem('authInfo');
-                    setAuthInfo(prevState => ({
-                        ...prevState,
-                        authenticated: false,
-                        registrationCompleted: false
-                    }));
-                }
                 return Promise.reject(error);
             } else {
-                localStorage.removeItem('authInfo');
-                setAuthInfo(prevState => ({
-                    ...prevState,
-                    authenticated: false,
-                    registrationCompleted: false
-                }));
                  window.location.href = '/error';
             }
         } else {
-            localStorage.removeItem('authInfo');
-            setAuthInfo(prevState => ({
-                ...prevState,
-                authenticated: false,
-                registrationCompleted: false
-            }));
             window.location.href = '/error';
         }
 
