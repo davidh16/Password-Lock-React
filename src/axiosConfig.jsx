@@ -8,7 +8,7 @@ let baseUrl
 
 console.log("Environment:", process.env.VITE_ENVIRONMENT);
 
-switch (process.VITE_ENVIRONMENT){
+switch (process.env.VITE_ENVIRONMENT){
     case "local":
         baseUrl = '/api'
         break;
