@@ -31,7 +31,14 @@ export const AuthProvider = ({ children }) => {
 
             try {
                 const loginRes = await axiosInstance.post("login", JSON.stringify(credentials))
-                console.log("loginRes", loginRes.data);
+                console.log("loginRes", loginRes.status);
+
+                if (loginRes.status !== 200){
+                    setAuthError("Wrong email address or password")
+                    return
+                }
+
+
             }catch (error){
                 console.log(error)
                 setAuthInfo(prevState => ({
