@@ -3,9 +3,9 @@ import axios from 'axios';
 
 let baseUrl
 
-console.log("Environment:", import.meta.env.VITE_ENVIRONMENT);
+console.log("Environment:", import.meta.env._VITE_ENVIRONMENT);
 
-switch (import.meta.env.VITE_ENVIRONMENT){
+switch (import.meta.env._VITE_ENVIRONMENT){
     case "local":
         baseUrl = '/api'
         break;
