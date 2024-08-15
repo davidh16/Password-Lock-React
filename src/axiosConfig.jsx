@@ -1,22 +1,19 @@
 // axiosConfig.js
 import axios from 'axios';
-import dotenv from 'dotenv'
-
-dotenv.config()
 
 let baseUrl
 
-console.log("Environment:", process.env.VITE_ENVIRONMENT);
+console.log("Environment:", import.meta.env.VITE_ENVIRONMENT);
 
-switch (process.env.VITE_ENVIRONMENT){
+switch (import.meta.env.VITE_ENVIRONMENT){
     case "local":
         baseUrl = '/api'
         break;
     case "debug":
-        baseUrl = process.env.VITE_DEBUG_BASE_URL
+        baseUrl = import.meta.env.VITE_DEBUG_BASE_URL
         break;
     case "production":
-        baseUrl = process.env.VITE_PRODUCTION_BASE_URL
+        baseUrl = import.meta.env.VITE_PRODUCTION_BASE_URL
         break;
 }
 
