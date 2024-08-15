@@ -19,8 +19,6 @@ switch (import.meta.env.ENVIRONMENT){
 
 console.log("Base URL after switch:", baseUrl);
 
-
-
 // Create an Axios instance
 const axiosInstance = axios.create({
     baseURL: baseUrl,
