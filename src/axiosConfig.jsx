@@ -2,6 +2,9 @@
 import axios from 'axios';
 
 let baseUrl
+
+console.log("Environment:", process.env.ENVIRONMENT);
+
 switch (process.env.ENVIRONMENT){
     case "local":
         baseUrl = '/api'
@@ -14,11 +17,16 @@ switch (process.env.ENVIRONMENT){
         break;
 }
 
+console.log("Base URL after switch:", baseUrl);
+
+
 // Create an Axios instance
 const axiosInstance = axios.create({
     baseURL: baseUrl,
     withCredentials: true, // If you need to send cookies
 });
+
+console.log("Axios Base URL:", axiosInstance.defaults.baseURL);
 
 
 let setAuthInfo;
