@@ -3,17 +3,17 @@ import axios from 'axios';
 
 let baseUrl
 
-console.log("Environment:", process.env.ENVIRONMENT);
+console.log("Environment:", import.meta.env.ENVIRONMENT);
 
-switch (process.env.ENVIRONMENT){
+switch (import.meta.env.ENVIRONMENT){
     case "local":
         baseUrl = '/api'
         break;
     case "debug":
-        baseUrl = process.env.DEBUG_BASE_URL
+        baseUrl = import.meta.env.DEBUG_BASE_URL
         break;
     case "production":
-        baseUrl = process.env.PRODUCTION_BASE_URL
+        baseUrl = import.meta.env.PRODUCTION_BASE_URL
         break;
 }
 
