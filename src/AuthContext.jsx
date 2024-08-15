@@ -26,30 +26,38 @@ export const AuthProvider = ({ children }) => {
 
     // call this function when you want to authenticate the user
     const login = async (credentials) => {
-        await axiosInstance.post("login", JSON.stringify(credentials)).then(() => {
-            axiosInstance.post("me", undefined, {withCredentials: true}).then(
-                (response) => {
 
-                    if (response !== undefined){
-                        setAuthInfo(prevState => ({
-                            ...prevState,
-                            authenticated: true,
-                            registrationCompleted: response.data["completed"]
-                        }))
-                    }else {
-                        setAuthError("Wrong email address or password")
-                    }
-                })
-        }).catch(()=>{
+        try {
+            const loginRes = await axiosInstance.post("login", JSON.stringify(credentials))
+            console.log("loginRes", loginRes);
+        }catch (error){
+            console.log(error)
             setAuthInfo(prevState => ({
                 ...prevState,
                 authenticated: false,
                 registrationCompleted: false
             }))
-
             setAuthError("Wrong email address or password")
+        }
 
-        })
+
+        try{
+            const userData = axiosInstance.post("me", undefined, {withCredentials: true})
+            console.log("userData", userData);
+            setAuthInfo(prevState => ({
+                ...prevState,
+                authenticated: true,
+                registrationCompleted: userData.data["completed"]
+            }))
+        }catch (error){
+            console.log(error)
+            setAuthInfo(prevState => ({
+                ...prevState,
+                authenticated: false,
+                registrationCompleted: false
+            }))
+        }
+
     }
 
     // call this function to sign out logged in user
