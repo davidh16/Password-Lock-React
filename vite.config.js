@@ -4,7 +4,6 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-
 export default defineConfig({
 
   plugins: [react()],
@@ -13,7 +12,7 @@ export default defineConfig({
     port: 5713,
     proxy: {
       '/api': {
-        target: import.meta.env.LOCAL_BASE_URL,
+        target: process.env.LOCAL_BASE_URL,
         changeOrigin: true,
         rewrite: path => path.replace(/^\/api/, ''),
       },
