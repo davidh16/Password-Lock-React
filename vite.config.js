@@ -16,6 +16,8 @@ switch (process.env.ENVIRONMENT){
     baseUrl = process.env.PRODUCTION_BASE_URL
     break;
 }
+
+console.log(baseUrl)
 export default defineConfig({
 
   plugins: [react()],
