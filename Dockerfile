@@ -18,7 +18,7 @@ FROM base as build
 
 RUN npm install -g serve
 
-RUN npm run build
+RUN vite build
 
 FROM build as deploy
 
