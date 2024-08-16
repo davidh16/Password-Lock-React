@@ -5,7 +5,7 @@ let baseUrl
 
 console.log(process.env)
 
-console.log(import.meta.env)
+console.log(import.meta.env.VITE_ENVIRNONMENT)
 
 switch (process.env.ENVIRONMENT){
     case "local":
