@@ -5,6 +5,8 @@ let baseUrl
 
 console.log("Environment:", process.env.VITE_ENVIRONMENT);
 
+console.log(process.env)
+
 switch (process.env.VITE_ENVIRONMENT){
     case "local":
         baseUrl = '/api'
