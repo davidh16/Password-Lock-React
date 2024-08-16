@@ -3,32 +3,23 @@ import axios from 'axios';
 
 let baseUrl
 
-console.log("Environment:", process.env.VITE_ENVIRONMENT);
-
-console.log(process.env)
-
-switch (process.env.VITE_ENVIRONMENT){
+switch (process.env.ENVIRONMENT){
     case "local":
         baseUrl = '/api'
         break;
     case "debug":
-        baseUrl = process.env.VITE_DEBUG_BASE_URL
+        baseUrl = process.env.DEBUG_BASE_URL
         break;
     case "production":
-        baseUrl = process.env.VITE_PRODUCTION_BASE_URL
+        baseUrl = process.env.PRODUCTION_BASE_URL
         break;
 }
-
-console.log("Base URL after switch:", baseUrl);
 
 // Create an Axios instance
 const axiosInstance = axios.create({
     baseURL: baseUrl,
     withCredentials: true, // If you need to send cookies
 });
-
-console.log("Axios Base URL:", axiosInstance.defaults.baseURL);
-
 
 let setAuthInfo;
 
