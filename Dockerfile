@@ -20,12 +20,6 @@ RUN npm install -g serve
 
 RUN npm run build
 
-FROM gcr.io/distroless/nodejs18 as deploy
-
-WORKDIR /app
-
-COPY --from=build /app/dist /app/dist
-
-EXPOSE 5713
+FROM build as deploy
 
 CMD ["serve", "-s", "-l", "5713", "./dist"]
