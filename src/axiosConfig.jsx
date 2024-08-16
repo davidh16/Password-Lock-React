@@ -5,6 +5,8 @@ let baseUrl
 
 console.log(process.env)
 
+console.log(import.meta.env)
+
 switch (process.env.ENVIRONMENT){
     case "local":
         baseUrl = '/api'
