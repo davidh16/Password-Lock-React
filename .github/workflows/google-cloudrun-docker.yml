@@ -62,7 +62,6 @@ jobs:
       id-token: 'write'
 
     runs-on: ubuntu-latest
-    environment: ENV_DEBUG
     steps:
       - name: Checkout
         uses: actions/checkout@v2
