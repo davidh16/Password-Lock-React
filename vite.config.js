@@ -24,6 +24,6 @@ export default defineConfig(({ command, mode })=>{
     port: 5713,
   },
   define: {
-    __APP_ENV__: JSON.stringify(env.APP_ENV),
+    'process.env': env,
   }
 }})

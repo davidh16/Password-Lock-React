@@ -3,7 +3,7 @@ import axios from 'axios';
 
 let baseUrl
 
-console.log(import.meta.env)
+console.log(process.env)
 
 switch (import.meta.env.ENVIRONMENT){
     case "local":
