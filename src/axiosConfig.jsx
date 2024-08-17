@@ -5,15 +5,15 @@ let baseUrl
 
 console.log(process.env)
 
-switch (import.meta.env.ENVIRONMENT){
+switch (process.env.ENVIRONMENT){
     case "local":
         baseUrl = '/api'
         break;
     case "debug":
-        baseUrl = import.meta.env.DEBUG_BASE_URL
+        baseUrl = process.env.DEBUG_BASE_URL
         break;
     case "production":
-        baseUrl = import.meta.env.PRODUCTION_BASE_URL
+        baseUrl = process.env.PRODUCTION_BASE_URL
         break;
 }
 
