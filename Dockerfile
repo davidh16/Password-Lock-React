@@ -5,7 +5,7 @@ ARG ENV_VARS
 
 # Split the ENV_VARS string and set each variable as an environment variable
 RUN set -eux; \
-  for var in $(echo "$ENV_VARS" | tr " " "\n"); do \
+  for var in $(echo $ENV_VARS | tr " " "\n"); do \
     key=$(echo $var | cut -d= -f1); \
     value=$(echo $var | cut -d= -f2-); \
     echo "Setting ENV $key=$value"; \
