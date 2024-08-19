@@ -95,7 +95,7 @@ jobs:
       # Build and push the Docker image, passing the .env_file
       - name: Build and Push Container
         run: |-
-          ENV_VARS=$(printenv | grep ^VITE_ | sed 's/^VITE_//; s/$/"/; s/=/="/g' | tr '\n' ' ')
+          ENV_VARS=$(printenv | grep ^VITE_ | sed 's/^VITE_//; s/="\|"$//g' | tr '\n' ' ')
 
           echo "ENV_VARS: $ENV_VARS"
           
