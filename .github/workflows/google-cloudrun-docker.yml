@@ -57,6 +57,7 @@ on:
 
 jobs:
   deploy:
+    environment: debug
 
     permissions:
       contents: 'read'
