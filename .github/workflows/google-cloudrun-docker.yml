@@ -56,12 +56,11 @@ env:
 
 jobs:
   deploy:
+    environment: ENV_DEBUG
     # Add 'id-token' with the intended permissions for workload identity federation
     permissions:
       contents: 'read'
       id-token: 'write'
-
-    environment: ENV_DEBUG
 
     runs-on: ubuntu-latest
     steps:
