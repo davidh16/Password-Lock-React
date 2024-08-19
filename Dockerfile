@@ -10,6 +10,10 @@ COPY . .
 
 EXPOSE 5713
 
+ARG VITE_ENVIRONMENT
+
+ENV VITE_ENVIRONMENT=$VITE_ENVIRONMENT
+
 FROM base as local
 
 CMD ["npm", "run", "dev"]
