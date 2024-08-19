@@ -10,11 +10,7 @@ RUN set -eux; \
     value=$(echo $var | cut -d= -f2-); \
     echo "Setting ENV $key=$value"; \
     export $key="$value"; \
-    echo "ENV $key=$value" >> /tmp/Dockerfile.envs; \
   done
-
-# Source the generated environment variables
-RUN . /tmp/Dockerfile.envs
 
 WORKDIR /app
 
