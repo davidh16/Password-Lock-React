@@ -47,13 +47,6 @@ name: Build and Deploy to Cloud Run
 on:
   push:
     branches: [ "debug" ]
-  workflow_call:
-    inputs:
-      environment:
-        required: true
-        type: string
-        description: 'The environment to deploy to'
-  
 
 env:
   PROJECT_ID: password-lock-486ee # TODO: update Google Cloud project id
@@ -63,7 +56,7 @@ env:
 
 jobs:
   deploy:
-    environment: ${{ inputs.environment }}
+    environment: debug
     # Add 'id-token' with the intended permissions for workload identity federation
     permissions:
       contents: 'read'
