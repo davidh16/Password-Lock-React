@@ -49,6 +49,7 @@ env:
   GAR_LOCATION: europe-west1 # TODO: update Artifact Registry location
   SERVICE: password-lock-frontend # TODO: update Cloud Run service name
   REGION: europe-west1 # TODO: update Cloud Run service region
+  VITE_ENVIRONMENT: ${{ vars.VITE_ENVIRONMENT }}   # If it's a variable set in the environment
 
 on:
   push:
