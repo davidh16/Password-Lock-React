@@ -10,9 +10,13 @@ COPY . .
 
 EXPOSE 5713
 
-ARG ENVIRONMENT
-
-ENV VITE_ENVIRONMENT=$ENVIRONMENT
+RUN for var in $(env | grep "^${VITE}_" | awk -F= '{print $1}'); do \
+      echo "Processing variable $var"; \
+      value=$(eval echo \$$var); \
+      echo "$var=$value"; \
+      # Example: Set environment variables based on build args
+      export $var=$value; \
+    done
 
 FROM base as local
 
