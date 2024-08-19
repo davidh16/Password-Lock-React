@@ -61,6 +61,8 @@ jobs:
       contents: 'read'
       id-token: 'write'
 
+    environment: ENV_DEBUG
+
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
