@@ -48,17 +48,10 @@ on:
   push:
     branches: [ "debug" ]
 
-env:
-  PROJECT_ID: password-lock-486ee # TODO: update Google Cloud project id
-  GAR_LOCATION: europe-west1 # TODO: update Artifact Registry location
-  SERVICE: password-lock-frontend # TODO: update Cloud Run service name
-  REGION: europe-west1 # TODO: update Cloud Run service region
-
 jobs:
   deploy:
-    environment:
-      name: debug
-    # Add 'id-token' with the intended permissions for workload identity federation
+    environment: debug
+
     permissions:
       contents: 'read'
       id-token: 'write'
