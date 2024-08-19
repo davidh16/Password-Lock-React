@@ -1,5 +1,21 @@
 FROM node:18-alpine as base
 
+# Define ARG to accept the concatenated ENV_VARS string
+ARG ENV_VARS
+
+# Split the ENV_VARS string and set each variable as an environment variable
+RUN set -eux; \
+  for var in $(echo "$ENV_VARS" | tr " " "\n"); do \
+    key=$(echo $var | cut -d= -f1); \
+    value=$(echo $var | cut -d= -f2-); \
+    echo "Setting ENV $key=$value"; \
+    export $key="$value"; \
+    echo "ENV $key=$value" >> /tmp/Dockerfile.envs; \
+  done
+
+# Source the generated environment variables
+RUN . /tmp/Dockerfile.envs
+
 WORKDIR /app
 
 COPY package.json .
@@ -9,10 +25,6 @@ RUN npm install
 COPY . .
 
 EXPOSE 5713
-
-ARG ENVIRONMENT
-
-ENV VITE_ENVIRONMENT=$ENVIRONMENT
 
 FROM base as local
 
