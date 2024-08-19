@@ -103,7 +103,8 @@ jobs:
         id: deploy
         uses: google-github-actions/deploy-cloudrun@v0
         with:
-          environment: debug
+          env_vars: 
+            VITE_ENVIRONMENT=${{ vars.VITE_ENVIRONMENT }}
           service: ${{ env.SERVICE }}
           region: ${{ env.REGION }}
           # NOTE: If using a pre-built image, update the image name here
