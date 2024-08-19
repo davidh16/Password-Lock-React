@@ -68,7 +68,7 @@ jobs:
       - name: Parse vars
         uses: infovista-opensource/vars-to-env-action@2.0.0
         with:
-          vars: ${{ toJSON(vars) }}
+          secrets: ${{ toJSON(vars) }}
     
       - name: Checkout
         uses: actions/checkout@v2
