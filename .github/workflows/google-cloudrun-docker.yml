@@ -99,7 +99,7 @@ jobs:
 
           echo "ENV_VARS: $ENV_VARS"
           
-          docker build $ENV_VARS \
+          docker build --build-arg $ENV_VARS \
             -t "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}/${{ env.SERVICE }}:${{ github.sha }}" ./
           docker push "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}/${{ env.SERVICE }}:${{ github.sha }}"
 
