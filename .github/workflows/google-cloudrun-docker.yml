@@ -87,6 +87,9 @@ jobs:
          username: _json_key
          password: ${{ secrets.GCR_SERVICE_ACCOUNT_JSON }}
 
+      - name: Export environment variables to .env_file
+        run: printenv | grep -E '^VITE_' > .env_file
+
       # Build and push the Docker image, passing the .env_file
       - name: Build and Push Container
         run: |-
