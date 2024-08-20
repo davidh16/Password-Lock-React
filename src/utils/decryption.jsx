@@ -1,7 +1,7 @@
 import CryptoJS from "crypto-js";
 
-const secret = import.meta.env.VITE_RESPONSE_SECRET_KEY;
-const iv = import.meta.env.VITE_RESPONSE_SECRET_VECTOR;
+const secret = process.env.RESPONSE_SECRET_KEY;
+const iv = process.env.RESPONSE_SECRET_VECTOR;
 
 function decodeBase64(input) {
     return CryptoJS.enc.Base64.parse(input);

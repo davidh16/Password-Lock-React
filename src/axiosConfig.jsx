@@ -3,10 +3,6 @@ import axios from 'axios';
 
 let baseUrl
 
-console.log(process.env)
-
-console.log(import.meta.env.VITE_ENVIRONMENT)
-
 switch (process.env.ENVIRONMENT){
     case "local":
         baseUrl = '/api'
