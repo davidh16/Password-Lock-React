@@ -54,21 +54,23 @@ function Register(){
         if(emailAddress !== undefined && emailAddress !== ""){
             if (!validator.isEmail(emailAddress)) {
                 setValidationError("Invalid email address")
+            }else {
+                setValidationError(null)
+
+                const request = {
+                    email_address: emailAddress
+                }
+
+                console.log(request)
+
+                axiosInstance.post("register", JSON.stringify(request))
+                    .then(()=>{
+                        setSubmitted(true);
+                        setTimer(20);
+                    })
             }
         }else {
-            setValidationError(null)
-
-            const request = {
-                email_address: emailAddress
-            }
-
-            console.log(request)
-
-            axiosInstance.post("register", JSON.stringify(request))
-                .then(()=>{
-                    setSubmitted(true);
-                    setTimer(20);
-                })
+            setValidationError("Invalid email address")
         }
     }
     function handleOnResendVerificationLink(){
