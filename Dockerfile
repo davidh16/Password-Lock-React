@@ -8,9 +8,10 @@ RUN set -eux; \
   for var in $(echo "$ENV_VARS" | tr " " "\n"); do \
     key=$(echo $var | cut -d= -f1); \
     value=$(echo $var | cut -d= -f2-); \
-    echo "Setting ENV $key=$value"; \
-    export $key="$value"; \
+    echo "ENV $key=\"$value\"" >> /tmp/envfile; \
   done
+
+RUN cat /tmp/envfile >> Dockerfile
 
 WORKDIR /app
 
