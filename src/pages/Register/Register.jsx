@@ -60,6 +60,8 @@ function Register(){
                 email_address: emailAddress
             }
 
+            console.log(request)
+
             axiosInstance.post("register", JSON.stringify(request))
                 .then(()=>{
                     setSubmitted(true);
