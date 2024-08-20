@@ -1,18 +1,5 @@
 FROM node:18-alpine as base
 
-# Define ARG to accept the concatenated ENV_VARS string
-ARG ENV_VARS
-
-# Split the ENV_VARS string and set each variable as an environment variable
-RUN set -eux; \
-  for var in $(echo "$ENV_VARS" | tr " " "\n"); do \
-    key=$(echo $var | cut -d= -f1); \
-    value=$(echo $var | cut -d= -f2-); \
-    echo "ENV $key=\"$value\"" >> Dockerfile; \
-  done
-
-RUN cat /tmp/envfile >> Dockerfile
-
 WORKDIR /app
 
 COPY package.json .
