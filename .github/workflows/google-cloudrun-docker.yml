@@ -49,6 +49,8 @@ env:
   GAR_LOCATION: ${{ secrets.GAR_LOCATION }}
   SERVICE: ${{ secrets.SERVICE }}
   REGION: ${{ secrets.REGION }}
+  VITE_RESPONSE_SECRET_KEY: ${{ secrets.VITE_RESPONSE_SECRET_KEY }}
+  VITE_RESPONSE_SECRET_VECTOR: ${{ secrets.VITE_RESPONSE_SECRET_VECTOR }}
   
 on:
   push:
