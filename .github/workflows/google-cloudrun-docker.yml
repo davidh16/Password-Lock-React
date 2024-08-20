@@ -96,8 +96,6 @@ jobs:
       - name: Build and Push Container
         run: |-
           ENV_VARS=$(printenv | grep ^VITE_ | sed 's/^VITE_//; s/="\|"$//g' | tr '\n' ' ')
-
-          echo "ENV_VARS: $ENV_VARS"
           
           docker build --build-arg ENV_VARS=$ENV_VARS \
             -t "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}/${{ env.SERVICE }}:${{ github.sha }}" ./
