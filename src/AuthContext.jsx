@@ -28,13 +28,27 @@ export const AuthProvider = ({ children }) => {
     const login = async (credentials) => {
 
         try {
+            try {
+                const loginRes = await axiosInstance.post("login", JSON.stringify(credentials));
+                console.log("loginRes", loginRes.status);
 
-            const loginRes = await axiosInstance.post("login", JSON.stringify(credentials));
-            console.log("loginRes", loginRes.status);
+                if (loginRes.status !== 200) {
+                    setAuthError("Wrong email address or password");
+                    return;
+                }
+            }catch (error) {
+                console.log("error je", error);
 
-            if (loginRes.status !== 200) {
-                setAuthError("Wrong email address or password");
-                return;
+                if (error.status === 401){
+                    setAuthInfo(prevState => ({
+                        ...prevState,
+                        authenticated: false,
+                        registrationCompleted: false,
+                    }));
+
+                    setAuthError("Wrong email address or password");
+                    return;
+                }
             }
 
             const userDataRes = await axiosInstance.post("me", undefined, { withCredentials: true });
