@@ -45,10 +45,12 @@
 name: Build and Deploy to Cloud Run
 
 env:
-  PROJECT_ID: password-lock-486ee # TODO: update Google Cloud project id
-  GAR_LOCATION: europe-west1 # TODO: update Artifact Registry location
-  SERVICE: password-lock-frontend # TODO: update Cloud Run service name
-  REGION: europe-west1 # TODO: update Cloud Run service region
+  PROJECT_ID: ${{ secrets.PROJECT_ID }}
+  GAR_LOCATION: ${{ secrets.GAR_LOCATION }}
+  SERVICE: ${{ secrets.SERVICE }}
+  REGION: ${{ secrets.REGION }}
+  VITE_RESPONSE_SECRET_KEY: ${{ secrets.VITE_RESPONSE_SECRET_KEY }}
+  VITE_RESPONSE_SECRET_VECTOR: ${{ secrets.VITE_RESPONSE_SECRET_VECTOR }}
   
 on:
   push:
