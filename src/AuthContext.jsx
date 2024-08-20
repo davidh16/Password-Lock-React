@@ -49,19 +49,33 @@ export const AuthProvider = ({ children }) => {
                 return;
             }
 
-            // const userDataRes = await axiosInstance.post("me", undefined, { withCredentials: true });
-            // console.log("userData", userDataRes.data);
-            //
-            // if (userDataRes.status !== 200) {
-            //     setAuthError("Wrong email address or password");
-            //     return;
-            // }
-            //
-            // setAuthInfo(prevState => ({
-            //     ...prevState,
-            //     authenticated: true,
-            //     registrationCompleted: userDataRes.data["completed"],
-            // }));
+            try {
+                const userDataRes = await axiosInstance.post("me", undefined, {withCredentials: true});
+                console.log("userData", userDataRes.data);
+
+                if (userDataRes.status !== 200) {
+                    setAuthError("Wrong email address or password");
+                    return;
+                }
+
+                setAuthInfo(prevState => ({
+                    ...prevState,
+                    authenticated: true,
+                    registrationCompleted: userDataRes.data["completed"],
+                }));
+            }catch (error) {
+                console.log("me error je", error);
+
+                setAuthInfo(prevState => ({
+                    ...prevState,
+                    authenticated: false,
+                    registrationCompleted: false,
+                }));
+
+                setAuthError("Wrong email address or password");
+                return;
+            }
+
         } catch (error) {
             console.log(error);
 
