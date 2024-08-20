@@ -50,13 +50,13 @@ axiosInstance.interceptors.response.use(
 
                 console.log("not 401", error)
 
-                 window.location.href = '/error';
+                 // window.location.href = '/error';
             }
         } else {
 
             console.log("else", error)
 
-            window.location.href = '/error';
+            // window.location.href = '/error';
         }
 
         return Promise.reject(error);
