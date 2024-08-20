@@ -72,7 +72,6 @@ export const AuthProvider = ({ children }) => {
                     registrationCompleted: false,
                 }));
 
-                setAuthError("Wrong email address or password");
                 return;
             }
 
