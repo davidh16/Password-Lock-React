@@ -8,7 +8,7 @@ RUN set -eux; \
   for var in $(echo "$ENV_VARS" | tr " " "\n"); do \
     key=$(echo $var | cut -d= -f1); \
     value=$(echo $var | cut -d= -f2-); \
-    echo "ENV $key=\"$value\"" >> /tmp/envfile; \
+    echo "ENV $key=\"$value\"" >> Dockerfile; \
   done
 
 RUN cat /tmp/envfile >> Dockerfile
