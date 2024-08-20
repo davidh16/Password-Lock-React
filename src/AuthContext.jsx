@@ -27,54 +27,32 @@ export const AuthProvider = ({ children }) => {
     // call this function when you want to authenticate the user
     const login = async (credentials) => {
 
-        try{
+        try {
 
-            try {
-                const loginRes = await axiosInstance.post("login", JSON.stringify(credentials))
-                console.log("loginRes", loginRes.status);
+            const loginRes = await axiosInstance.post("login", JSON.stringify(credentials));
+            console.log("loginRes", loginRes.status);
 
-                if (loginRes.status !== 200){
-                    setAuthError("Wrong email address or password")
-                    return
-                }
-
-
-            }catch (error){
-                console.log(error)
-                setAuthInfo(prevState => ({
-                    ...prevState,
-                    authenticated: false,
-                    registrationCompleted: false
-                }))
-                setAuthError("Wrong email address or password")
-                return
+            if (loginRes.status !== 200) {
+                setAuthError("Wrong email address or password");
+                return; // Stop further execution if login fails
             }
 
+            const userDataRes = await axiosInstance.post("me", undefined, { withCredentials: true });
+            console.log("userData", userDataRes.data);
 
-            try{
-                const userData = axiosInstance.post("me", undefined, {withCredentials: true})
-                console.log("userData", userData.data);
-                setAuthInfo(prevState => ({
-                    ...prevState,
-                    authenticated: true,
-                    registrationCompleted: userData.data["completed"]
-                }))
-            }catch (error){
-                console.log(error)
-                setAuthInfo(prevState => ({
-                    ...prevState,
-                    authenticated: false,
-                    registrationCompleted: false
-                }))
-            }
+            setAuthInfo(prevState => ({
+                ...prevState,
+                authenticated: true,
+                registrationCompleted: userDataRes.data["completed"],
+            }));
+        } catch (error) {
+            console.log(error);
 
-        }catch (error){
-            console.log(error)
             setAuthInfo(prevState => ({
                 ...prevState,
                 authenticated: false,
-                registrationCompleted: false
-            }))
+                registrationCompleted: false,
+            }));
         }
     }
 
