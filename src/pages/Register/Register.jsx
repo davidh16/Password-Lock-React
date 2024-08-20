@@ -45,6 +45,8 @@ function Register(){
 
     function handleOnSubmit(){
 
+        console.log(emailAddress)
+
         if(emailAddress === ""){
             setErrorMessage("Email address not specified")
         }
