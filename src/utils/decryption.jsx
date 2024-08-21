@@ -7,6 +7,9 @@ export function decryptResponse(cipherText){
 
     console.log(process.env.RESPONSE_SECRET_VECTOR)
     console.log(process.env.RESPONSE_SECRET_KEY)
+    console.log(cipherText.data)
+    console.log(decodeBase64(cipherText.data))
+    console.log(CryptoJS.enc.Base64.parse(cipherText.data))
 
     const key = CryptoJS.enc.Utf8.parse(process.env.RESPONSE_SECRET_KEY);
     const iv1 = CryptoJS.enc.Hex.parse(process.env.RESPONSE_SECRET_VECTOR);
