@@ -1,15 +1,15 @@
 import CryptoJS from "crypto-js";
 
-const secret = process.env.RESPONSE_SECRET_KEY;
-const iv = process.env.RESPONSE_SECRET_VECTOR;
-
 function decodeBase64(input) {
     return CryptoJS.enc.Base64.parse(input);
 }
 export function decryptResponse(cipherText){
 
-    const key = CryptoJS.enc.Utf8.parse(secret);
-    const iv1 = CryptoJS.enc.Hex.parse(iv);
+    console.log(process.env.RESPONSE_SECRET_VECTOR)
+    console.log(process.env.RESPONSE_SECRET_KEY)
+
+    const key = CryptoJS.enc.Utf8.parse(process.env.RESPONSE_SECRET_KEY);
+    const iv1 = CryptoJS.enc.Hex.parse(process.env.RESPONSE_SECRET_VECTOR);
 
     const decrypted = CryptoJS.AES.decrypt({
         ciphertext: decodeBase64(cipherText.data)
