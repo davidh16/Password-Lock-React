@@ -50,6 +50,7 @@ export const AuthProvider = ({ children }) => {
             }
 
             try {
+
                 const userDataRes = await axiosInstance.post("me", undefined);
                 console.log("userData", userDataRes.data);
 

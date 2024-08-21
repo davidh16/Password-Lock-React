@@ -30,8 +30,9 @@ function Home() {
                 }, {});
                 setEntityStates(initialStates);
             })
-            .catch(() => {
-                navigate("/error")
+            .catch((error) => {
+                console.log(error)
+                // navigate("/error")
             });
     }, []);
 
