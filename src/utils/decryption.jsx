@@ -35,9 +35,9 @@ export function decryptResponse(cipherText){
     }
 
     try {
-        const decryptedBuffer = Buffer.from(decrypted.toString(CryptoJS.enc.Hex), 'hex');
-        const utf8String = decryptedBuffer.toString('utf8');
-        console.log("Decrypted UTF-8 String using Buffer:", utf8String);
+        const byteArray = CryptoJS.enc.Hex.parse(decrypted.toString(CryptoJS.enc.Hex));
+        const utf8String = new TextDecoder().decode(new Uint8Array(byteArray.words));
+        console.log("Decrypted UTF-8 String using TextDecoder:", utf8String);
     } catch (e) {
         console.error("Error converting decrypted data to BUFFER", e.message);
         // Handle the error, perhaps by logging the raw data or using a fallback encoding
