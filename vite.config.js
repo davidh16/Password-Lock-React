@@ -13,7 +13,7 @@ export default defineConfig(({ command, mode })=>{
     port: 5713,
     proxy: {
       '/api': {
-        target: process.env.LOCAL_BASE_URL,
+        target: "http://backend:8080",
         changeOrigin: true,
         rewrite: path => path.replace(/^\/api/, ''),
       },
@@ -27,3 +27,4 @@ export default defineConfig(({ command, mode })=>{
     'process.env': env,
   }
 }})
+
