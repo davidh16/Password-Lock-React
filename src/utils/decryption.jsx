@@ -16,32 +16,8 @@ export function decryptResponse(cipherText){
         padding: CryptoJS.pad.NoPadding
     });
 
-    console.log(JSON.stringify(decrypted))
-
-    try {
-        const base64String = CryptoJS.enc.Base64.stringify(decrypted);
-        console.log("Decrypted Base64 String:", base64String);
-    } catch (e) {
-        console.error("Error converting decrypted data to BASE64:", e.message);
-        // Handle the error, perhaps by logging the raw data or using a fallback encoding
-    }
-
-    try {
-        const hexString = CryptoJS.enc.Hex.stringify(decrypted);
-        console.log("Decrypted Hex String:", hexString);
-    } catch (e) {
-        console.error("Error converting decrypted data to hex:", e.message);
-        // Handle the error, perhaps by logging the raw data or using a fallback encoding
-    }
-
-    try {
-        const byteArray = CryptoJS.enc.Hex.parse(decrypted.toString(CryptoJS.enc.Hex));
-        const utf8String = new TextDecoder().decode(new Uint8Array(byteArray.words));
-        console.log("Decrypted UTF-8 String using TextDecoder:", utf8String);
-    } catch (e) {
-        console.error("Error converting decrypted data to BUFFER", e.message);
-        // Handle the error, perhaps by logging the raw data or using a fallback encoding
-    }
+    console.log(decrypted.words)
+    console.log(CryptoJS.enc.Utf8.stringify(decrypted.words))
 
     try {
         const utf8String = CryptoJS.enc.Utf8.stringify(decrypted);
