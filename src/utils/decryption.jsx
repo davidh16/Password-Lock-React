@@ -16,7 +16,7 @@ export function decryptResponse(cipherText){
         padding: CryptoJS.pad.NoPadding
     });
 
-    console.log(decrypted)
+    console.log(JSON.stringify(decrypted))
 
     try {
         const base64String = CryptoJS.enc.Base64.stringify(decrypted);
@@ -50,11 +50,6 @@ export function decryptResponse(cipherText){
         console.error("Error converting decrypted data to UTF-8:", e.message);
         // Handle the error, perhaps by logging the raw data or using a fallback encoding
     }
-
-
-
-
-
 
     return CryptoJS.enc.Utf8.stringify(decrypted);
 }
