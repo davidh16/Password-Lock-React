@@ -21,9 +21,6 @@ function Home() {
     useEffect(() => {
         axiosInstance.get("entity/list", { withCredentials: true })
             .then((response) => {
-
-                console.log(response)
-
                 const decryptedResponse = decryptResponse(response);
                 setEntities(JSON.parse(decryptedResponse).entities);
 
@@ -34,8 +31,7 @@ function Home() {
                 setEntityStates(initialStates);
             })
             .catch((error) => {
-                console.log(error)
-                // navigate("/error")
+                navigate("/error")
             });
     }, []);
 

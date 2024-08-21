@@ -44,19 +44,12 @@ axiosInstance.interceptors.response.use(
 
         if (error.response) {
             if (error.response.status === 401) {
-                console.log("error.response.status === 401", error)
                 return Promise.reject(error);
             } else {
-
-                console.log("not 401", error)
-
-                 // window.location.href = '/error';
+                 window.location.href = '/error';
             }
         } else {
-
-            console.log("else", error)
-
-            // window.location.href = '/error';
+            window.location.href = '/error';
         }
 
         return Promise.reject(error);

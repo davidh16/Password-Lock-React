@@ -44,7 +44,7 @@ function Entity({ entityData = {}, handleDeleteIconClick, handleUpdateIconClick,
         }
 
         if (entityData.uuid) {
-            Axios.get(`http://localhost:8085/icon/${entityData.uuid}`, { withCredentials: true })
+            Axios.get(`/icon/${entityData.uuid}`)
                 .then((response) => {
                     const decryptedResponse = JSON.parse(decryptResponse(response));
                     setIcon(decryptedResponse.signed_url);
