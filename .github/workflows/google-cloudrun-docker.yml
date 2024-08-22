@@ -95,6 +95,9 @@ jobs:
           # Convert JSON to .env format
           cat env_vars.json | jq -r 'to_entries | map("\(.key)=\(.value)") | .[]' > .env
 
+          #remove no longer needed env_vars.json file
+          rm -f env_vars.json
+
           # Display the contents of the .env file (for debugging purposes)
           cat .env
 
