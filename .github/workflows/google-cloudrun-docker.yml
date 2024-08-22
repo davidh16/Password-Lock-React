@@ -90,7 +90,8 @@ jobs:
         uses: infovista-opensource/vars-to-env-action@2.0.0
         with:
           secrets: ${{ toJSON(vars) }}
-          prefix: VITE_
+          include: VITE_.+
+          removeprefix: VITE_
 
       - name: Create .env file from environment variables
         run: |-
@@ -101,7 +102,7 @@ jobs:
            printenv | while IFS= read -r line; do
             key=$(echo $line | cut -d= -f1)
             value=$(echo $line | cut -d= -f2-)
-            echo "${key#VITE_}=$value" >> .env
+            echo "$key=$value" >> .env
           done
 
           # Display the contents of the .env file (for debugging purposes)
