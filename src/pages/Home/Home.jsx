@@ -78,8 +78,9 @@ function Home() {
                     }));
 
                 })
-                .catch(() => {
-                    navigate("/error")
+                .catch((error) => {
+                    console.log(error)
+                    // navigate("/error")
                 });
         }else{
             setEntityStates(prevStates => ({
