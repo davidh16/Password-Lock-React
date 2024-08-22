@@ -19,6 +19,7 @@ import gmailIcon from "../../assets/gmail.png";
 import uploadIcon from "../../assets/upload-icon.png";
 import { EntityState } from "../../utils/EntityState";
 import {validateCreateRequest} from "../../utils/validations.jsx";
+import axiosInstance from "../../axiosConfig.jsx";
 
 const icons = {
     2: facebookIcon,
@@ -44,11 +45,16 @@ function Entity({ entityData = {}, handleDeleteIconClick, handleUpdateIconClick,
         }
 
         if (entityData.uuid) {
-            Axios.get(`/icon/${entityData.uuid}`)
-                .then((response) => {
-                    const decryptedResponse = JSON.parse(decryptResponse(response));
-                    setIcon(decryptedResponse.signed_url);
-                })
+            try{
+                axiosInstance.get(`/icon/${entityData.uuid}`)
+                    .then((response) => {
+                        const decryptedResponse = JSON.parse(decryptResponse(response));
+                        setIcon(decryptedResponse.signed_url);
+                    })
+            }catch (error){
+                console.log(error)
+            }
+
         }
     }, []);
 
