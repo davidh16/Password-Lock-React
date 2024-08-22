@@ -86,24 +86,14 @@ jobs:
          username: _json_key
          password: ${{ secrets.GCR_SERVICE_ACCOUNT_JSON }}
 
-      - name: Parse environment variables
-        uses: infovista-opensource/vars-to-env-action@2.0.0
-        with:
-          secrets: ${{ toJSON(vars) }}
-          include: VITE_*
-          removeprefix: VITE_
+      - name: Prepare Environment Variables for Deployment
+        id: prepare-env
+        run: |
+          # Convert repository or organization variables to JSON format
+          echo '${{ toJSON(vars) }}' > env_vars.json
 
-      - name: Create .env file from environment variables
-        run: |-
-          # Create .env file
-          echo "# Generated .env file" > .env
-          
-          # Add all variables starting with VITE_ prefix to .env file
-           printenv | while IFS= read -r line; do
-            key=$(echo $line | cut -d= -f1)
-            value=$(echo $line | cut -d= -f2-)
-            echo "$key=$value" >> .env
-          done
+          # Convert JSON to .env format
+          cat env_vars.json | jq -r 'to_entries | map("\(.key)=\(.value)") | .[]' > .env
 
           # Display the contents of the .env file (for debugging purposes)
           cat .env
