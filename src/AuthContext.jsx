@@ -30,7 +30,6 @@ export const AuthProvider = ({ children }) => {
         try {
             try {
                 const loginRes = await axiosInstance.post("login", JSON.stringify(credentials));
-                console.log("loginRes", loginRes.status);
 
                 if (loginRes.status !== 200) {
                     setAuthError("Wrong email address or password");
@@ -52,7 +51,6 @@ export const AuthProvider = ({ children }) => {
             try {
 
                 const userDataRes = await axiosInstance.post("me", undefined);
-                console.log("userData", userDataRes.data);
 
                 if (userDataRes.status !== 200) {
                     setAuthError("Wrong email address or password");
@@ -65,7 +63,6 @@ export const AuthProvider = ({ children }) => {
                     registrationCompleted: userDataRes.data["completed"],
                 }));
             }catch (error) {
-                console.log("me error je", error);
 
                 setAuthInfo(prevState => ({
                     ...prevState,

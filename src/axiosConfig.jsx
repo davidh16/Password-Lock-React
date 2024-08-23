@@ -44,7 +44,7 @@ axiosInstance.interceptors.response.use(
             if (error.response.status === 401) {
                 return Promise.reject(error);
             } else {
-                console.log("Error response: ", error.response)
+                console.log("Error response: ", error.response.data.error)
                  // window.location.href = '/error';
             }
         } else {
