@@ -26,30 +26,62 @@ export const AuthProvider = ({ children }) => {
 
     // call this function when you want to authenticate the user
     const login = async (credentials) => {
-        await axiosInstance.post("login", JSON.stringify(credentials)).then(() => {
-            axiosInstance.post("me", undefined, {withCredentials: true}).then(
-                (response) => {
 
-                    if (response !== undefined){
-                        setAuthInfo(prevState => ({
-                            ...prevState,
-                            authenticated: true,
-                            registrationCompleted: response.data["completed"]
-                        }))
-                    }else {
-                        setAuthError("Wrong email address or password")
-                    }
-                })
-        }).catch(()=>{
+        try {
+            try {
+                const loginRes = await axiosInstance.post("login", JSON.stringify(credentials));
+
+                if (loginRes.status !== 200) {
+                    setAuthError("Wrong email address or password");
+                    return;
+                }
+            }catch (error) {
+                console.log("error je", error);
+
+                setAuthInfo(prevState => ({
+                    ...prevState,
+                    authenticated: false,
+                    registrationCompleted: false,
+                }));
+
+                setAuthError("Wrong email address or password");
+                return;
+            }
+
+            try {
+
+                const userDataRes = await axiosInstance.post("me", undefined);
+
+                if (userDataRes.status !== 200) {
+                    setAuthError("Wrong email address or password");
+                    return;
+                }
+
+                setAuthInfo(prevState => ({
+                    ...prevState,
+                    authenticated: true,
+                    registrationCompleted: userDataRes.data["completed"],
+                }));
+            }catch (error) {
+
+                setAuthInfo(prevState => ({
+                    ...prevState,
+                    authenticated: false,
+                    registrationCompleted: false,
+                }));
+
+                return;
+            }
+
+        } catch (error) {
+            console.log(error);
+
             setAuthInfo(prevState => ({
                 ...prevState,
                 authenticated: false,
-                registrationCompleted: false
-            }))
-
-            setAuthError("Wrong email address or password")
-
-        })
+                registrationCompleted: false,
+            }));
+        }
     }
 
     // call this function to sign out logged in user

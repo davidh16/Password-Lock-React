@@ -7,7 +7,7 @@ services:
       dockerfile: ./Dockerfile
       target: local
     volumes:
-      - /Users/davidhorvat/React projects/Password-Locker-React:/app
+      - /Users/davidhorvat/React projects/Password-Lock-React:/app
       - /app/node_modules
     ports:
       - "5713:5713"

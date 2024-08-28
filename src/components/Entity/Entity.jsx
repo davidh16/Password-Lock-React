@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import './Entity.css';
-import PropTypes from "prop-types";
+import PropTypes, {number, string} from "prop-types";
 import Axios from "axios";
 import { decryptResponse } from "../../utils/decryption";
 import copyIcon from "../../assets/copy.png";
@@ -19,6 +19,7 @@ import gmailIcon from "../../assets/gmail.png";
 import uploadIcon from "../../assets/upload-icon.png";
 import { EntityState } from "../../utils/EntityState";
 import {validateCreateRequest} from "../../utils/validations.jsx";
+import axiosInstance from "../../axiosConfig.jsx";
 
 const icons = {
     2: facebookIcon,
@@ -29,7 +30,11 @@ const icons = {
     6: uploadIcon,
 };
 
-function Entity({ entityData = {}, handleDeleteIconClick, handleUpdateIconClick, handleSaveIconClickOnUpdate, handleSaveIconClickOnCreate, handleCancelIconClick, entityState }) {
+function Entity({ entityData = {
+    icon_path: string,
+    uuid: string,
+    type: number,
+}, handleDeleteIconClick, handleUpdateIconClick, handleSaveIconClickOnUpdate, handleSaveIconClickOnCreate, handleCancelIconClick, entityState }) {
     const [icon, setIcon] = useState(placeholderIcon);
     const [entity, setEntity] = useState(entityData);
     const [file, setFile] = useState(null);
@@ -43,12 +48,23 @@ function Entity({ entityData = {}, handleDeleteIconClick, handleUpdateIconClick,
             setIcon(uploadIcon)
         }
 
-        if (entityData.uuid) {
-            Axios.get(`http://localhost:8085/icon/${entityData.uuid}`, { withCredentials: true })
-                .then((response) => {
-                    const decryptedResponse = JSON.parse(decryptResponse(response));
-                    setIcon(decryptedResponse.signed_url);
-                })
+        if (entityData.icon_path !== undefined) {
+            try{
+                axiosInstance.get(`/icon/${entityData.uuid}`)
+                    .then((response) => {
+                        const decryptedResponse = JSON.parse(decryptResponse(response));
+                        setIcon(decryptedResponse.signed_url);
+                    })
+            }catch (error){
+                console.log(error)
+            }
+
+        }else {
+            if (entityData.type === 6){
+                setIcon(placeholderIcon)
+            }else {
+                setIcon(icons[entityData.type])
+            }
         }
     }, []);
 

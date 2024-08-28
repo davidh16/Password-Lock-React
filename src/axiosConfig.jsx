@@ -1,12 +1,25 @@
 // axiosConfig.js
 import axios from 'axios';
 
+let baseUrl
+
+switch (process.env.ENVIRONMENT){
+    case "local":
+        baseUrl = '/api'
+        break;
+    case "debug":
+        baseUrl = process.env.DEBUG_BASE_URL
+        break;
+    case "production":
+        baseUrl = process.env.PRODUCTION_BASE_URL
+        break;
+}
+
 // Create an Axios instance
 const axiosInstance = axios.create({
-    baseURL: '/api',
-    withCredentials: true, // Include cookies in requests
+    baseURL: baseUrl,
+    withCredentials: true, // If you need to send cookies
 });
-
 
 let setAuthInfo;
 

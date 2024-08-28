@@ -20,6 +20,12 @@ function Error(){
     }
 
     function handleOnLogoClick(){
+        // setAuthInfo(prevState => ({
+        //     ...prevState,
+        //     authenticated: false,
+        //     registrationCompleted: false
+        // }));
+
         navigate("/")
     }
 
