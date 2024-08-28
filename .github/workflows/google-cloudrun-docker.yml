@@ -54,12 +54,17 @@ env:
   
 on:
   push:
-    branches: [ "debug" ]
+    branches:
+      - debug
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   deploy:
     environment: 
-      name: ${{ github.ref == 'refs/heads/master' && 'production' || 'debug' }}
+      name: ${{ github.ref == 'refs/heads/main' && 'production' || 'debug' }}
 
     permissions:
       contents: 'read'
