@@ -45,8 +45,6 @@ function Register(){
 
     function handleOnSubmit(){
 
-        console.log(emailAddress)
-
         if(emailAddress === ""){
             setErrorMessage("Email address not specified")
         }
@@ -60,8 +58,6 @@ function Register(){
                 const request = {
                     email_address: emailAddress
                 }
-
-                console.log(request)
 
                 axiosInstance.post("register", JSON.stringify(request))
                     .then(()=>{
@@ -80,17 +76,14 @@ function Register(){
                 setValidationError("Invalid email address")
             }
         }else {
+            const request = {
+                email_address: emailAddress
+                }
 
-        const request = {
-            email_address: emailAddress
-        }
-
-        axiosInstance.post("resend-verification-email", JSON.stringify(request)).catch(()=>{
-            navigate("/error")
-        })
-
-        startTimer(5)
-        setSubmitted(false)
+            axiosInstance.post("resend-verification-email", JSON.stringify(request)).then(()=>{
+                startTimer(5)
+                setSubmitted(false)
+            })
         }
     }
 
