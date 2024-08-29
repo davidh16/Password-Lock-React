@@ -83,8 +83,6 @@ function Register(){
                 email_address: emailAddress
             }
 
-            console.log(JSON.stringify(request))
-
             axiosInstance.post("resend-verification-email", JSON.stringify(request)).then(()=>{
                 startTimer(5)
                 setSubmitted(true)
