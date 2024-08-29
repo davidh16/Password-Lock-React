@@ -71,7 +71,7 @@ function Register(){
     }
     function handleOnResendVerificationLink(){
 
-        if(emailAddress === undefined && emailAddress === ""){
+        if(emailAddress === undefined || emailAddress === ""){
            return
         }else {
 
