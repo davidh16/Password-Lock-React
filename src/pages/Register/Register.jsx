@@ -72,6 +72,7 @@ function Register(){
     function handleOnResendVerificationLink(){
 
         console.log("pritisak")
+        console.log(emailAddress)
 
         if(emailAddress !== undefined && emailAddress !== ""){
             if (!validator.isEmail(emailAddress)) {
