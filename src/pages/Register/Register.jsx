@@ -71,17 +71,19 @@ function Register(){
     }
     function handleOnResendVerificationLink(){
 
-        console.log("pritisak")
-        console.log(emailAddress)
-
-        if(emailAddress !== undefined && emailAddress !== ""){
-            if (!validator.isEmail(emailAddress)) {
-                setValidationError("Invalid email address")
-            }
+        if(emailAddress === undefined && emailAddress === ""){
+           return
         }else {
+
+            if (!validator.isEmail(emailAddress)) {
+                return;
+            }
+
             const request = {
                 email_address: emailAddress
-                }
+            }
+
+            console.log(JSON.stringify(request))
 
             axiosInstance.post("resend-verification-email", JSON.stringify(request)).then(()=>{
                 startTimer(5)
