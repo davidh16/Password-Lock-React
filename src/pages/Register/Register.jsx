@@ -71,6 +71,8 @@ function Register(){
     }
     function handleOnResendVerificationLink(){
 
+        console.log("pritisak")
+
         if(emailAddress !== undefined && emailAddress !== ""){
             if (!validator.isEmail(emailAddress)) {
                 setValidationError("Invalid email address")
